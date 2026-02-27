@@ -14,6 +14,6 @@ public class RoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("rooms", roomService.listActiveRoomTypes());
-        req.getRequestDispatcher("/WEB-INF/views/rooms.jspx").forward(req, resp);
+        req.getRequestDispatcher("rooms.jspx").forward(req, resp);
     }
 }

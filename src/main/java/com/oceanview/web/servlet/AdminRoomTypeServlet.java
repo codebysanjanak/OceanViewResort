@@ -24,7 +24,7 @@ public class AdminRoomTypeServlet extends HttpServlet {
         }
 
         req.setAttribute("rooms", DAOFactory.roomTypeDAO().findAll());
-        req.getRequestDispatcher("/WEB-INF/views/admin-roomtypes.jspx").forward(req, resp);
+        req.getRequestDispatcher("admin-roomtypes.jspx").forward(req, resp);
     }
 
     @Override
@@ -53,6 +53,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
         }
 
         req.setAttribute("rooms", DAOFactory.roomTypeDAO().findAll());
-        req.getRequestDispatcher("/WEB-INF/views/admin-roomtypes.jspx").forward(req, resp);
+        req.getRequestDispatcher("admin-roomtypes.jspx").forward(req, resp);
     }
 }

@@ -15,7 +15,7 @@ public class GuestProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int guestId = (int) req.getSession().getAttribute("guestId");
         req.setAttribute("guest", profileFacade.getGuestProfile(guestId));
-        req.getRequestDispatcher("/WEB-INF/views/guest-profile.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-profile.jspx").forward(req, resp);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class GuestProfileServlet extends HttpServlet {
             req.setAttribute("error", e.getMessage());
         }
         req.setAttribute("guest", profileFacade.getGuestProfile(guestId));
-        req.getRequestDispatcher("/WEB-INF/views/guest-profile.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-profile.jspx").forward(req, resp);
     }
 }

@@ -13,13 +13,13 @@ public class GuestRegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/guest-register.jspx").forward(req, resp);
+        req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int id = authService.register(
+            authService.register(
                     req.getParameter("name"),
                     req.getParameter("email"),
                     req.getParameter("phone"),
@@ -27,10 +27,10 @@ public class GuestRegisterServlet extends HttpServlet {
                     req.getParameter("password")
             );
             req.setAttribute("success", "Registered successfully! Please login.");
-            req.getRequestDispatcher("/WEB-INF/views/guest-login.jspx").forward(req, resp);
+            req.getRequestDispatcher("/guest-login.jspx").forward(req, resp);
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/guest-register.jspx").forward(req, resp);
+            req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);
         }
     }
 }

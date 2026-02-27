@@ -16,7 +16,7 @@ public class BookingCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("rooms", DAOFactory.roomTypeDAO().findAllActive());
-        req.getRequestDispatcher("/WEB-INF/views/booking-create.jspx").forward(req, resp);
+        req.getRequestDispatcher("booking-create.jspx").forward(req, resp);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class BookingCreateServlet extends HttpServlet {
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
         }
-        req.getRequestDispatcher("/WEB-INF/views/booking-create.jspx").forward(req, resp);
+        req.getRequestDispatcher("booking-create.jspx").forward(req, resp);
     }
 }

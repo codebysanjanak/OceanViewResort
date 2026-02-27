@@ -13,7 +13,7 @@ public class GuestPasswordServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/guest-password.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-password.jspx").forward(req, resp);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class GuestPasswordServlet extends HttpServlet {
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
         }
-        req.getRequestDispatcher("/WEB-INF/views/guest-password.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-password.jspx").forward(req, resp);
     }
 }

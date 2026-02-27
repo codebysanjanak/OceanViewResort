@@ -23,6 +23,6 @@ public class GuestBookingsServlet extends HttpServlet {
         }
 
         req.setAttribute("bookings", bookingFacade.getGuestBookings(guestId));
-        req.getRequestDispatcher("/WEB-INF/views/guest-bookings.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-bookings.jspx").forward(req, resp);
     }
 }

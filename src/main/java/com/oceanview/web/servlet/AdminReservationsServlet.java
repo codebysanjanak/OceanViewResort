@@ -12,6 +12,6 @@ public class AdminReservationsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("reservations", DAOFactory.reservationDAO().findAll());
-        req.getRequestDispatcher("/WEB-INF/views/admin-reservations.jspx").forward(req, resp);
+        req.getRequestDispatcher("admin-reservations.jspx").forward(req, resp);
     }
 }

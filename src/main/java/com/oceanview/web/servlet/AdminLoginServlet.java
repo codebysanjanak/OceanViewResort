@@ -15,7 +15,7 @@ public class AdminLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/admin-login.jspx").forward(req, resp);
+        req.getRequestDispatcher("admin-login.jspx").forward(req, resp);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class AdminLoginServlet extends HttpServlet {
             Admin a = DAOFactory.adminDAO().findByUsername(username);
             if (a == null || !hasher.verify(password, a.getPasswordHash())) {
                 req.setAttribute("error", "Invalid admin credentials");
-                req.getRequestDispatcher("/WEB-INF/views/admin-login.jspx").forward(req, resp);
+                req.getRequestDispatcher("admin-login.jspx").forward(req, resp);
                 return;
             }
 
@@ -38,7 +38,7 @@ public class AdminLoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/admin/roomtypes");
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/admin-login.jspx").forward(req, resp);
+            req.getRequestDispatcher("admin-login.jspx").forward(req, resp);
         }
     }
 }

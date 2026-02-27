@@ -24,6 +24,6 @@ public class AdminBillServlet extends HttpServlet {
                 req.setAttribute("error", e.getMessage());
             }
         }
-        req.getRequestDispatcher("/WEB-INF/views/admin-bill.jspx").forward(req, resp);
+        req.getRequestDispatcher("admin-bill.jspx").forward(req, resp);
     }
 }

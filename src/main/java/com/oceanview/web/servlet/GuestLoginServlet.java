@@ -14,7 +14,7 @@ public class GuestLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/guest-login.jspx").forward(req, resp);
+        req.getRequestDispatcher("guest-login.jspx").forward(req, resp);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class GuestLoginServlet extends HttpServlet {
             Guest g = authService.login(req.getParameter("email"), req.getParameter("password"));
             if (g == null) {
                 req.setAttribute("error", "Invalid email or password");
-                req.getRequestDispatcher("/WEB-INF/views/guest-login.jspx").forward(req, resp);
+                req.getRequestDispatcher("guest-login.jspx").forward(req, resp);
                 return;
             }
             HttpSession session = req.getSession(true);
@@ -32,7 +32,7 @@ public class GuestLoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/guest/bookings");
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/guest-login.jspx").forward(req, resp);
+            req.getRequestDispatcher("guest-login.jspx").forward(req, resp);
         }
     }
 }

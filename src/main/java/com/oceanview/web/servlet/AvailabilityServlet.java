@@ -33,6 +33,6 @@ public class AvailabilityServlet extends HttpServlet {
             }
         }
 
-        req.getRequestDispatcher("/WEB-INF/views/availability.jspx").forward(req, resp);
+        req.getRequestDispatcher("availability.jspx").forward(req, resp);
     }
 }
