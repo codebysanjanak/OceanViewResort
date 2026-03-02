@@ -39,8 +39,9 @@ public class GuestRegisterServlet extends HttpServlet {
                     req.getParameter("confirmPassword")
             );
 
-            req.setAttribute("success", "Registered successfully! Please login.");
-            req.getRequestDispatcher("/guest-login.jspx").forward(req, resp);
+            // stay on register page, show toast, then JS will redirect
+            req.setAttribute("success", "Registered successfully!, You'll redirect to login..");
+            req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);
 
         } catch (ValidationException ve) {
             req.setAttribute("errors", ve.getErrors());

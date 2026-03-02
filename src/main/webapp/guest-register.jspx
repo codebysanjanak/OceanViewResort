@@ -125,6 +125,50 @@
           color: var(--primary-contrast);
           border: none;
         }
+        
+        #snackbar {
+          visibility: hidden;
+          min-width: 320px;
+          margin-left: -160px;
+          background-color: var(--secondary-color);
+          color: #fff;
+          text-align: center;
+          border-radius: 10px;
+          padding: 16px;
+          position: fixed;
+          z-index: 9999;
+          left: 50%;
+          bottom: 30px;
+          font-size: 17px;
+          font-family: "Montserrat", sans-serif;
+          box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+        }
+
+        #snackbar.show {
+          visibility: visible;
+          -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+          animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        }
+
+        @-webkit-keyframes fadein {
+          from { bottom: 0; opacity: 0; }
+          to { bottom: 30px; opacity: 1; }
+        }
+
+        @keyframes fadein {
+          from { bottom: 0; opacity: 0; }
+          to { bottom: 30px; opacity: 1; }
+        }
+
+        @-webkit-keyframes fadeout {
+          from { bottom: 30px; opacity: 1; }
+          to { bottom: 0; opacity: 0; }
+        }
+
+        @keyframes fadeout {
+          from { bottom: 30px; opacity: 1; }
+          to { bottom: 0; opacity: 0; }
+        }
       </style>
     </head>
 
@@ -215,6 +259,8 @@
 
         </form>
       </div>
+      
+      <div id="snackbar">${success}</div>
 
       <script type="text/javascript">
         <![CDATA[
@@ -262,10 +308,10 @@
               });
             });
 
+            // client validation
             form.addEventListener("submit", function (e) {
               let ok = true;
 
-              // required checks
               fields.forEach(f => {
                 const input = document.getElementById(f.name);
                 const v = (input && input.value ? input.value : "").trim();
@@ -275,7 +321,6 @@
                 }
               });
 
-              // email format
               const email = document.getElementById("email");
               const ev = (email && email.value ? email.value : "").trim();
               if (ev && !emailValid(ev)) {
@@ -283,7 +328,6 @@
                 setErr("email", "Enter a valid email address");
               }
 
-              // password min length
               const pw = document.getElementById("password");
               const pv = (pw && pw.value ? pw.value : "");
               if (pv && pv.length < 6) {
@@ -291,7 +335,6 @@
                 setErr("password", "Password must be at least 6 characters");
               }
 
-              // password match
               const cpw = document.getElementById("confirmPassword");
               const cv = (cpw && cpw.value ? cpw.value : "");
               if (pv && cv && pv !== cv) {
@@ -301,6 +344,18 @@
 
               if (!ok) e.preventDefault();
             });
+
+            // Toast on success + redirect after 5s
+            const successMsg = "${success}";
+            if (successMsg && successMsg.trim().length > 0) {
+              const bar = document.getElementById("snackbar");
+              if (bar) {
+                bar.classList.add("show");
+                setTimeout(() => {
+                  window.location.href = "${pageContext.request.contextPath}/guest/login";
+                }, 5000);
+              }
+            }
           })();
         ]]>
       </script>
