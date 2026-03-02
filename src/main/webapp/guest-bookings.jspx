@@ -1,0 +1,186 @@
+<jsp:root
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="jakarta.tags.core"
+  version="2.0">
+
+  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
+
+  <html>
+    <head>
+      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/global.css" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&amp;display=swap" rel="stylesheet" />
+
+      <style>
+        .headerRow{
+          padding: 1rem 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          height: 10vh;
+          color: var(--primary-contrast);
+          background-color: var(--primary-color);
+          box-sizing: border-box;
+        }
+        .headerRow h2{ font-size: 1.8rem; font-family: "Roboto", sans-serif; }
+        .headerRow .headerActions{ display:flex; font-family:"Montserrat",sans-serif; font-size:1.4rem; gap:1.2rem; }
+        .headerRow a{ color: var(--primary-contrast); text-decoration:none; }
+
+        .content{ padding: 2rem 5rem; width:100%; box-sizing:border-box; }
+        .greeting{ font-family:"Montserrat",sans-serif; font-size:1.2rem; color:var(--primary-color); margin-bottom:0.2rem; }
+
+        .content h2{
+          margin-bottom: 1.2rem;
+          color: var(--primary-color);
+          font-size: 2.8rem;
+          font-weight: 700;
+          font-family: "Cascadia Mono", sans-serif;
+        }
+
+        .actionsTop{ margin:0 0 1.4rem; font-family:"Montserrat",sans-serif; display:flex; gap:1.2rem; flex-wrap:wrap; }
+        .actionsTop a{
+          color: var(--primary-color);
+          text-decoration: none;
+          border: 1px solid var(--primary-color);
+          padding: 10px 14px;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .emptyBox{
+          border: 1px dashed rgba(0,0,0,0.25);
+          border-radius: 12px;
+          padding: 16px;
+          margin: 0 0 1.4rem;
+          font-family: "Montserrat", sans-serif;
+          color: rgba(0,0,0,0.7);
+        }
+        .emptyBox b{ color: rgba(0,0,0,0.85); }
+
+        table{ width:100%; border-collapse:collapse; font-family:"Montserrat",sans-serif; }
+        th, td{ border:1px solid rgba(0,0,0,0.15); padding:12px 10px; text-align:left; }
+        th{ background: rgba(0,0,0,0.04); font-weight:700; }
+
+        .cancelLink{ color: var(--danger-color); text-decoration:none; font-weight:700; }
+
+        #snackbar{
+          visibility:hidden;
+          min-width:320px;
+          margin-left:-160px;
+          background-color:var(--secondary-color);
+          color:#fff;
+          text-align:center;
+          border-radius:10px;
+          padding:16px;
+          position:fixed;
+          z-index:9999;
+          left:50%;
+          bottom:30px;
+          font-size:17px;
+          font-family:"Montserrat",sans-serif;
+          box-shadow:0 8px 22px rgba(0,0,0,0.25);
+        }
+        #snackbar.show{
+          visibility:visible;
+          -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+          animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        }
+        @-webkit-keyframes fadein { from{bottom:0;opacity:0;} to{bottom:30px;opacity:1;} }
+        @keyframes fadein { from{bottom:0;opacity:0;} to{bottom:30px;opacity:1;} }
+        @-webkit-keyframes fadeout { from{bottom:30px;opacity:1;} to{bottom:0;opacity:0;} }
+        @keyframes fadeout { from{bottom:30px;opacity:1;} to{bottom:0;opacity:0;} }
+      </style>
+    </head>
+
+    <body>
+      <div class="headerRow">
+        <h2>Ocean View Resort</h2>
+        <div class="headerActions">
+          <a href="${pageContext.request.contextPath}/guest/bookings">My Bookings</a>
+          <a href="${pageContext.request.contextPath}/guest/profile">My Profile</a>
+          <a href="${pageContext.request.contextPath}/">Offers</a>
+          <a href="${pageContext.request.contextPath}/">About Us</a>
+          <a href="${pageContext.request.contextPath}/guest/logout">Logout</a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="greeting">
+          Hi ${sessionScope.guestName}
+        </div>
+
+        <h2>My Bookings</h2>
+
+        <div class="actionsTop">
+          <a href="${pageContext.request.contextPath}/guest/booking/create">Create New Booking</a>
+        </div>
+
+        <c:if test="${empty bookings}">
+          <div class="emptyBox">
+            You don’t have any reservations yet. Click <b>Create New Booking</b> to make your first reservation.
+          </div>
+        </c:if>
+
+        <c:if test="${not empty bookings}">
+          <table>
+            <tr>
+              <th>Reservation No</th>
+              <th>Room Type</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+
+            <c:forEach items="${bookings}" var="r">
+              <tr>
+                <td>${r.reservationNo}</td>
+                <td>${r.roomTypeId}</td>
+                <td>${r.checkIn}</td>
+                <td>${r.checkOut}</td>
+                <td>${r.status}</td>
+                <td>
+                  <a class="cancelLink"
+                     href="${pageContext.request.contextPath}/guest/bookings?action=cancel&amp;reservationNo=${r.reservationNo}"
+                     onclick="return confirm('Cancel reservation ${r.reservationNo}?');">
+                    Cancel
+                  </a>
+                </td>
+              </tr>
+            </c:forEach>
+          </table>
+        </c:if>
+      </div>
+
+      <div id="snackbar" data-success="${success}" data-error="${error}"></div>
+
+      <script type="text/javascript">
+        <![CDATA[
+          (function () {
+            const bar = document.getElementById("snackbar");
+            if (!bar) return;
+
+            const successMsg = (bar.getAttribute("data-success") || "").trim();
+            const errorMsg = (bar.getAttribute("data-error") || "").trim();
+
+            function showToast(msg, isError) {
+              if (!msg) return;
+              bar.textContent = msg;
+              bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+              bar.classList.add("show");
+              setTimeout(() => bar.classList.remove("show"), 5000);
+            }
+
+            if (errorMsg.length > 0) showToast(errorMsg, true);
+            else if (successMsg.length > 0) showToast(successMsg, false);
+          })();
+        ]]>
+      </script>
+    </body>
+  </html>
+</jsp:root>

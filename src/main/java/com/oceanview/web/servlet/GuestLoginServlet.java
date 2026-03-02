@@ -21,6 +21,7 @@ public class GuestLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Guest g = authService.login(req.getParameter("email"), req.getParameter("password"));
+
             if (g == null) {
                 req.setAttribute("error", "Invalid email or password");
                 req.getRequestDispatcher("/guest-login.jspx").forward(req, resp);
@@ -30,8 +31,10 @@ public class GuestLoginServlet extends HttpServlet {
             HttpSession session = req.getSession(true);
             session.setAttribute("role", "GUEST");
             session.setAttribute("guestId", g.getGuestId());
+            session.setAttribute("guestName", g.getName());
 
             resp.sendRedirect(req.getContextPath() + "/guest/bookings");
+
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/guest-login.jspx").forward(req, resp);
