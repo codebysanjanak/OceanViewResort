@@ -1,11 +1,14 @@
 package com.oceanview.web.servlet;
 
 import com.oceanview.service.GuestAuthService;
+import com.oceanview.service.ValidationException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/guest/register")
 public class GuestRegisterServlet extends HttpServlet {
@@ -18,16 +21,31 @@ public class GuestRegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, String> form = new HashMap<>();
+        form.put("name", req.getParameter("name"));
+        form.put("email", req.getParameter("email"));
+        form.put("phone", req.getParameter("phone"));
+        form.put("address", req.getParameter("address"));
+
+        req.setAttribute("form", form);
+
         try {
             authService.register(
-                    req.getParameter("name"),
-                    req.getParameter("email"),
-                    req.getParameter("phone"),
-                    req.getParameter("address"),
-                    req.getParameter("password")
+                    form.get("name"),
+                    form.get("email"),
+                    form.get("phone"),
+                    form.get("address"),
+                    req.getParameter("password"),
+                    req.getParameter("confirmPassword")
             );
+
             req.setAttribute("success", "Registered successfully! Please login.");
             req.getRequestDispatcher("/guest-login.jspx").forward(req, resp);
+
+        } catch (ValidationException ve) {
+            req.setAttribute("errors", ve.getErrors());
+            req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);
+
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);

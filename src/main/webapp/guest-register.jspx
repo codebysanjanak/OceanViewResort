@@ -4,24 +4,306 @@
                       pageEncoding="UTF-8" />
 
   <html>
+    <head>
+      <link rel="stylesheet"
+            type="text/css"
+            href="${pageContext.request.contextPath}/styles/global.css" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&amp;display=swap"
+            rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap"
+            rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&amp;display=swap"
+            rel="stylesheet" />
+
+      <style>
+        .headerRow{
+          padding: 1rem 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          height: 10vh;
+          color: var(--primary-contrast);
+          background-color: var(--primary-color);
+          box-sizing: border-box;
+        }
+        .headerRow h2{
+          font-size: 1.8rem;
+          font-family: "Roboto", sans-serif;
+        }
+        .headerRow .headerActions{
+          display: flex;
+          font-family: "Montserrat", sans-serif;
+          font-size: 1.4rem;
+          gap: 1.2rem;
+        }
+        .headerRow a{
+          color: var(--primary-contrast);
+          text-decoration: none;
+        }
+
+        .content{
+          padding: 2rem 5rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .content h2{
+          margin-bottom: 2.5rem;
+          color: var(--primary-color);
+          font-size: 2.5rem;
+          font-weight: 600;
+          font-family: "Cascadia Mono", sans-serif;
+        }
+        .content form{
+          padding-left: 2rem;
+          display: flex;
+          flex-direction: column;
+          width: 60%;
+          gap: 1.5rem;
+        }
+        .content form h2{
+          font-weight: 400;
+        }
+
+        .fieldError{
+          margin: 0.4rem 0 0;
+          color: var(--danger-color);
+          font-family: "Montserrat", sans-serif;
+          font-size: 1rem;
+        }
+        .inputError{
+          border: 1px solid var(--danger-color) !important;
+          outline: none;
+        }
+
+        .requiredMark{
+          color: var(--danger-color);
+          margin-left: 4px;
+          font-weight: 700;
+        }
+
+        .passwordRow{
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .toggleBtn{
+          background: transparent;
+          border: 1px solid var(--primary-color);
+          color: var(--primary-color);
+          padding: 10px 14px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-family: "Montserrat", sans-serif;
+          font-size: 1rem;
+          white-space: nowrap;
+        }
+
+        .content .actionRow{
+          margin-bottom: 20px;
+          display: flex;
+          justify-content: end;
+          gap: 1.5rem;
+        }
+        .content .actionRow button{
+          width: 220px;
+          height: 65px;
+          font-size: 1.3rem;
+          cursor: pointer;
+        }
+        .content .actionRow button:first-child{
+          background-color: transparent;
+          color: var(--primary-color);
+          border: 1px solid var(--primary-color);
+        }
+        .content .actionRow button:last-child{
+          background-color: var(--primary-color);
+          color: var(--primary-contrast);
+          border: none;
+        }
+      </style>
+    </head>
+
     <body>
-      <h2>Guest Register</h2>
+      <div class="headerRow">
+        <h2>Ocean View Resort</h2>
+        <div class="headerActions">
+          <a href="${pageContext.request.contextPath}/">My Bookings</a>
+          <a href="${pageContext.request.contextPath}/">Offers</a>
+          <a href="${pageContext.request.contextPath}/">About Us</a>
+          <a href="${pageContext.request.contextPath}/guest/login">Sign In</a>
+        </div>
+      </div>
 
-      <a href="${pageContext.request.contextPath}/">Home</a> |
-      <a href="${pageContext.request.contextPath}/guest/login">Login</a>
-      <hr/>
+      <div class="content">
+        <h2>Your Profile</h2>
 
-      <!-- error message -->
-      <p style="color:red;">${error}</p>
+        <p class="fieldError">${error}</p>
 
-      <form method="post" action="${pageContext.request.contextPath}/guest/register">
-        Name: <input type="text" name="name"/><br/>
-        Email: <input type="email" name="email"/><br/>
-        Phone: <input type="text" name="phone"/><br/>
-        Address: <input type="text" name="address"/><br/>
-        Password: <input type="password" name="password"/><br/><br/>
-        <button type="submit">Register</button>
-      </form>
+        <form id="registerForm"
+              method="post"
+              novalidate="novalidate"
+              action="${pageContext.request.contextPath}/guest/register">
+
+          <h2>Profile Information</h2>
+
+          <div class="dataRow">
+            <span class="label">Name:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <input id="name" type="text" name="name" value="${form.name}" />
+              <p id="err-name" class="fieldError">${errors.name}</p>
+            </div>
+          </div>
+
+          <div class="dataRow">
+            <span class="label">Email:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <input id="email" type="email" name="email" value="${form.email}" />
+              <p id="err-email" class="fieldError">${errors.email}</p>
+            </div>
+          </div>
+
+          <div class="dataRow">
+            <span class="label">Phone:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <input id="phone" type="text" name="phone" value="${form.phone}" />
+              <p id="err-phone" class="fieldError">${errors.phone}</p>
+            </div>
+          </div>
+
+          <div class="dataRow">
+            <span class="label">Address:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <input id="address" type="text" name="address" value="${form.address}" />
+              <p id="err-address" class="fieldError">${errors.address}</p>
+            </div>
+          </div>
+
+          <div class="dataRow">
+            <span class="label">Password:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <div class="passwordRow">
+                <input id="password" type="password" name="password" />
+                <button type="button" class="toggleBtn" data-toggle="password">Show</button>
+              </div>
+              <p id="err-password" class="fieldError">${errors.password}</p>
+            </div>
+          </div>
+
+          <div class="dataRow">
+            <span class="label">Confirm Password:<span class="requiredMark">*</span></span>
+            <div class="inputRow">
+              <div class="passwordRow">
+                <input id="confirmPassword" type="password" name="confirmPassword" />
+                <button type="button" class="toggleBtn" data-toggle="confirmPassword">Show</button>
+              </div>
+              <p id="err-confirmPassword" class="fieldError">${errors.confirmPassword}</p>
+            </div>
+          </div>
+
+          <div class="actionRow">
+            <button type="button"
+                    onclick="window.location.href='${pageContext.request.contextPath}/'">
+              Cancel
+            </button>
+            <button type="submit">Create Profile</button>
+          </div>
+
+        </form>
+      </div>
+
+      <script type="text/javascript">
+        <![CDATA[
+          (function () {
+            const form = document.getElementById("registerForm");
+            if (!form) return;
+
+            const fields = [
+              { name: "name", msg: "Name is required" },
+              { name: "email", msg: "Email is required" },
+              { name: "phone", msg: "Phone is required" },
+              { name: "address", msg: "Address is required" },
+              { name: "password", msg: "Password is required" },
+              { name: "confirmPassword", msg: "Confirm password is required" }
+            ];
+
+            function setErr(name, text) {
+              const p = document.getElementById("err-" + name);
+              const input = document.getElementById(name);
+              if (p) p.textContent = text || "";
+              if (input) input.classList.toggle("inputError", !!text);
+            }
+
+            function emailValid(v) {
+              return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            }
+
+            // clear error as user types
+            fields.forEach(f => {
+              const input = document.getElementById(f.name);
+              if (!input) return;
+              input.addEventListener("input", () => setErr(f.name, ""));
+            });
+
+            // show/hide password toggles
+            document.querySelectorAll("[data-toggle]").forEach(btn => {
+              btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-toggle");
+                const input = document.getElementById(id);
+                if (!input) return;
+
+                const hidden = input.type === "password";
+                input.type = hidden ? "text" : "password";
+                btn.textContent = hidden ? "Hide" : "Show";
+              });
+            });
+
+            form.addEventListener("submit", function (e) {
+              let ok = true;
+
+              // required checks
+              fields.forEach(f => {
+                const input = document.getElementById(f.name);
+                const v = (input && input.value ? input.value : "").trim();
+                if (!v) {
+                  ok = false;
+                  setErr(f.name, f.msg);
+                }
+              });
+
+              // email format
+              const email = document.getElementById("email");
+              const ev = (email && email.value ? email.value : "").trim();
+              if (ev && !emailValid(ev)) {
+                ok = false;
+                setErr("email", "Enter a valid email address");
+              }
+
+              // password min length
+              const pw = document.getElementById("password");
+              const pv = (pw && pw.value ? pw.value : "");
+              if (pv && pv.length < 6) {
+                ok = false;
+                setErr("password", "Password must be at least 6 characters");
+              }
+
+              // password match
+              const cpw = document.getElementById("confirmPassword");
+              const cv = (cpw && cpw.value ? cpw.value : "");
+              if (pv && cv && pv !== cv) {
+                ok = false;
+                setErr("confirmPassword", "Passwords do not match");
+              }
+
+              if (!ok) e.preventDefault();
+            });
+          })();
+        ]]>
+      </script>
 
     </body>
   </html>
