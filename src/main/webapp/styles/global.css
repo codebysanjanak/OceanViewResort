@@ -9,8 +9,8 @@ input{
 	padding-inline-start: 20px;
 	padding-inline-end: 20px;
 	width: 100%;
-	height: 55px;
-	font-size: 1.2rem;
+	height: 45px;
+	font-size: 1.1rem;
 	box-sizing: border-box;
 }
 
@@ -22,7 +22,7 @@ input{
 }
 
 .dataRow .label{
-	font-size: 1.3rem;
+	font-size: 1.1rem;
 	font-weight: 600;
 	font-family: "Montserrat", sans-serif;	
 }

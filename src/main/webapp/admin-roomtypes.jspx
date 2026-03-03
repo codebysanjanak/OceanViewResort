@@ -1,0 +1,259 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="jakarta.tags.core"
+          version="2.0">
+
+  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+  <html>
+    <head>
+      <link rel="stylesheet"
+            href="${pageContext.request.contextPath}/styles/global.css"/>
+
+      <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono&amp;display=swap" rel="stylesheet"/>
+
+      <style>
+        body{ margin:0; background:#f6f8fb; }
+
+        .header{
+          height:70px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:0 40px;
+          background:var(--primary-color);
+          color:#fff;
+          font-family:"Roboto",sans-serif;
+        }
+
+        .container{
+          max-width:900px;
+          margin:40px auto;
+          font-family:"Montserrat",sans-serif;
+        }
+
+        h2{
+          font-family:"Cascadia Mono",sans-serif;
+          color:var(--primary-color);
+        }
+
+        .card{
+          background:#fff;
+          padding:30px;
+          border-radius:14px;
+          box-shadow:0 8px 25px rgba(0,0,0,0.05);
+          margin-bottom:30px;
+        }
+
+        .dataRow{
+          margin-bottom:20px;
+        }
+
+        .label{
+          font-weight:600;
+          display:block;
+          margin-bottom:6px;
+        }
+
+        .requiredMark{
+          color:var(--danger-color);
+          margin-left:4px;
+        }
+
+        .inputRow input,
+        .inputRow select{
+          width:100%;
+          padding:12px;
+          border-radius:10px;
+          border:1px solid rgba(0,0,0,0.2);
+          font-size:15px;
+        }
+
+        .fieldError{
+          margin-top:6px;
+          color:var(--danger-color);
+          font-size:14px;
+        }
+
+        .btn{
+          margin-top:10px;
+          padding:12px 24px;
+          border:none;
+          border-radius:10px;
+          background:var(--primary-color);
+          color:#fff;
+          font-size:16px;
+          cursor:pointer;
+        }
+
+        table{
+          width:100%;
+          border-collapse:collapse;
+        }
+
+        th, td{
+          padding:12px;
+          border-bottom:1px solid #eee;
+        }
+
+        th{
+          background:#f1f3f8;
+          text-align:left;
+        }
+
+        .toggleBtn{
+          padding:6px 12px;
+          border-radius:8px;
+          font-size:13px;
+          background:var(--secondary-color);
+          color:#fff;
+          text-decoration:none;
+        }
+
+        /* TOAST */
+        #toast{
+          position:fixed;
+          bottom:30px;
+          left:50%;
+          transform:translateX(-50%);
+          padding:16px 24px;
+          border-radius:12px;
+          color:#fff;
+          display:none;
+          box-shadow:0 8px 20px rgba(0,0,0,0.25);
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <div class="header">
+        <div>Ocean View Resort — Admin</div>
+        <div>
+          <a style="color:white;"
+             href="${pageContext.request.contextPath}/admin/logout">Logout</a>
+        </div>
+      </div>
+
+      <div class="container">
+
+        <h2>Manage Room Types</h2>
+
+        <!-- FORM -->
+        <div class="card">
+          <form method="post"
+                action="${pageContext.request.contextPath}/admin/roomtypes">
+
+            <div class="dataRow">
+              <span class="label">Room Name<span class="requiredMark">*</span></span>
+              <div class="inputRow">
+                <input name="typeName" value="${form.typeName}"/>
+                <p class="fieldError">${errors.typeName}</p>
+              </div>
+            </div>
+
+            <div class="dataRow">
+              <span class="label">Nightly Rate<span class="requiredMark">*</span></span>
+              <div class="inputRow">
+                <input name="rate" value="${form.rate}"/>
+                <p class="fieldError">${errors.rate}</p>
+              </div>
+            </div>
+
+            <div class="dataRow">
+              <span class="label">Capacity<span class="requiredMark">*</span></span>
+              <div class="inputRow">
+                <input name="capacity" value="${form.capacity}"/>
+                <p class="fieldError">${errors.capacity}</p>
+              </div>
+            </div>
+
+            <div class="dataRow">
+			  <span class="label">Status<span class="requiredMark">*</span></span>
+			  <div class="inputRow">
+			    <select name="active">
+			
+			      <c:choose>
+			        <c:when test="${form.active == 'false'}">
+			          <option value="true">Active</option>
+			          <option value="false" selected="selected">Inactive</option>
+			        </c:when>
+			
+			        <c:otherwise>
+			          <option value="true" selected="selected">Active</option>
+			          <option value="false">Inactive</option>
+			        </c:otherwise>
+			      </c:choose>
+			
+			    </select>
+			  </div>
+			</div>
+
+            <button class="btn" type="submit">Save Room Type</button>
+
+          </form>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Rate</th>
+              <th>Capacity</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+
+            <c:forEach items="${rooms}" var="rt">
+              <tr>
+                <td>${rt.roomTypeId}</td>
+                <td>${rt.typeName}</td>
+                <td>${rt.nightlyRate}</td>
+                <td>${rt.capacity}</td>
+                <td>${rt.active ? 'Active' : 'Inactive'}</td>
+                <td>
+                  <a class="toggleBtn"
+                     href="${pageContext.request.contextPath}/admin/roomtypes?action=toggle&amp;id=${rt.roomTypeId}">
+                    Toggle
+                  </a>
+                </td>
+              </tr>
+            </c:forEach>
+
+          </table>
+        </div>
+
+      </div>
+
+      <!-- TOAST -->
+      <div id="toast"
+           data-success="${success}"
+           data-error="${error}">
+      </div>
+
+      <script>
+        (function(){
+          const toast = document.getElementById("toast");
+          const success = toast.getAttribute("data-success") || "";
+          const error = toast.getAttribute("data-error") || "";
+
+          function show(msg, isError){
+            toast.textContent = msg;
+            toast.style.background = isError
+              ? "var(--danger-color)"
+              : "var(--secondary-color)";
+            toast.style.display="block";
+            setTimeout(()=> toast.style.display="none", 5000);
+          }
+
+          if(error.trim()) show(error,true);
+          else if(success.trim()) show(success,false);
+        })();
+      </script>
+
+    </body>
+  </html>
+</jsp:root>
