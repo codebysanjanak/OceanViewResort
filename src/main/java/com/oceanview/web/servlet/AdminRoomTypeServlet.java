@@ -3,10 +3,10 @@ package com.oceanview.web.servlet;
 import com.oceanview.dao.DAOFactory;
 import com.oceanview.model.RoomType;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,11 +17,14 @@ import java.util.UUID;
 
 @WebServlet("/admin/roomtypes")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024,       // 1MB
-        maxFileSize = 10 * 1024 * 1024,        // 10MB
-        maxRequestSize = 20 * 1024 * 1024      // 20MB
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 10 * 1024 * 1024,
+        maxRequestSize = 20 * 1024 * 1024
 )
 public class AdminRoomTypeServlet extends HttpServlet {
+
+    // Put JSPX here (recommended)
+    private static final String VIEW = "/WEB-INF/views/admin-roomtypes.jspx";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -30,27 +33,29 @@ public class AdminRoomTypeServlet extends HttpServlet {
         String action = req.getParameter("action");
         String idStr = req.getParameter("id");
 
-        if (action != null && idStr != null) {
+        if (action != null && idStr != null && !idStr.isBlank()) {
             int id = Integer.parseInt(idStr);
 
             switch (action) {
-
                 case "toggle" -> {
                     RoomType rt = DAOFactory.roomTypeDAO().findById(id);
                     if (rt != null) DAOFactory.roomTypeDAO().setActive(id, !rt.isActive());
-                    resp.sendRedirect(req.getContextPath() + "/admin/roomtypes");
+                    resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=toggled");
                     return;
                 }
 
                 case "delete" -> {
                     DAOFactory.roomTypeDAO().delete(id);
-                    resp.sendRedirect(req.getContextPath() + "/admin/roomtypes");
+                    resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=deleted");
                     return;
                 }
 
                 case "edit" -> {
                     RoomType rt = DAOFactory.roomTypeDAO().findById(id);
-                    if (rt != null) req.setAttribute("form", rt);
+                    if (rt != null) {
+                        req.setAttribute("form", rt);
+                        // keep query param toast like your link: msg=editing
+                    }
                 }
             }
         }
@@ -58,7 +63,7 @@ public class AdminRoomTypeServlet extends HttpServlet {
         List<RoomType> rooms = DAOFactory.roomTypeDAO().findAll();
         req.setAttribute("rooms", rooms);
 
-        req.getRequestDispatcher("/admin-roomtypes.jspx").forward(req, resp);
+        req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
     @Override
@@ -66,42 +71,60 @@ public class AdminRoomTypeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            req.setCharacterEncoding("UTF-8");
+
+            String roomTypeId = trim(req.getParameter("roomTypeId"));
+            String typeName = trim(req.getParameter("typeName"));
+            String rateStr = trim(req.getParameter("rate"));
+            String adultsStr = trim(req.getParameter("adultsCount"));
+            String childrenStr = trim(req.getParameter("childrenCount"));
+            String roomsStr = trim(req.getParameter("roomsCount"));
+            String description = trim(req.getParameter("description"));
+            boolean active = "true".equals(req.getParameter("active"));
+
+            // server required validation
+            if (typeName.isBlank()) throw new IllegalArgumentException("Room Name is required");
+            if (rateStr.isBlank()) throw new IllegalArgumentException("Nightly Rate is required");
+            if (adultsStr.isBlank()) throw new IllegalArgumentException("Adults Count is required");
+            if (childrenStr.isBlank()) throw new IllegalArgumentException("Children Count is required");
+            if (roomsStr.isBlank()) throw new IllegalArgumentException("Rooms Count is required");
+
+            BigDecimal rate = new BigDecimal(rateStr);
+            int adults = Integer.parseInt(adultsStr);
+            int children = Integer.parseInt(childrenStr);
+            int roomsCount = Integer.parseInt(roomsStr);
+
+            if (rate.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Rate must be >= 0");
+            if (adults < 0 || children < 0 || roomsCount < 0) throw new IllegalArgumentException("Counts must be >= 0");
+
             RoomType rt = new RoomType();
+            rt.setTypeName(typeName);
+            rt.setNightlyRate(rate);
+            rt.setAdultsCount(adults);
+            rt.setChildrenCount(children);
+            rt.setRoomsCount(roomsCount);
+            rt.setDescription(description);
+            rt.setActive(active);
 
-            String idStr = req.getParameter("roomTypeId");
+            // keep existing photo if no new photo
+            String existingPhotoPath = trim(req.getParameter("existingPhotoPath"));
+            if (!existingPhotoPath.isBlank()) rt.setPhotoPath(existingPhotoPath);
 
-            rt.setTypeName(req.getParameter("typeName"));
-            rt.setNightlyRate(new BigDecimal(req.getParameter("rate")));
-            rt.setAdultsCount(Integer.parseInt(req.getParameter("adultsCount")));
-            rt.setChildrenCount(Integer.parseInt(req.getParameter("childrenCount")));
-            rt.setRoomsCount(Integer.parseInt(req.getParameter("roomsCount")));
-            rt.setDescription(req.getParameter("description"));
-            rt.setActive("true".equals(req.getParameter("active")));
-
-            // Keep existing if no new upload
-            String existingPhotoPath = req.getParameter("existingPhotoPath");
-            rt.setPhotoPath((existingPhotoPath != null && !existingPhotoPath.isBlank()) ? existingPhotoPath : null);
-
-            // =========================
-            // PHOTO UPLOAD
-            // =========================
-            Part photoPart = req.getPart("photo"); // name="photo" in JSPX
+            // upload new photo
+            Part photoPart = req.getPart("photo");
             if (photoPart != null && photoPart.getSize() > 0) {
 
                 String submitted = photoPart.getSubmittedFileName();
                 String ext = getExtension(submitted);
 
-                // allow only safe extensions
                 if (!isAllowedImageExt(ext)) {
                     throw new IllegalArgumentException("Only jpg, jpeg, png, webp allowed");
                 }
 
                 String fileName = "rt_" + UUID.randomUUID() + ext;
 
-                // Save under /images/roomtypes/
                 String relativeDir = "/images/roomtypes";
                 String absoluteDir = getServletContext().getRealPath(relativeDir);
-
                 if (absoluteDir == null) {
                     throw new IllegalStateException("Upload path not available. Deploy as exploded folder in Tomcat.");
                 }
@@ -109,42 +132,44 @@ public class AdminRoomTypeServlet extends HttpServlet {
                 Files.createDirectories(Paths.get(absoluteDir));
 
                 Path target = Paths.get(absoluteDir, fileName);
-
                 try (InputStream in = photoPart.getInputStream()) {
                     Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
                 }
 
-                // store web path in DB
                 rt.setPhotoPath(relativeDir + "/" + fileName);
             }
 
-            // =========================
-            // CREATE / UPDATE
-            // =========================
-            if (idStr != null && !idStr.isBlank()) {
-                rt.setRoomTypeId(Integer.parseInt(idStr));
+            // PRG redirect (toast uses msg param)
+            if (!roomTypeId.isBlank()) {
+                rt.setRoomTypeId(Integer.parseInt(roomTypeId));
                 DAOFactory.roomTypeDAO().update(rt);
-                req.setAttribute("success", "Room type updated successfully");
+                resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=updated");
             } else {
                 DAOFactory.roomTypeDAO().create(rt);
-                req.setAttribute("success", "Room type saved successfully");
+                resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=saved");
             }
+            return;
 
         } catch (Exception e) {
-            req.setAttribute("error", e.getMessage());
+            resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?error=" + urlEncode(e.getMessage()));
         }
+    }
 
-        List<RoomType> rooms = DAOFactory.roomTypeDAO().findAll();
-        req.setAttribute("rooms", rooms);
+    private static String trim(String s) { return (s == null) ? "" : s.trim(); }
 
-        req.getRequestDispatcher("/admin-roomtypes.jspx").forward(req, resp);
+    private static String urlEncode(String s) {
+        try {
+            return java.net.URLEncoder.encode(s == null ? "" : s, java.nio.charset.StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     private static String getExtension(String filename) {
         if (filename == null) return "";
         int dot = filename.lastIndexOf('.');
         if (dot < 0) return "";
-        return filename.substring(dot).toLowerCase(); // includes dot
+        return filename.substring(dot).toLowerCase();
     }
 
     private static boolean isAllowedImageExt(String ext) {

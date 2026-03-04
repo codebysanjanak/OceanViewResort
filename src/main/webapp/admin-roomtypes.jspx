@@ -28,7 +28,6 @@
         h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin:0 0 14px; }
 
         .topRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; }
-
         .card{
           background:#fff; padding:28px; border-radius:14px;
           box-shadow:0 8px 25px rgba(0,0,0,0.06); margin-bottom:25px;
@@ -42,14 +41,13 @@
 
         .inputRow input,.inputRow select,.inputRow textarea{
           width:100%; padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.18);
-          font-family:"Montserrat",sans-serif; font-size:15px; box-sizing:border-box;
-          outline:none;
+          font-family:"Montserrat",sans-serif; font-size:15px; box-sizing:border-box; outline:none;
         }
         .inputRow textarea{ min-height:100px; resize:vertical; }
 
-        /* ✅ required error UI (like login page) */
+        /* required error */
         .inputError{ border:1px solid var(--danger-color) !important; }
-        .fieldError{ margin:6px 0 0; color:var(--danger-color); font-size:13px; font-weight:600; }
+        .fieldError{ margin:6px 0 0; color:var(--danger-color); font-size:13px; font-weight:600; min-height:16px; }
 
         .actions{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
         .btn{
@@ -139,7 +137,6 @@
         .k{ font-size:12px; color:#64748b; margin-bottom:4px; font-weight:800; }
         .v{ font-size:14px; color:#0f172a; font-weight:700; }
 
-        /* ✅ nicer description area */
         .descBox{
           margin-top:12px; background:#fff; border:1px solid #eef2f7; border-radius:12px;
           padding:12px;
@@ -447,10 +444,7 @@
       </div>
 
       <!-- TOAST -->
-      <div id="toast"
-           data-msg="${param.msg}"
-           data-success="${param.success}"
-           data-error="${param.error}"></div>
+      <div id="toast"></div>
 
       <script type="text/javascript">
         <![CDATA[
@@ -462,14 +456,6 @@
         function textOf(root, selector){
           var el = root.querySelector(selector);
           return el ? (el.textContent || "").trim() : "";
-        }
-
-        function cleanUrl(){
-          var url = new URL(window.location.href);
-          url.searchParams.delete("msg");
-          url.searchParams.delete("success");
-          url.searchParams.delete("error");
-          window.history.replaceState({}, "", url.toString());
         }
 
         function showToast(msg, isError){
@@ -498,7 +484,7 @@
         }
 
         function openPreviewModal(name, rate, adults, children, rooms, active, photoPath, desc){
-          closeDeleteModal(); // ✅ never show both
+          closeDeleteModal();
           var modal = $("previewModal");
           if(!modal) return;
 
@@ -543,7 +529,7 @@
         }
 
         function openDeleteById(id){
-          closePreviewModal(); // ✅ never show both
+          closePreviewModal();
           var box = $("rt-" + id);
           var name = box ? textOf(box, ".rt-name") : ("#" + id);
 
@@ -555,7 +541,7 @@
           $("deleteModal").style.display = "flex";
         }
 
-        // ✅ form required errors (like admin-login)
+        // required errors
         function setErr(fieldId, msg){
           var el = $(fieldId);
           var p = $("err-" + fieldId);
@@ -603,7 +589,7 @@
           });
         })();
 
-        // validate on submit
+        // validate submit
         (function(){
           var form = $("roomTypeForm");
           if(!form) return;
@@ -617,11 +603,7 @@
             var children = ($("childrenCount").value || "").trim();
             var rooms = ($("roomsCount").value || "").trim();
 
-            setErr("typeName","");
-            setErr("rate","");
-            setErr("adultsCount","");
-            setErr("childrenCount","");
-            setErr("roomsCount","");
+            setErr("typeName",""); setErr("rate",""); setErr("adultsCount",""); setErr("childrenCount",""); setErr("roomsCount","");
 
             if(!typeName){ ok=false; setErr("typeName","Room Name is required"); }
             if(!rate){ ok=false; setErr("rate","Nightly Rate is required"); }
@@ -633,18 +615,23 @@
           });
         })();
 
-        // toast messages from query param msg
+        // ✅ TOAST FROM JSP EL (most reliable)
         (function(){
-          var msg = (new URLSearchParams(window.location.search).get("msg") || "").trim();
-          var err = (new URLSearchParams(window.location.search).get("error") || "").trim();
+          var msg = ("${param.msg}" || "").trim();
+          var err = ("${param.error}" || "").trim();
 
-          if(err){ showToast(decodeURIComponent(err), true); cleanUrl(); return; }
+          try { err = decodeURIComponent(err); } catch(e){}
 
-          if(msg === "saved"){ showToast("Room type created successfully.", false); cleanUrl(); }
-          if(msg === "updated"){ showToast("Room type updated successfully.", false); cleanUrl(); }
-          if(msg === "deleted"){ showToast("Room type deleted successfully.", false); cleanUrl(); }
-          if(msg === "editing"){ showToast("Edit mode enabled. Update and click Save Changes.", false); cleanUrl(); }
-          if(msg === "toggled"){ showToast("Status updated.", false); cleanUrl(); }
+          if(err){
+            showToast(err, true);
+            return;
+          }
+
+          if(msg === "saved")   showToast("Room type created successfully.", false);
+          if(msg === "updated") showToast("Room type updated successfully.", false);
+          if(msg === "deleted") showToast("Room type deleted successfully.", false);
+          if(msg === "editing") showToast("Edit mode enabled. Update and click Save Changes.", false);
+          if(msg === "toggled") showToast("Status updated.", false);
         })();
         ]]>
       </script>
