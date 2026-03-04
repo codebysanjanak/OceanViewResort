@@ -54,8 +54,18 @@
           display:inline-block;
         }
 
+        /* ✅ layout: form + preview */
+        .grid{
+          display:grid;
+          grid-template-columns: 1fr 420px;
+          gap: 1.2rem;
+          align-items:start;
+        }
+        @media (max-width: 1000px){
+          .grid{ grid-template-columns: 1fr; }
+        }
+
         .card{
-          width: min(720px, 100%);
           background:#fff;
           border-radius:14px;
           box-shadow:0 8px 25px rgba(0,0,0,0.06);
@@ -100,6 +110,45 @@
           background:#fff;
           color: var(--primary-color);
           border:1px solid var(--primary-color);
+        }
+
+        /* ✅ preview card */
+        .previewTitle{
+          font-family:"Cascadia Mono", sans-serif;
+          font-weight:800;
+          font-size:1.2rem;
+          color: var(--primary-color);
+          margin:0 0 0.6rem;
+        }
+        .previewImg{
+          width:100%;
+          height:220px;
+          border-radius:12px;
+          object-fit:cover;
+          border:1px solid rgba(0,0,0,0.08);
+          background: rgba(0,0,0,0.03);
+        }
+        .previewMeta{
+          margin-top: 0.9rem;
+          display:grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.7rem;
+        }
+        .metaBox{
+          border:1px solid rgba(0,0,0,0.10);
+          border-radius:12px;
+          padding:10px 12px;
+          background: rgba(0,0,0,0.02);
+        }
+        .metaLabel{ font-size:0.85rem; opacity:0.75; }
+        .metaVal{ font-weight:800; margin-top:4px; }
+        .previewDesc{
+          margin-top:0.9rem;
+          color: rgba(0,0,0,0.75);
+          line-height:1.5;
+          font-size:0.98rem;
+          min-height: 40px;
+          white-space: pre-wrap;
         }
 
         #snackbar{
@@ -151,42 +200,98 @@
           <a href="${pageContext.request.contextPath}/guest/bookings">Back to My Bookings</a>
         </div>
 
-        <div class="card">
-          <form id="bookingForm"
-                method="post"
-                action="${pageContext.request.contextPath}/guest/booking/create"
-                novalidate="novalidate">
+        <div class="grid">
+          <!-- LEFT: form -->
+          <div class="card">
+            <form id="bookingForm"
+                  method="post"
+                  action="${pageContext.request.contextPath}/guest/booking/create"
+                  novalidate="novalidate">
 
-            <div class="dataRow">
-              <span class="label">Room Type<span class="requiredMark">*</span></span>
-              <select id="roomTypeId" name="roomTypeId">
-                <option value="">-- Select a room type --</option>
-                <c:forEach items="${rooms}" var="rt">
-                  <option value="${rt.roomTypeId}">
-                    ${rt.typeName} (LKR ${rt.nightlyRate})
-                  </option>
-                </c:forEach>
-              </select>
-              <p id="err-roomTypeId" class="fieldError"></p>
+              <div class="dataRow">
+                <span class="label">Room Type<span class="requiredMark">*</span></span>
+
+                <select id="roomTypeId" name="roomTypeId">
+                  <option value="">-- Select a room type --</option>
+
+                  <!-- ✅ data attributes for preview (use your existing fields) -->
+                  <c:forEach items="${rooms}" var="rt">
+                    <option
+                      value="${rt.roomTypeId}"
+                      data-name="${fn:escapeXml(rt.typeName)}"
+                      data-rate="${rt.nightlyRate}"
+                      data-desc="${fn:escapeXml(rt.description)}"
+                      data-adults="${rt.adultsCount}"
+                      data-children="${rt.childrenCount}"
+                      data-rooms="${rt.roomsCount}"
+                      data-photo="${fn:escapeXml(rt.photoPath)}">
+                      ${rt.typeName} (LKR ${rt.nightlyRate})
+                    </option>
+                  </c:forEach>
+                </select>
+
+                <p id="err-roomTypeId" class="fieldError"></p>
+              </div>
+
+              <div class="dataRow">
+                <span class="label">Check-in<span class="requiredMark">*</span></span>
+                <input id="checkIn" type="date" name="checkIn" />
+                <p id="err-checkIn" class="fieldError"></p>
+              </div>
+
+              <div class="dataRow">
+                <span class="label">Check-out<span class="requiredMark">*</span></span>
+                <input id="checkOut" type="date" name="checkOut" />
+                <p id="err-checkOut" class="fieldError"></p>
+              </div>
+
+              <div class="actionRow">
+                <button type="button" class="btn btnGhost" onclick="clearForm()">Clear</button>
+                <button class="btn" type="submit">Create Booking</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT: preview -->
+          <div class="card">
+            <div class="previewTitle" id="pvTitle">Select a room type</div>
+
+            <img id="pvImg"
+                 class="previewImg"
+                 src="${pageContext.request.contextPath}/images/room-placeholder.jpg"
+                 alt="Room preview" />
+
+            <div class="previewMeta">
+              <div class="metaBox">
+                <div class="metaLabel">Nightly Rate</div>
+                <div class="metaVal" id="pvRate">—</div>
+              </div>
+              <div class="metaBox">
+                <div class="metaLabel">Max Guests</div>
+                <div class="metaVal" id="pvGuests">—</div>
+              </div>
+              <div class="metaBox">
+                <div class="metaLabel">Adults</div>
+                <div class="metaVal" id="pvAdults">—</div>
+              </div>
+              <div class="metaBox">
+                <div class="metaLabel">Children</div>
+                <div class="metaVal" id="pvChildren">—</div>
+              </div>
+              <div class="metaBox">
+                <div class="metaLabel">Rooms Count</div>
+                <div class="metaVal" id="pvRooms">—</div>
+              </div>
+              <div class="metaBox">
+                <div class="metaLabel">Room Type ID</div>
+                <div class="metaVal" id="pvId">—</div>
+              </div>
             </div>
 
-            <div class="dataRow">
-              <span class="label">Check-in<span class="requiredMark">*</span></span>
-              <input id="checkIn" type="date" name="checkIn" />
-              <p id="err-checkIn" class="fieldError"></p>
+            <div class="previewDesc" id="pvDesc">
+              Choose a room type to see photo and description.
             </div>
-
-            <div class="dataRow">
-              <span class="label">Check-out<span class="requiredMark">*</span></span>
-              <input id="checkOut" type="date" name="checkOut" />
-              <p id="err-checkOut" class="fieldError"></p>
-            </div>
-
-            <div class="actionRow">
-              <button type="button" class="btn btnGhost" onclick="clearForm()">Clear</button>
-              <button class="btn" type="submit">Create Booking</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
 
@@ -195,72 +300,81 @@
       <script type="text/javascript">
         <![CDATA[
           (function () {
-            const bar = document.getElementById("snackbar");
-
-            function showToast(msg, isError) {
-              if (!bar || !msg) return;
-              bar.textContent = msg;
-              bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-              bar.classList.add("show");
-              setTimeout(() => bar.classList.remove("show"), 5000);
-            }
-
-            // PRG messages (from redirect)
-            let successMsg = (bar.getAttribute("data-success") || "").trim();
-            let errorMsg = (bar.getAttribute("data-error") || "").trim();
-            try { errorMsg = decodeURIComponent(errorMsg); } catch(e) {}
-            try { successMsg = decodeURIComponent(successMsg); } catch(e) {}
-
-            if (errorMsg.length > 0) showToast(errorMsg, true);
-            else if (successMsg.length > 0) showToast(successMsg, false);
-
-            // form validation
-            const form = document.getElementById("bookingForm");
             const roomTypeId = document.getElementById("roomTypeId");
-            const checkIn = document.getElementById("checkIn");
-            const checkOut = document.getElementById("checkOut");
 
-            function setErr(id, msg) {
-              const input = document.getElementById(id);
-              const p = document.getElementById("err-" + id);
-              if (p) p.textContent = msg || "";
-              if (input) input.classList.toggle("inputError", !!msg);
+            // preview nodes
+            const pvTitle = document.getElementById("pvTitle");
+            const pvImg = document.getElementById("pvImg");
+            const pvRate = document.getElementById("pvRate");
+            const pvGuests = document.getElementById("pvGuests");
+            const pvAdults = document.getElementById("pvAdults");
+            const pvChildren = document.getElementById("pvChildren");
+            const pvRooms = document.getElementById("pvRooms");
+            const pvId = document.getElementById("pvId");
+            const pvDesc = document.getElementById("pvDesc");
+
+            function safe(v){ return (v || "").toString().trim(); }
+
+            function normalizePhotoPath(p){
+              p = safe(p);
+              if (!p) return "";
+              // if DB stores "/images/.." or "images/.." we build full URL with contextPath
+              if (p.startsWith("http://") || p.startsWith("https://")) return p;
+              if (p.startsWith("/")) return "${pageContext.request.contextPath}" + p;
+              return "${pageContext.request.contextPath}/" + p;
             }
 
+            function updatePreview(){
+              const opt = roomTypeId.options[roomTypeId.selectedIndex];
+              const id = safe(roomTypeId.value);
+
+              if (!id) {
+                pvTitle.textContent = "Select a room type";
+                pvRate.textContent = "—";
+                pvGuests.textContent = "—";
+                pvAdults.textContent = "—";
+                pvChildren.textContent = "—";
+                pvRooms.textContent = "—";
+                pvId.textContent = "—";
+                pvDesc.textContent = "Choose a room type to see photo and description.";
+                pvImg.src = "${pageContext.request.contextPath}/images/room-placeholder.jpg";
+                return;
+              }
+
+              const name = safe(opt.getAttribute("data-name"));
+              const rate = safe(opt.getAttribute("data-rate"));
+              const desc = safe(opt.getAttribute("data-desc"));
+
+              const adults = parseInt(safe(opt.getAttribute("data-adults")) || "0", 10) || 0;
+              const children = parseInt(safe(opt.getAttribute("data-children")) || "0", 10) || 0;
+              const rooms = parseInt(safe(opt.getAttribute("data-rooms")) || "0", 10) || 0;
+              const guests = adults + children;
+
+              const photo = normalizePhotoPath(opt.getAttribute("data-photo"));
+
+              pvTitle.textContent = name || ("Room Type " + id);
+              pvRate.textContent = rate ? ("LKR " + rate + " / night") : "—";
+              pvAdults.textContent = adults.toString();
+              pvChildren.textContent = children.toString();
+              pvGuests.textContent = guests.toString();
+              pvRooms.textContent = rooms.toString();
+              pvId.textContent = id;
+
+              pvDesc.textContent = desc || "No description available.";
+
+              pvImg.src = photo || "${pageContext.request.contextPath}/images/room-placeholder.jpg";
+            }
+
+            // update on change + initial load
+            roomTypeId.addEventListener("change", updatePreview);
+            updatePreview();
+
+            // clear form hook (if you already have clearForm, keep yours; just add updatePreview call)
             window.clearForm = function(){
               roomTypeId.value = "";
-              checkIn.value = "";
-              checkOut.value = "";
-              setErr("roomTypeId","");
-              setErr("checkIn","");
-              setErr("checkOut","");
-            }
-
-            if (form) {
-              form.addEventListener("submit", function(e){
-                let ok = true;
-
-                setErr("roomTypeId","");
-                setErr("checkIn","");
-                setErr("checkOut","");
-
-                const r = (roomTypeId.value || "").trim();
-                const ci = (checkIn.value || "").trim();
-                const co = (checkOut.value || "").trim();
-
-                if (!r) { ok = false; setErr("roomTypeId","Room Type is required"); }
-                if (!ci) { ok = false; setErr("checkIn","Check-in date is required"); }
-                if (!co) { ok = false; setErr("checkOut","Check-out date is required"); }
-
-                // if both dates exist, ensure co > ci
-                if (ci && co) {
-                  const d1 = new Date(ci + "T00:00:00");
-                  const d2 = new Date(co + "T00:00:00");
-                  if (d2 <= d1) { ok = false; setErr("checkOut","Check-out must be after Check-in"); }
-                }
-
-                if (!ok) e.preventDefault();
-              });
+              document.getElementById("checkIn").value = "";
+              document.getElementById("checkOut").value = "";
+              updatePreview();
             }
           })();
         ]]>
