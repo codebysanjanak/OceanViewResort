@@ -381,73 +381,71 @@
         </c:if>
 
        <c:if test="${not empty rooms}">
-  <div class="grid">
-    <c:forEach items="${rooms}" var="rt">
-
-      <!-- DB: rt.photoPath should be like /images/room-types/rt_xxx.png -->
-      <c:set var="p" value="${fn:trim(rt.photoPath)}" />
-      <c:set var="imgSrc" value="${pageContext.request.contextPath}/images/room-placeholder.jpg" />
-
-      <!-- normalize old wrong paths if any -->
-      <c:if test="${not empty p}">
-        <c:set var="p" value="${fn:replace(p, '/images/roomtypes/', '/images/room-types/')}" />
-        <c:set var="imgSrc" value="${pageContext.request.contextPath}${p}?v=${rt.roomTypeId}" />
-      </c:if>
-
-      <div class="card">
-        <img class="cardImg"
-             src="${imgSrc}"
-             alt="${rt.typeName}"
-             onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/room-placeholder.jpg';" />
-
-        <!-- DEBUG
-        <div style="font-family:monospace; font-size:12px; color:#666; padding: 0 14px;">
-          photoPath = [${p}]<br/>
-          imgSrc = [${imgSrc}]
-        </div> -->
-
-        <div class="cardBody">
-          <div class="cardTop">
-            <h3 class="cardName">${rt.typeName}</h3>
-            <div class="pricePill">LKR ${rt.nightlyRate} / night</div>
-          </div>
-
-          <p class="desc">
-            <c:choose>
-              <c:when test="${not empty rt.description}">
-                ${rt.description}
-              </c:when>
-              <c:otherwise>
-                Comfortable stay with beautiful resort facilities and ocean vibes.
-              </c:otherwise>
-            </c:choose>
-          </p>
-
-          <div class="metaRow">
-            <div class="meta">
-              <div class="metaLabel">Adults</div>
-              <div class="metaVal">${rt.adultsCount}</div>
-            </div>
-            <div class="meta">
-              <div class="metaLabel">Children</div>
-              <div class="metaVal">${rt.childrenCount}</div>
-            </div>
-            <div class="meta">
-              <div class="metaLabel">Rooms</div>
-              <div class="metaVal">${rt.roomsCount}</div>
-            </div>
-          </div>
-
-          <div class="cardActions">
-            <a href="${pageContext.request.contextPath}/availability">Check Dates</a>
-            <a class="primary" href="${pageContext.request.contextPath}/guest/login">Book Now</a>
-          </div>
-        </div>
-      </div>
-
-    </c:forEach>
-  </div>
-</c:if>
+		  <div class="grid">
+		    <c:forEach items="${rooms}" var="rt">
+		
+		      <c:set var="p" value="${fn:trim(rt.photoPath)}" />
+		      <c:set var="imgSrc" value="${pageContext.request.contextPath}/images/room-placeholder.jpg" />
+		
+		      <c:if test="${not empty p}">
+		        <c:set var="p" value="${fn:replace(p, '/images/roomtypes/', '/images/room-types/')}" />
+		        <c:set var="imgSrc" value="${pageContext.request.contextPath}${p}?v=${rt.roomTypeId}" />
+		      </c:if>
+		
+		      <div class="card">
+		        <img class="cardImg"
+		             src="${imgSrc}"
+		             alt="${rt.typeName}"
+		             onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/room-placeholder.jpg';" />
+		
+		        <!-- DEBUG
+		        <div style="font-family:monospace; font-size:12px; color:#666; padding: 0 14px;">
+		          photoPath = [${p}]<br/>
+		          imgSrc = [${imgSrc}]
+		        </div> -->
+		
+		        <div class="cardBody">
+		          <div class="cardTop">
+		            <h3 class="cardName">${rt.typeName}</h3>
+		            <div class="pricePill">LKR ${rt.nightlyRate} / night</div>
+		          </div>
+		
+		          <p class="desc">
+		            <c:choose>
+		              <c:when test="${not empty rt.description}">
+		                ${rt.description}
+		              </c:when>
+		              <c:otherwise>
+		                Comfortable stay with beautiful resort facilities and ocean vibes.
+		              </c:otherwise>
+		            </c:choose>
+		          </p>
+		
+		          <div class="metaRow">
+		            <div class="meta">
+		              <div class="metaLabel">Adults</div>
+		              <div class="metaVal">${rt.adultsCount}</div>
+		            </div>
+		            <div class="meta">
+		              <div class="metaLabel">Children</div>
+		              <div class="metaVal">${rt.childrenCount}</div>
+		            </div>
+		            <div class="meta">
+		              <div class="metaLabel">Rooms</div>
+		              <div class="metaVal">${rt.roomsCount}</div>
+		            </div>
+		          </div>
+		
+		          <div class="cardActions">
+		            <a href="${pageContext.request.contextPath}/availability">Check Dates</a>
+		            <a class="primary" href="${pageContext.request.contextPath}/guest/login">Book Now</a>
+		          </div>
+		        </div>
+		      </div>
+		
+		    </c:forEach>
+		  </div>
+		</c:if>
       </div>
 
       <div class="footer">
@@ -477,8 +475,8 @@
         </div>
 
         <div class="footerBottom">
-          <div>© ${pageContext.request.serverName} Ocean View Resort</div>
-          <div>Designed for OceanViewResort System</div>
+          <div>© Ocean View Resort</div>
+          <div>Designed By Ishara Sanjana</div>
         </div>
       </div>
     </body>
