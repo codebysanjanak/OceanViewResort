@@ -2,12 +2,14 @@
           xmlns:c="jakarta.tags.core"
           version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
+  <jsp:directive.page isELIgnored="false" />
 
   <html>
     <head>
-      <link rel="stylesheet"
-            href="${pageContext.request.contextPath}/styles/global.css"/>
+      <title>Manage Room Types</title>
+
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/global.css"/>
 
       <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"/>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet"/>
@@ -15,112 +17,70 @@
 
       <style>
         body{ margin:0; background:#f6f8fb; }
-
         .header{
-          height:70px;
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          padding:0 40px;
-          background:var(--primary-color);
-          color:#fff;
-          font-family:"Roboto",sans-serif;
+          height:70px; display:flex; justify-content:space-between; align-items:center;
+          padding:0 40px; background:var(--primary-color); color:#fff; font-family:"Roboto",sans-serif;
         }
-
-        .container{
-          max-width:900px;
-          margin:40px auto;
-          font-family:"Montserrat",sans-serif;
-        }
-
-        h2{
-          font-family:"Cascadia Mono",sans-serif;
-          color:var(--primary-color);
-        }
-
+        .header a{ color:#fff; text-decoration:none; font-weight:600; }
+        .container{ max-width:1100px; margin:40px auto; padding:0 16px; font-family:"Montserrat",sans-serif; }
+        h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin-bottom:20px; }
         .card{
-          background:#fff;
-          padding:30px;
-          border-radius:14px;
-          box-shadow:0 8px 25px rgba(0,0,0,0.05);
-          margin-bottom:30px;
+          background:#fff; padding:28px; border-radius:14px;
+          box-shadow:0 8px 25px rgba(0,0,0,0.06); margin-bottom:25px;
         }
+        .grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+        @media(max-width:820px){ .grid{ grid-template-columns:1fr; } }
 
-        .dataRow{
-          margin-bottom:20px;
+        .label{ font-weight:600; margin-bottom:6px; display:block; }
+        .requiredMark{ color:var(--danger-color); }
+
+        .inputRow input,.inputRow select,.inputRow textarea{
+          width:100%; padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.18);
+          font-family:"Montserrat",sans-serif; font-size:15px; box-sizing:border-box;
         }
+        .inputRow textarea{ min-height:100px; resize:vertical; }
 
-        .label{
-          font-weight:600;
-          display:block;
-          margin-bottom:6px;
-        }
-
-        .requiredMark{
-          color:var(--danger-color);
-          margin-left:4px;
-        }
-
-        .inputRow input,
-        .inputRow select{
-          width:100%;
-          padding:12px;
-          border-radius:10px;
-          border:1px solid rgba(0,0,0,0.2);
-          font-size:15px;
-        }
-
-        .fieldError{
-          margin-top:6px;
-          color:var(--danger-color);
-          font-size:14px;
-        }
-
+        .actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:15px; }
         .btn{
-          margin-top:10px;
-          padding:12px 24px;
-          border:none;
-          border-radius:10px;
-          background:var(--primary-color);
-          color:#fff;
-          font-size:16px;
-          cursor:pointer;
+          padding:12px 22px; border-radius:10px; border:none;
+          background:var(--primary-color); color:#fff; cursor:pointer;
         }
 
-        table{
-          width:100%;
-          border-collapse:collapse;
+        table{ width:100%; border-collapse:collapse; }
+        th,td{ padding:12px; border-bottom:1px solid #eee; vertical-align:top; }
+        th{ background:#f1f3f8; font-weight:700; }
+
+        .previewImg{
+          width:100px; height:70px; object-fit:cover; border-radius:10px;
+          border:1px solid #ddd; background:#fafafa;
         }
 
-        th, td{
-          padding:12px;
-          border-bottom:1px solid #eee;
+        .actionBtn{
+          display:inline-block; padding:7px 12px; border-radius:8px; font-size:13px;
+          color:#fff; text-decoration:none; margin-right:6px; cursor:pointer; border:none;
+        }
+        .btnEdit{ background:var(--secondary-color); }
+        .btnPreview{ background:#64748b; }
+        .btnDelete{ background:var(--danger-color); }
+
+        .modal{
+          display:none; position:fixed; z-index:9999; left:0; top:0;
+          width:100%; height:100%; background:rgba(0,0,0,0.5);
+          justify-content:center; align-items:center;
+        }
+        .modalContent{
+          background:#fff; padding:25px; border-radius:14px; width:600px;
+          max-width:95%; position:relative;
+        }
+        .closeBtn{ position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer; }
+        .modalImg{
+          width:100%; height:250px; object-fit:cover; border-radius:10px;
+          margin-bottom:15px; background:#fafafa;
         }
 
-        th{
-          background:#f1f3f8;
-          text-align:left;
-        }
-
-        .toggleBtn{
-          padding:6px 12px;
-          border-radius:8px;
-          font-size:13px;
-          background:var(--secondary-color);
-          color:#fff;
-          text-decoration:none;
-        }
-
-        /* TOAST */
         #toast{
-          position:fixed;
-          bottom:30px;
-          left:50%;
-          transform:translateX(-50%);
-          padding:16px 24px;
-          border-radius:12px;
-          color:#fff;
-          display:none;
+          position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+          padding:14px 22px; border-radius:10px; color:#fff; display:none; z-index:9999;
           box-shadow:0 8px 20px rgba(0,0,0,0.25);
         }
       </style>
@@ -131,66 +91,103 @@
       <div class="header">
         <div>Ocean View Resort — Admin</div>
         <div>
-          <a style="color:white;"
-             href="${pageContext.request.contextPath}/admin/logout">Logout</a>
+          <a href="${pageContext.request.contextPath}/admin/logout">Logout</a>
         </div>
       </div>
 
       <div class="container">
-
         <h2>Manage Room Types</h2>
 
         <!-- FORM -->
         <div class="card">
           <form method="post"
+                enctype="multipart/form-data"
                 action="${pageContext.request.contextPath}/admin/roomtypes">
 
-            <div class="dataRow">
-              <span class="label">Room Name<span class="requiredMark">*</span></span>
-              <div class="inputRow">
-                <input name="typeName" value="${form.typeName}"/>
-                <p class="fieldError">${errors.typeName}</p>
+            <input type="hidden" name="roomTypeId" value="${form.roomTypeId}" />
+            <input type="hidden" name="existingPhotoPath" value="${form.photoPath}" />
+
+            <div class="grid">
+
+              <div>
+                <span class="label">Room Name<span class="requiredMark">*</span></span>
+                <div class="inputRow">
+                  <input name="typeName" value="${form.typeName}" />
+                </div>
               </div>
+
+              <div>
+                <span class="label">Nightly Rate<span class="requiredMark">*</span></span>
+                <div class="inputRow">
+                  <input name="rate" value="${form.nightlyRate}" />
+                </div>
+              </div>
+
+              <div>
+                <span class="label">Adults Count<span class="requiredMark">*</span></span>
+                <div class="inputRow">
+                  <input name="adultsCount" value="${form.adultsCount}" />
+                </div>
+              </div>
+
+              <div>
+                <span class="label">Children Count<span class="requiredMark">*</span></span>
+                <div class="inputRow">
+                  <input name="childrenCount" value="${form.childrenCount}" />
+                </div>
+              </div>
+
+              <div>
+                <span class="label">Rooms Count<span class="requiredMark">*</span></span>
+                <div class="inputRow">
+                  <input name="roomsCount" value="${form.roomsCount}" />
+                </div>
+              </div>
+
+              <div>
+                <span class="label">Status</span>
+                <div class="inputRow">
+                  <select name="active">
+                    <c:choose>
+                      <c:when test="${form.active == false}">
+                        <option value="true">Active</option>
+                        <option value="false" selected="selected">Inactive</option>
+                      </c:when>
+                      <c:otherwise>
+                        <option value="true" selected="selected">Active</option>
+                        <option value="false">Inactive</option>
+                      </c:otherwise>
+                    </c:choose>
+                  </select>
+                </div>
+              </div>
+
+              <div style="grid-column:1 / -1;">
+                <span class="label">Description</span>
+                <div class="inputRow">
+                  <textarea name="description"><c:out value="${form.description}" /></textarea>
+                </div>
+              </div>
+
+              <div style="grid-column:1 / -1;">
+                <span class="label">Room Photo</span>
+                <div class="inputRow">
+                  <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png,.webp" />
+                  <img id="photoPreview" class="previewImg"
+                       src="${empty form.photoPath ? '' : pageContext.request.contextPath.concat(form.photoPath)}" alt="Preview" />
+                </div>
+              </div>
+
             </div>
 
-            <div class="dataRow">
-              <span class="label">Nightly Rate<span class="requiredMark">*</span></span>
-              <div class="inputRow">
-                <input name="rate" value="${form.rate}"/>
-                <p class="fieldError">${errors.rate}</p>
-              </div>
+            <div class="actions">
+              <button type="submit" class="btn">
+                <c:choose>
+                  <c:when test="${not empty form.roomTypeId}">Save Changes</c:when>
+                  <c:otherwise>Save</c:otherwise>
+                </c:choose>
+              </button>
             </div>
-
-            <div class="dataRow">
-              <span class="label">Capacity<span class="requiredMark">*</span></span>
-              <div class="inputRow">
-                <input name="capacity" value="${form.capacity}"/>
-                <p class="fieldError">${errors.capacity}</p>
-              </div>
-            </div>
-
-            <div class="dataRow">
-			  <span class="label">Status<span class="requiredMark">*</span></span>
-			  <div class="inputRow">
-			    <select name="active">
-			
-			      <c:choose>
-			        <c:when test="${form.active == 'false'}">
-			          <option value="true">Active</option>
-			          <option value="false" selected="selected">Inactive</option>
-			        </c:when>
-			
-			        <c:otherwise>
-			          <option value="true" selected="selected">Active</option>
-			          <option value="false">Inactive</option>
-			        </c:otherwise>
-			      </c:choose>
-			
-			    </select>
-			  </div>
-			</div>
-
-            <button class="btn" type="submit">Save Room Type</button>
 
           </form>
         </div>
@@ -200,59 +197,82 @@
           <table>
             <tr>
               <th>ID</th>
+              <th>Photo</th>
               <th>Name</th>
               <th>Rate</th>
-              <th>Capacity</th>
+              <th>Adults</th>
+              <th>Children</th>
+              <th>Rooms</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
+
+            <c:if test="${empty rooms}">
+              <tr>
+                <td colspan="9" style="text-align:center; padding:18px;">
+                  No records found.
+                </td>
+              </tr>
+            </c:if>
 
             <c:forEach items="${rooms}" var="rt">
               <tr>
-                <td>${rt.roomTypeId}</td>
-                <td>${rt.typeName}</td>
-                <td>${rt.nightlyRate}</td>
-                <td>${rt.capacity}</td>
-                <td>${rt.active ? 'Active' : 'Inactive'}</td>
+                <td><c:out value="${rt.roomTypeId}" /></td>
+
                 <td>
-                  <a class="toggleBtn"
-                     href="${pageContext.request.contextPath}/admin/roomtypes?action=toggle&amp;id=${rt.roomTypeId}">
-                    Toggle
+                  <c:choose>
+                    <c:when test="${not empty rt.photoPath}">
+                      <img class="previewImg"
+                           src="${pageContext.request.contextPath}${rt.photoPath}" alt="Room"/>
+                    </c:when>
+                    <c:otherwise>No Photo</c:otherwise>
+                  </c:choose>
+                </td>
+
+                <td><c:out value="${rt.typeName}" /></td>
+                <td><c:out value="${rt.nightlyRate}" /></td>
+                <td><c:out value="${rt.adultsCount}" /></td>
+                <td><c:out value="${rt.childrenCount}" /></td>
+                <td><c:out value="${rt.roomsCount}" /></td>
+                <td><c:out value="${rt.active ? 'Active' : 'Inactive'}" /></td>
+
+                <td>
+                  <a class="actionBtn btnEdit"
+                     href="${pageContext.request.contextPath}/admin/roomtypes?action=edit&amp;id=${rt.roomTypeId}">
+                    Edit
+                  </a>
+
+                  <button type="button" class="actionBtn btnPreview"
+                          onclick="openPreviewModal(
+                            '${rt.typeName}',
+                            '${rt.nightlyRate}',
+                            '${rt.adultsCount}',
+                            '${rt.childrenCount}',
+                            '${rt.roomsCount}',
+                            '${rt.active}',
+                            '${rt.photoPath}',
+                            '${rt.description}'
+                          )">
+                    Preview
+                  </button>
+
+                  <a class="actionBtn btnDelete"
+                     onclick="return confirm('Delete this room type?');"
+                     href="${pageContext.request.contextPath}/admin/roomtypes?action=delete&amp;id=${rt.roomTypeId}">
+                    Delete
                   </a>
                 </td>
               </tr>
             </c:forEach>
-
           </table>
         </div>
-
       </div>
 
-      <!-- TOAST -->
+      <!-- Toast -->
       <div id="toast"
            data-success="${success}"
            data-error="${error}">
       </div>
-
-      <script>
-        (function(){
-          const toast = document.getElementById("toast");
-          const success = toast.getAttribute("data-success") || "";
-          const error = toast.getAttribute("data-error") || "";
-
-          function show(msg, isError){
-            toast.textContent = msg;
-            toast.style.background = isError
-              ? "var(--danger-color)"
-              : "var(--secondary-color)";
-            toast.style.display="block";
-            setTimeout(()=> toast.style.display="none", 5000);
-          }
-
-          if(error.trim()) show(error,true);
-          else if(success.trim()) show(success,false);
-        })();
-      </script>
 
     </body>
   </html>

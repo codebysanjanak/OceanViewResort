@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class RoomService {
+
     private final RoomTypeDAO roomTypeDAO = DAOFactory.roomTypeDAO();
     private final ReservationDAO reservationDAO = DAOFactory.reservationDAO();
 
@@ -18,18 +19,24 @@ public class RoomService {
     }
 
     public void validateDates(LocalDate in, LocalDate out) {
-        if (in == null || out == null) throw new IllegalArgumentException("Dates are required");
-        if (!out.isAfter(in)) throw new IllegalArgumentException("Check-out must be after check-in");
+        if (in == null || out == null)
+            throw new IllegalArgumentException("Dates are required");
+
+        if (!out.isAfter(in))
+            throw new IllegalArgumentException("Check-out must be after check-in");
     }
 
     public AvailabilityResult filterAvailability(int roomTypeId, LocalDate in, LocalDate out) {
         validateDates(in, out);
 
         RoomType rt = roomTypeDAO.findById(roomTypeId);
-        if (rt == null || !rt.isActive()) throw new IllegalArgumentException("Invalid room type");
+        if (rt == null || !rt.isActive())
+            throw new IllegalArgumentException("Invalid room type");
 
         int overlaps = reservationDAO.countOverlaps(roomTypeId, in, out);
-        boolean available = overlaps < rt.getCapacity();
+
+        boolean available = overlaps < rt.getRoomsCount();
+
         return new AvailabilityResult(rt, available, overlaps);
     }
 }

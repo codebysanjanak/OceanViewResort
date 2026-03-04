@@ -34,7 +34,7 @@ public class ProfileService {
         guestDAO.updatePassword(guestId, hasher.hash(newPw));
     }
 
-    // Optional admin profile usage
+    // Admin profile usage
     public Admin getAdmin(int adminId) {
         Admin a = adminDAO.findById(adminId);
         if (a == null) throw new IllegalArgumentException("Admin not found");

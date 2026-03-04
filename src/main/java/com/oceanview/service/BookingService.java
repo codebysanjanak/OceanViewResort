@@ -11,22 +11,33 @@ import java.util.List;
 import java.util.UUID;
 
 public class BookingService {
+
     private final ReservationDAO reservationDAO = DAOFactory.reservationDAO();
     private final RoomTypeDAO roomTypeDAO = DAOFactory.roomTypeDAO();
 
     public void validateDates(LocalDate in, LocalDate out) {
-        if (in == null || out == null) throw new IllegalArgumentException("Dates are required");
-        if (!out.isAfter(in)) throw new IllegalArgumentException("Check-out must be after check-in");
+        if (in == null || out == null)
+            throw new IllegalArgumentException("Dates are required");
+
+        if (!out.isAfter(in))
+            throw new IllegalArgumentException("Check-out must be after check-in");
     }
 
     public void checkCapacity(int roomTypeId, LocalDate in, LocalDate out) {
         RoomType rt = roomTypeDAO.findById(roomTypeId);
-        if (rt == null || !rt.isActive()) throw new IllegalArgumentException("Invalid room type");
+
+        if (rt == null || !rt.isActive())
+            throw new IllegalArgumentException("Invalid room type");
+
         int overlaps = reservationDAO.countOverlaps(roomTypeId, in, out);
-        if (overlaps >= rt.getCapacity()) throw new IllegalArgumentException("Selected room type is not available for these dates");
+
+        // 🔥 use roomsCount instead of capacity
+        if (overlaps >= rt.getRoomsCount())
+            throw new IllegalArgumentException("Selected room type is not available for these dates");
     }
 
     public String createBooking(int guestId, int roomTypeId, LocalDate in, LocalDate out) {
+
         validateDates(in, out);
         checkCapacity(roomTypeId, in, out);
 
@@ -39,6 +50,7 @@ public class BookingService {
         r.setStatus("BOOKED");
 
         reservationDAO.create(r);
+
         return r.getReservationNo();
     }
 

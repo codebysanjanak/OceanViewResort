@@ -3,10 +3,13 @@
   version="2.0">
 
   <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
+  <jsp:directive.page isELIgnored="false" />
 
   <html>
     <head>
-      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/global.css" />
+      <!-- Maven web root: src/main/webapp/styles/global.css -->
+      <link rel="stylesheet" type="text/css"
+            href="${pageContext.request.contextPath}/styles/global.css" />
 
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -151,7 +154,6 @@
           border: none;
         }
 
-        /* toast */
         #snackbar {
           visibility: hidden;
           min-width: 320px;
@@ -240,90 +242,77 @@
         </div>
       </div>
 
-      <!-- toast holder -->
       <div id="snackbar"
            data-success="${success}"
            data-error="${error}"></div>
 
       <script type="text/javascript">
-		<![CDATA[
-		(function () {
-		
-		  const form = document.getElementById("adminLoginForm");
-		  if (!form) return;
-		
-		  function setErr(id, text) {
-		    const p = document.getElementById("err-" + id);
-		    const input = document.getElementById(id);
-		    if (p) p.textContent = text || "";
-		    if (input) input.classList.toggle("inputError", !!text);
-		  }
-		
-		  // show/hide password
-		  document.querySelectorAll("[data-toggle]").forEach(btn => {
-		    btn.addEventListener("click", () => {
-		      const id = btn.getAttribute("data-toggle");
-		      const input = document.getElementById(id);
-		      if (!input) return;
-		
-		      const hidden = input.type === "password";
-		      input.type = hidden ? "text" : "password";
-		      btn.textContent = hidden ? "Hide" : "Show";
-		    });
-		  });
-		
-		  // client validation
-		  form.addEventListener("submit", function (e) {
-		    let ok = true;
-		
-		    const username = (document.getElementById("username").value || "").trim();
-		    const password = (document.getElementById("password").value || "").trim();
-		
-		    if (!username) { ok = false; setErr("username", "Username is required"); }
-		    if (!password) { ok = false; setErr("password", "Password is required"); }
-		
-		    if (!ok) e.preventDefault();
-		  });
-		
-		  // =========================
-		  // TOAST + AUTO REDIRECT
-		  // =========================
-		
-		  const bar = document.getElementById("snackbar");
-		  if (!bar) return;
-		
-		  const successMsg = (bar.getAttribute("data-success") || "").trim();
-		  const errorMsg = (bar.getAttribute("data-error") || "").trim();
-		
-		  const redirectUrl = "${redirectUrl}";
-		
-		  function showToast(msg, isError) {
-		    if (!msg) return;
-		
-		    bar.textContent = msg;
-		    bar.style.backgroundColor =
-		      isError ? "var(--danger-color)" : "var(--secondary-color)";
-		    bar.classList.add("show");
-		
-		    setTimeout(() => {
-		      bar.classList.remove("show");
-		
-		      // ✅ redirect only on success
-		      if (!isError && redirectUrl) {
-		        window.location.href = redirectUrl;
-		      }
-		    }, 5000);
-		  }
-		
-		  if (errorMsg.length > 0) {
-		    showToast(errorMsg, true);
-		  } else if (successMsg.length > 0) {
-		    showToast(successMsg, false);
-		  }
-		
-		})();
-		]]>
-		</script>
+        <![CDATA[
+        (function () {
+
+          const form = document.getElementById("adminLoginForm");
+          if (!form) return;
+
+          function setErr(id, text) {
+            const p = document.getElementById("err-" + id);
+            const input = document.getElementById(id);
+            if (p) p.textContent = text || "";
+            if (input) input.classList.toggle("inputError", !!text);
+          }
+
+          document.querySelectorAll("[data-toggle]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-toggle");
+              const input = document.getElementById(id);
+              if (!input) return;
+
+              const hidden = input.type === "password";
+              input.type = hidden ? "text" : "password";
+              btn.textContent = hidden ? "Hide" : "Show";
+            });
+          });
+
+          form.addEventListener("submit", function (e) {
+            let ok = true;
+
+            const username = (document.getElementById("username").value || "").trim();
+            const password = (document.getElementById("password").value || "").trim();
+
+            setErr("username", "");
+            setErr("password", "");
+
+            if (!username) { ok = false; setErr("username", "Username is required"); }
+            if (!password) { ok = false; setErr("password", "Password is required"); }
+
+            if (!ok) e.preventDefault();
+          });
+
+          const bar = document.getElementById("snackbar");
+          if (!bar) return;
+
+          const successMsg = (bar.getAttribute("data-success") || "").trim();
+          const errorMsg = (bar.getAttribute("data-error") || "").trim();
+          const redirectUrl = "${redirectUrl}";
+
+          function showToast(msg, isError) {
+            if (!msg) return;
+
+            bar.textContent = msg;
+            bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+            bar.classList.add("show");
+
+            setTimeout(() => {
+              bar.classList.remove("show");
+              if (!isError && redirectUrl) window.location.href = redirectUrl;
+            }, 5000);
+          }
+
+          if (errorMsg.length > 0) showToast(errorMsg, true);
+          else if (successMsg.length > 0) showToast(successMsg, false);
+
+        })();
+        ]]>
+      </script>
 
     </body>
   </html>
