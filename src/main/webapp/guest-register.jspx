@@ -32,13 +32,13 @@
           box-sizing: border-box;
         }
         .headerRow h2{
-          font-size: 1.8rem;
+          font-size: 1.2rem;
           font-family: "Roboto", sans-serif;
         }
         .headerRow .headerActions{
           display: flex;
           font-family: "Montserrat", sans-serif;
-          font-size: 1.4rem;
+          font-size: 1.2rem;
           gap: 1.2rem;
         }
         .headerRow a{
@@ -54,7 +54,7 @@
         .content h2{
           margin-bottom: 2.5rem;
           color: var(--primary-color);
-          font-size: 2.5rem;
+          font-size: 1.5rem;
           font-weight: 600;
           font-family: "Cascadia Mono", sans-serif;
         }
@@ -111,8 +111,8 @@
         }
         .content .actionRow button{
           width: 220px;
-          height: 65px;
-          font-size: 1.3rem;
+          height: 50px;
+          font-size: 1rem;
           cursor: pointer;
         }
         .content .actionRow button:first-child{

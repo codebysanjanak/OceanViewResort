@@ -27,8 +27,8 @@
           background-color: var(--primary-color);
           box-sizing: border-box;
         }
-        .headerRow h2{ font-size: 1.8rem; font-family: "Roboto", sans-serif; }
-        .headerRow .headerActions{ display:flex; font-family:"Montserrat",sans-serif; font-size:1.4rem; gap:1.2rem; }
+        .headerRow h2{ font-size: 1.4rem; font-family: "Roboto", sans-serif; }
+        .headerRow .headerActions{ display:flex; font-family:"Montserrat",sans-serif; font-size:1.1rem; gap:1.2rem; }
         .headerRow a{ color: var(--primary-contrast); text-decoration:none; }
 
         .content{ padding: 2rem 5rem; width:100%; box-sizing:border-box; }
@@ -37,7 +37,7 @@
         .content h2{
           margin-bottom: 1.2rem;
           color: var(--primary-color);
-          font-size: 2.8rem;
+          font-size: 1.8rem;
           font-weight: 700;
           font-family: "Cascadia Mono", sans-serif;
         }
