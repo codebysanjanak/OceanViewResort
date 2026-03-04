@@ -24,7 +24,7 @@ import java.util.UUID;
 public class AdminRoomTypeServlet extends HttpServlet {
 
     // Put JSPX here (recommended)
-    private static final String VIEW = "/WEB-INF/views/admin-roomtypes.jspx";
+    private static final String VIEW = "/admin-roomtypes.jspx";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -54,7 +54,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
                     RoomType rt = DAOFactory.roomTypeDAO().findById(id);
                     if (rt != null) {
                         req.setAttribute("form", rt);
-                        // keep query param toast like your link: msg=editing
                     }
                 }
             }

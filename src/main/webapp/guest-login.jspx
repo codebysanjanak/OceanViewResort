@@ -270,12 +270,16 @@
 
             const successMsg = (bar.getAttribute("data-success") || "").trim();
             const errorMsg = (bar.getAttribute("data-error") || "").trim();
+            const redirectUrl = "${redirectUrl}";
 
             function showToast(msg, isError) {
               bar.textContent = msg;
               bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
               bar.classList.add("show");
-              setTimeout(() => bar.classList.remove("show"), 5000);
+              setTimeout(() => {
+                  bar.classList.remove("show");
+                  if (!isError && redirectUrl) window.location.href = redirectUrl;
+                }, 5000);
             }
 
             if (errorMsg.length > 0) {
