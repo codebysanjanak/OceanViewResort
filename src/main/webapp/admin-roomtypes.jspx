@@ -338,8 +338,9 @@
                                onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
                         </c:when>
                         <c:otherwise>
-                          <img class="previewImg" alt="Room" src="${pageContext.request.contextPath}${rt.photoPath}"
-                               onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
+                          <img class="previewImg" alt="Room"
+							     src="${pageContext.request.contextPath}${rt.photoPath}"
+							     onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
                         </c:otherwise>
                       </c:choose>
                     </c:when>

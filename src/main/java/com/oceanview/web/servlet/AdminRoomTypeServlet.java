@@ -23,8 +23,10 @@ import java.util.UUID;
 )
 public class AdminRoomTypeServlet extends HttpServlet {
 
-    // Put JSPX here (recommended)
     private static final String VIEW = "/admin-roomtypes.jspx";
+
+    // stored in DB
+    private static final String URL_DIR = "/images/room-types";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -43,18 +45,14 @@ public class AdminRoomTypeServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=toggled");
                     return;
                 }
-
                 case "delete" -> {
                     DAOFactory.roomTypeDAO().delete(id);
                     resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=deleted");
                     return;
                 }
-
                 case "edit" -> {
                     RoomType rt = DAOFactory.roomTypeDAO().findById(id);
-                    if (rt != null) {
-                        req.setAttribute("form", rt);
-                    }
+                    if (rt != null) req.setAttribute("form", rt);
                 }
             }
         }
@@ -73,15 +71,14 @@ public class AdminRoomTypeServlet extends HttpServlet {
             req.setCharacterEncoding("UTF-8");
 
             String roomTypeId = trim(req.getParameter("roomTypeId"));
-            String typeName = trim(req.getParameter("typeName"));
-            String rateStr = trim(req.getParameter("rate"));
-            String adultsStr = trim(req.getParameter("adultsCount"));
-            String childrenStr = trim(req.getParameter("childrenCount"));
-            String roomsStr = trim(req.getParameter("roomsCount"));
-            String description = trim(req.getParameter("description"));
-            boolean active = "true".equals(req.getParameter("active"));
+            String typeName   = trim(req.getParameter("typeName"));
+            String rateStr    = trim(req.getParameter("rate"));
+            String adultsStr  = trim(req.getParameter("adultsCount"));
+            String childrenStr= trim(req.getParameter("childrenCount"));
+            String roomsStr   = trim(req.getParameter("roomsCount"));
+            String description= trim(req.getParameter("description"));
+            boolean active    = "true".equals(req.getParameter("active"));
 
-            // server required validation
             if (typeName.isBlank()) throw new IllegalArgumentException("Room Name is required");
             if (rateStr.isBlank()) throw new IllegalArgumentException("Nightly Rate is required");
             if (adultsStr.isBlank()) throw new IllegalArgumentException("Adults Count is required");
@@ -93,9 +90,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
             int children = Integer.parseInt(childrenStr);
             int roomsCount = Integer.parseInt(roomsStr);
 
-            if (rate.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Rate must be >= 0");
-            if (adults < 0 || children < 0 || roomsCount < 0) throw new IllegalArgumentException("Counts must be >= 0");
-
             RoomType rt = new RoomType();
             rt.setTypeName(typeName);
             rt.setNightlyRate(rate);
@@ -105,11 +99,10 @@ public class AdminRoomTypeServlet extends HttpServlet {
             rt.setDescription(description);
             rt.setActive(active);
 
-            // keep existing photo if no new photo
+            // keep existing photo if no new upload
             String existingPhotoPath = trim(req.getParameter("existingPhotoPath"));
             if (!existingPhotoPath.isBlank()) rt.setPhotoPath(existingPhotoPath);
 
-            // upload new photo
             Part photoPart = req.getPart("photo");
             if (photoPart != null && photoPart.getSize() > 0) {
 
@@ -122,23 +115,27 @@ public class AdminRoomTypeServlet extends HttpServlet {
 
                 String fileName = "rt_" + UUID.randomUUID() + ext;
 
-                String relativeDir = "/images/roomtypes";
-                String absoluteDir = getServletContext().getRealPath(relativeDir);
-                if (absoluteDir == null) {
-                    throw new IllegalStateException("Upload path not available. Deploy as exploded folder in Tomcat.");
+                // Real folder inside deployed webapp
+                String realDir = getServletContext().getRealPath(URL_DIR);
+                if (realDir == null) {
+                    throw new IllegalStateException("Cannot resolve real path for " + URL_DIR);
                 }
 
-                Files.createDirectories(Paths.get(absoluteDir));
+                Path uploadDir = Paths.get(realDir).toAbsolutePath().normalize();
+                Files.createDirectories(uploadDir);
 
-                Path target = Paths.get(absoluteDir, fileName);
+                Path target = uploadDir.resolve(fileName);
+
                 try (InputStream in = photoPart.getInputStream()) {
                     Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
                 }
 
-                rt.setPhotoPath(relativeDir + "/" + fileName);
+                rt.setPhotoPath(URL_DIR + "/" + fileName);
+
+                System.out.println("✅ Saved image to = " + target);
+                System.out.println("✅ DB photo_path  = " + rt.getPhotoPath());
             }
 
-            // PRG redirect (toast uses msg param)
             if (!roomTypeId.isBlank()) {
                 rt.setRoomTypeId(Integer.parseInt(roomTypeId));
                 DAOFactory.roomTypeDAO().update(rt);
@@ -147,14 +144,19 @@ public class AdminRoomTypeServlet extends HttpServlet {
                 DAOFactory.roomTypeDAO().create(rt);
                 resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?msg=saved");
             }
-            return;
 
         } catch (Exception e) {
-            resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?error=" + urlEncode(e.getMessage()));
+            e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/admin/roomtypes?error=" + urlEncode(messageOf(e)));
         }
     }
 
     private static String trim(String s) { return (s == null) ? "" : s.trim(); }
+
+    private static String messageOf(Exception e) {
+        String m = (e == null) ? "" : e.getMessage();
+        return (m == null || m.isBlank()) ? "Something went wrong" : m;
+    }
 
     private static String urlEncode(String s) {
         try {

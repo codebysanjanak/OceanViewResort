@@ -5,4 +5,33 @@
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0"
          metadata-complete="false">
+
+  <welcome-file-list>
+    <welcome-file>home</welcome-file>
+    <welcome-file>home.jspx</welcome-file>
+  </welcome-file-list>
+
+  <!-- ✅ IMPORTANT: Serve static content using Tomcat DefaultServlet -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/images/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/styles/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/js/*</url-pattern>
+  </servlet-mapping>
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jspx</url-pattern>
+      <is-xml>true</is-xml>
+    </jsp-property-group>
+  </jsp-config>
+
 </web-app>
