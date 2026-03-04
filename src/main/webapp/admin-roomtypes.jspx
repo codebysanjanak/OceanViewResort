@@ -1,5 +1,6 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="jakarta.tags.core"
+          xmlns:fn="jakarta.tags.functions"
           version="2.0">
 
   <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
@@ -22,12 +23,17 @@
           padding:0 40px; background:var(--primary-color); color:#fff; font-family:"Roboto",sans-serif;
         }
         .header a{ color:#fff; text-decoration:none; font-weight:600; }
+
         .container{ max-width:1100px; margin:40px auto; padding:0 16px; font-family:"Montserrat",sans-serif; }
-        h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin-bottom:20px; }
+        h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin:0 0 14px; }
+
+        .topRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; }
+
         .card{
           background:#fff; padding:28px; border-radius:14px;
           box-shadow:0 8px 25px rgba(0,0,0,0.06); margin-bottom:25px;
         }
+
         .grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
         @media(max-width:820px){ .grid{ grid-template-columns:1fr; } }
 
@@ -37,13 +43,29 @@
         .inputRow input,.inputRow select,.inputRow textarea{
           width:100%; padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.18);
           font-family:"Montserrat",sans-serif; font-size:15px; box-sizing:border-box;
+          outline:none;
         }
         .inputRow textarea{ min-height:100px; resize:vertical; }
 
-        .actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:15px; }
+        /* ✅ required error UI (like login page) */
+        .inputError{ border:1px solid var(--danger-color) !important; }
+        .fieldError{ margin:6px 0 0; color:var(--danger-color); font-size:13px; font-weight:600; }
+
+        .actions{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
         .btn{
-          padding:12px 22px; border-radius:10px; border:none;
+          padding:12px 18px; border-radius:10px; border:none;
           background:var(--primary-color); color:#fff; cursor:pointer;
+          font-family:"Montserrat",sans-serif;
+        }
+        .btnSecondary{ background:#64748b; }
+        .btnGhost{ background:#fff; color:#0f172a; border:1px solid #e5e7eb; }
+
+        .editBadge{
+          display:inline-flex; align-items:center; gap:8px;
+          padding:8px 12px; border-radius:999px;
+          background:#f1f5f9; border:1px solid #e2e8f0;
+          color:#0f172a; font-size:13px; font-weight:700;
+          margin-bottom:14px;
         }
 
         table{ width:100%; border-collapse:collapse; }
@@ -52,42 +74,108 @@
 
         .previewImg{
           width:100px; height:70px; object-fit:cover; border-radius:10px;
-          border:1px solid #ddd; background:#fafafa;
+          border:1px solid #ddd; background:#fafafa; display:block;
         }
 
         .actionBtn{
           display:inline-block; padding:7px 12px; border-radius:8px; font-size:13px;
           color:#fff; text-decoration:none; margin-right:6px; cursor:pointer; border:none;
+          font-family:"Montserrat",sans-serif;
         }
         .btnEdit{ background:var(--secondary-color); }
         .btnPreview{ background:#64748b; }
         .btnDelete{ background:var(--danger-color); }
 
+        /* MODALS */
         .modal{
-          display:none; position:fixed; z-index:9999; left:0; top:0;
-          width:100%; height:100%; background:rgba(0,0,0,0.5);
-          justify-content:center; align-items:center;
+          display:none; position:fixed; left:0; top:0;
+          width:100%; height:100%; background:rgba(0,0,0,0.55);
+          justify-content:center; align-items:center; padding:18px;
         }
+        #previewModal{ z-index: 9999; }
+        #deleteModal{ z-index: 10000; }
+
         .modalContent{
-          background:#fff; padding:25px; border-radius:14px; width:600px;
-          max-width:95%; position:relative;
+          background:#fff; border-radius:16px; width:900px; max-width:96%;
+          overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.25);
+          position:relative;
         }
-        .closeBtn{ position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer; }
+        .modalHeader{
+          display:flex; justify-content:space-between; align-items:center;
+          padding:14px 18px; border-bottom:1px solid #eee;
+        }
+        .modalHeader h3{
+          margin:0; font-family:"Cascadia Mono",sans-serif; font-size:20px;
+          color:var(--primary-color); font-weight:800;
+          display:flex; align-items:center; gap:10px;
+        }
+        .statusBadge{
+          font-family:"Montserrat",sans-serif;
+          font-size:12px; padding:4px 10px; border-radius:999px;
+          color:#fff; background:#16a34a;
+        }
+        .statusBadge.inactive{ background:#ef4444; }
+
+        .closeBtn{
+          border:none; background:transparent; font-size:22px; cursor:pointer; line-height:1;
+          padding:6px 10px; border-radius:10px;
+        }
+        .closeBtn:hover{ background:#f3f4f6; }
+
+        .modalBody{
+          display:grid; grid-template-columns: 1.1fr 0.9fr; gap:16px;
+          padding:18px;
+        }
+        @media(max-width:880px){ .modalBody{ grid-template-columns:1fr; } }
+
         .modalImg{
-          width:100%; height:250px; object-fit:cover; border-radius:10px;
-          margin-bottom:15px; background:#fafafa;
+          width:100%; height:320px; object-fit:cover; border-radius:14px;
+          background:#fafafa; border:1px solid #eee; display:block;
         }
 
+        .infoCard{ border:1px solid #eee; border-radius:14px; padding:14px; }
+        .infoGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+        .kv{ background:#f8fafc; border:1px solid #eef2f7; border-radius:12px; padding:10px; }
+        .k{ font-size:12px; color:#64748b; margin-bottom:4px; font-weight:800; }
+        .v{ font-size:14px; color:#0f172a; font-weight:700; }
+
+        /* ✅ nicer description area */
+        .descBox{
+          margin-top:12px; background:#fff; border:1px solid #eef2f7; border-radius:12px;
+          padding:12px;
+        }
+        .descTitle{ font-weight:900; font-size:13px; color:#334155; margin-bottom:8px; }
+        .descText{
+          white-space:pre-wrap;
+          font-size:14px; line-height:1.7; color:#0f172a;
+          max-height:160px; overflow:auto; padding-right:6px;
+          word-break:break-word;
+        }
+
+        /* Delete modal */
+        .modalContent.sm{ width:520px; }
+        .modalBodySm{ padding:18px; }
+        .warn{
+          background:#fff7ed; border:1px solid #fed7aa; color:#9a3412;
+          padding:12px; border-radius:12px; margin-bottom:14px; font-weight:700;
+        }
+        .modalFooter{
+          display:flex; justify-content:flex-end; gap:10px; padding:14px 18px;
+          border-top:1px solid #eee;
+        }
+
+        /* Toast */
         #toast{
           position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
-          padding:14px 22px; border-radius:10px; color:#fff; display:none; z-index:9999;
-          box-shadow:0 8px 20px rgba(0,0,0,0.25);
+          padding:14px 22px; border-radius:12px; color:#fff; display:none; z-index:99999;
+          box-shadow:0 10px 26px rgba(0,0,0,0.25);
+          font-family:"Montserrat",sans-serif;
+          min-width:320px; text-align:center;
         }
       </style>
     </head>
 
     <body>
-
       <div class="header">
         <div>Ocean View Resort — Admin</div>
         <div>
@@ -96,58 +184,76 @@
       </div>
 
       <div class="container">
-        <h2>Manage Room Types</h2>
+
+        <div class="topRow">
+          <h2>Manage Room Types</h2>
+          <button type="button" class="btn btnSecondary" onclick="startNewRoomType()">
+            + Create New Room Type
+          </button>
+        </div>
 
         <!-- FORM -->
-        <div class="card">
-          <form method="post"
-                enctype="multipart/form-data"
+        <div class="card" id="formCard">
+
+          <c:if test="${not empty form.roomTypeId}">
+            <div class="editBadge">
+              Editing Room Type ID: <span>#<c:out value="${form.roomTypeId}"/></span>
+              <button type="button" class="btn btnGhost" style="padding:7px 10px; border-radius:999px;"
+                      onclick="startNewRoomType()">New</button>
+            </div>
+          </c:if>
+
+          <form id="roomTypeForm" method="post" enctype="multipart/form-data"
                 action="${pageContext.request.contextPath}/admin/roomtypes">
 
-            <input type="hidden" name="roomTypeId" value="${form.roomTypeId}" />
-            <input type="hidden" name="existingPhotoPath" value="${form.photoPath}" />
+            <input type="hidden" id="roomTypeId" name="roomTypeId" value="${form.roomTypeId}" />
+            <input type="hidden" id="existingPhotoPath" name="existingPhotoPath" value="${form.photoPath}" />
 
             <div class="grid">
-
               <div>
                 <span class="label">Room Name<span class="requiredMark">*</span></span>
                 <div class="inputRow">
-                  <input name="typeName" value="${form.typeName}" />
+                  <input id="typeName" name="typeName" value="${form.typeName}" />
+                  <p id="err-typeName" class="fieldError"></p>
                 </div>
               </div>
 
               <div>
                 <span class="label">Nightly Rate<span class="requiredMark">*</span></span>
                 <div class="inputRow">
-                  <input name="rate" value="${form.nightlyRate}" />
+                  <input id="rate" name="rate" value="${form.nightlyRate}" />
+                  <p id="err-rate" class="fieldError"></p>
                 </div>
               </div>
 
               <div>
                 <span class="label">Adults Count<span class="requiredMark">*</span></span>
                 <div class="inputRow">
-                  <input name="adultsCount" value="${form.adultsCount}" />
+                  <input id="adultsCount" name="adultsCount" value="${form.adultsCount}" />
+                  <p id="err-adultsCount" class="fieldError"></p>
                 </div>
               </div>
 
               <div>
                 <span class="label">Children Count<span class="requiredMark">*</span></span>
                 <div class="inputRow">
-                  <input name="childrenCount" value="${form.childrenCount}" />
+                  <input id="childrenCount" name="childrenCount" value="${form.childrenCount}" />
+                  <p id="err-childrenCount" class="fieldError"></p>
                 </div>
               </div>
 
               <div>
                 <span class="label">Rooms Count<span class="requiredMark">*</span></span>
                 <div class="inputRow">
-                  <input name="roomsCount" value="${form.roomsCount}" />
+                  <input id="roomsCount" name="roomsCount" value="${form.roomsCount}" />
+                  <p id="err-roomsCount" class="fieldError"></p>
                 </div>
               </div>
 
               <div>
                 <span class="label">Status</span>
                 <div class="inputRow">
-                  <select name="active">
+                  <select id="active" name="active">
                     <c:choose>
                       <c:when test="${form.active == false}">
                         <option value="true">Active</option>
@@ -165,7 +271,7 @@
               <div style="grid-column:1 / -1;">
                 <span class="label">Description</span>
                 <div class="inputRow">
-                  <textarea name="description"><c:out value="${form.description}" /></textarea>
+                  <textarea id="description" name="description"><c:out value="${form.description}" /></textarea>
                 </div>
               </div>
 
@@ -173,22 +279,40 @@
                 <span class="label">Room Photo</span>
                 <div class="inputRow">
                   <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png,.webp" />
-                  <img id="photoPreview" class="previewImg"
-                       src="${empty form.photoPath ? '' : pageContext.request.contextPath.concat(form.photoPath)}" alt="Preview" />
+
+                  <c:choose>
+                    <c:when test="${not empty form.photoPath}">
+                      <c:choose>
+                        <c:when test="${fn:startsWith(form.photoPath, pageContext.request.contextPath)}">
+                          <img id="photoPreview" class="previewImg" alt="Preview" src="${form.photoPath}" />
+                        </c:when>
+                        <c:otherwise>
+                          <img id="photoPreview" class="previewImg" alt="Preview"
+                               src="${pageContext.request.contextPath}${form.photoPath}" />
+                        </c:otherwise>
+                      </c:choose>
+                    </c:when>
+                    <c:otherwise>
+                      <img id="photoPreview" class="previewImg" alt="Preview" src="" style="display:none;" />
+                    </c:otherwise>
+                  </c:choose>
                 </div>
               </div>
-
             </div>
 
             <div class="actions">
-              <button type="submit" class="btn">
-                <c:choose>
-                  <c:when test="${not empty form.roomTypeId}">Save Changes</c:when>
-                  <c:otherwise>Save</c:otherwise>
-                </c:choose>
-              </button>
+              <div>
+                <button type="submit" class="btn">
+                  <c:choose>
+                    <c:when test="${not empty form.roomTypeId}">Save Changes</c:when>
+                    <c:otherwise>Save</c:otherwise>
+                  </c:choose>
+                </button>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btnGhost" onclick="startNewRoomType()">Clear</button>
+              </div>
             </div>
-
           </form>
         </div>
 
@@ -196,23 +320,12 @@
         <div class="card">
           <table>
             <tr>
-              <th>ID</th>
-              <th>Photo</th>
-              <th>Name</th>
-              <th>Rate</th>
-              <th>Adults</th>
-              <th>Children</th>
-              <th>Rooms</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>ID</th><th>Photo</th><th>Name</th><th>Rate</th><th>Adults</th>
+              <th>Children</th><th>Rooms</th><th>Status</th><th>Actions</th>
             </tr>
 
             <c:if test="${empty rooms}">
-              <tr>
-                <td colspan="9" style="text-align:center; padding:18px;">
-                  No records found.
-                </td>
-              </tr>
+              <tr><td colspan="9" style="text-align:center; padding:18px;">No records found.</td></tr>
             </c:if>
 
             <c:forEach items="${rooms}" var="rt">
@@ -222,8 +335,16 @@
                 <td>
                   <c:choose>
                     <c:when test="${not empty rt.photoPath}">
-                      <img class="previewImg"
-                           src="${pageContext.request.contextPath}${rt.photoPath}" alt="Room"/>
+                      <c:choose>
+                        <c:when test="${fn:startsWith(rt.photoPath, pageContext.request.contextPath)}">
+                          <img class="previewImg" alt="Room" src="${rt.photoPath}"
+                               onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
+                        </c:when>
+                        <c:otherwise>
+                          <img class="previewImg" alt="Room" src="${pageContext.request.contextPath}${rt.photoPath}"
+                               onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
+                        </c:otherwise>
+                      </c:choose>
                     </c:when>
                     <c:otherwise>No Photo</c:otherwise>
                   </c:choose>
@@ -238,41 +359,295 @@
 
                 <td>
                   <a class="actionBtn btnEdit"
-                     href="${pageContext.request.contextPath}/admin/roomtypes?action=edit&amp;id=${rt.roomTypeId}">
+                     href="${pageContext.request.contextPath}/admin/roomtypes?action=edit&amp;id=${rt.roomTypeId}&amp;msg=editing">
                     Edit
                   </a>
 
+                  <!-- hidden safe values -->
+                  <span id="rt-${rt.roomTypeId}" style="display:none;">
+                    <span class="rt-name"><c:out value="${rt.typeName}" /></span>
+                    <span class="rt-rate"><c:out value="${rt.nightlyRate}" /></span>
+                    <span class="rt-adults"><c:out value="${rt.adultsCount}" /></span>
+                    <span class="rt-children"><c:out value="${rt.childrenCount}" /></span>
+                    <span class="rt-rooms"><c:out value="${rt.roomsCount}" /></span>
+                    <span class="rt-active"><c:out value="${rt.active}" /></span>
+                    <span class="rt-photo"><c:out value="${rt.photoPath}" /></span>
+                    <span class="rt-desc"><c:out value="${rt.description}" /></span>
+                  </span>
+
                   <button type="button" class="actionBtn btnPreview"
-                          onclick="openPreviewModal(
-                            '${rt.typeName}',
-                            '${rt.nightlyRate}',
-                            '${rt.adultsCount}',
-                            '${rt.childrenCount}',
-                            '${rt.roomsCount}',
-                            '${rt.active}',
-                            '${rt.photoPath}',
-                            '${rt.description}'
-                          )">
+                          onclick="openPreviewById('${rt.roomTypeId}')">
                     Preview
                   </button>
 
-                  <a class="actionBtn btnDelete"
-                     onclick="return confirm('Delete this room type?');"
-                     href="${pageContext.request.contextPath}/admin/roomtypes?action=delete&amp;id=${rt.roomTypeId}">
+                  <button type="button" class="actionBtn btnDelete"
+                          onclick="openDeleteById('${rt.roomTypeId}')">
                     Delete
-                  </a>
+                  </button>
                 </td>
               </tr>
             </c:forEach>
           </table>
         </div>
+
       </div>
 
-      <!-- Toast -->
-      <div id="toast"
-           data-success="${success}"
-           data-error="${error}">
+      <!-- PREVIEW MODAL -->
+      <div id="previewModal" class="modal" onclick="closePreviewModal()">
+        <div class="modalContent" onclick="event.stopPropagation()">
+          <div class="modalHeader">
+            <h3>
+              <span id="pmTitle">Room Preview</span>
+              <span id="pmBadge" class="statusBadge">Active</span>
+            </h3>
+            <button class="closeBtn" type="button" onclick="closePreviewModal()">×</button>
+          </div>
+
+          <div class="modalBody">
+            <div><img id="pmImg" class="modalImg" alt="Room Photo" /></div>
+
+            <div class="infoCard">
+              <div class="infoGrid">
+                <div class="kv"><div class="k">Rate</div><div class="v" id="pmRate"></div></div>
+                <div class="kv"><div class="k">Rooms</div><div class="v" id="pmRooms"></div></div>
+                <div class="kv"><div class="k">Adults</div><div class="v" id="pmAdults"></div></div>
+                <div class="kv"><div class="k">Children</div><div class="v" id="pmChildren"></div></div>
+              </div>
+
+              <div class="descBox">
+                <div class="descTitle">Description</div>
+                <div id="pmDesc" class="descText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- DELETE MODAL -->
+      <div id="deleteModal" class="modal" onclick="closeDeleteModal()">
+        <div class="modalContent sm" onclick="event.stopPropagation()">
+          <div class="modalHeader">
+            <h3 style="font-size:18px;">Confirm Delete</h3>
+            <button class="closeBtn" type="button" onclick="closeDeleteModal()">×</button>
+          </div>
+
+          <div class="modalBodySm">
+            <div class="warn">This action cannot be undone.</div>
+            <div style="font-weight:700; color:#0f172a;">
+              Delete room type: <span id="dmName" style="color:var(--danger-color);"></span>
+            </div>
+          </div>
+
+          <div class="modalFooter">
+            <button type="button" class="btn btnGhost" onclick="closeDeleteModal()">Cancel</button>
+            <a id="dmDeleteLink" class="btn"
+               style="background:var(--danger-color); text-decoration:none; display:inline-block;">Delete</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOAST -->
+      <div id="toast"
+           data-msg="${param.msg}"
+           data-success="${param.success}"
+           data-error="${param.error}"></div>
+
+      <script type="text/javascript">
+        <![CDATA[
+        function $(id){ return document.getElementById(id); }
+
+        function closePreviewModal(){ var m = $("previewModal"); if(m) m.style.display="none"; }
+        function closeDeleteModal(){ var m = $("deleteModal"); if(m) m.style.display="none"; }
+
+        function textOf(root, selector){
+          var el = root.querySelector(selector);
+          return el ? (el.textContent || "").trim() : "";
+        }
+
+        function cleanUrl(){
+          var url = new URL(window.location.href);
+          url.searchParams.delete("msg");
+          url.searchParams.delete("success");
+          url.searchParams.delete("error");
+          window.history.replaceState({}, "", url.toString());
+        }
+
+        function showToast(msg, isError){
+          var t = $("toast");
+          if(!t || !msg) return;
+
+          t.textContent = msg;
+          t.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+          t.style.display = "block";
+          t.style.opacity = "1";
+
+          setTimeout(function(){
+            t.style.opacity = "0";
+            setTimeout(function(){ t.style.display = "none"; }, 250);
+          }, 3500);
+        }
+
+        function resolveImgSrc(photoPath){
+          var ctx = "${pageContext.request.contextPath}";
+          var p = String(photoPath || "").trim();
+          if(!p) return "";
+          if(p.indexOf("http://") === 0 || p.indexOf("https://") === 0) return p;
+          if(p.indexOf(ctx + "/") === 0) return p;
+          if(p.charAt(0) === "/") return ctx + p;
+          return ctx + "/" + p;
+        }
+
+        function openPreviewModal(name, rate, adults, children, rooms, active, photoPath, desc){
+          closeDeleteModal(); // ✅ never show both
+          var modal = $("previewModal");
+          if(!modal) return;
+
+          $("pmTitle").textContent = name || "Room Preview";
+          $("pmRate").textContent = rate || "";
+          $("pmAdults").textContent = adults || "";
+          $("pmChildren").textContent = children || "";
+          $("pmRooms").textContent = rooms || "";
+
+          var isActive = (String(active) === "true" || String(active) === "1");
+          var badge = $("pmBadge");
+          badge.textContent = isActive ? "Active" : "Inactive";
+          badge.classList.toggle("inactive", !isActive);
+
+          var img = $("pmImg");
+          var src = resolveImgSrc(photoPath);
+          if(src){
+            img.src = src;
+            img.style.display = "";
+          }else{
+            img.removeAttribute("src");
+            img.style.display = "none";
+          }
+
+          $("pmDesc").textContent = desc || "";
+          modal.style.display = "flex";
+        }
+
+        function openPreviewById(id){
+          var box = $("rt-" + id);
+          if(!box) return;
+          openPreviewModal(
+            textOf(box, ".rt-name"),
+            textOf(box, ".rt-rate"),
+            textOf(box, ".rt-adults"),
+            textOf(box, ".rt-children"),
+            textOf(box, ".rt-rooms"),
+            textOf(box, ".rt-active"),
+            textOf(box, ".rt-photo"),
+            textOf(box, ".rt-desc")
+          );
+        }
+
+        function openDeleteById(id){
+          closePreviewModal(); // ✅ never show both
+          var box = $("rt-" + id);
+          var name = box ? textOf(box, ".rt-name") : ("#" + id);
+
+          $("dmName").textContent = name || ("#" + id);
+          $("dmDeleteLink").href =
+            "${pageContext.request.contextPath}/admin/roomtypes?action=delete&id=" +
+            encodeURIComponent(id);
+
+          $("deleteModal").style.display = "flex";
+        }
+
+        // ✅ form required errors (like admin-login)
+        function setErr(fieldId, msg){
+          var el = $(fieldId);
+          var p = $("err-" + fieldId);
+          if(p) p.textContent = msg || "";
+          if(el) el.classList.toggle("inputError", !!msg);
+        }
+
+        function startNewRoomType(){
+          $("roomTypeId").value = "";
+          $("existingPhotoPath").value = "";
+
+          $("typeName").value = "";
+          $("rate").value = "";
+          $("adultsCount").value = "";
+          $("childrenCount").value = "";
+          $("roomsCount").value = "";
+          $("description").value = "";
+          if($("active")) $("active").value = "true";
+
+          setErr("typeName",""); setErr("rate",""); setErr("adultsCount",""); setErr("childrenCount",""); setErr("roomsCount","");
+
+          var img = $("photoPreview");
+          if(img){ img.removeAttribute("src"); img.style.display = "none"; }
+
+          var card = $("formCard");
+          if(card) card.scrollIntoView({behavior:"smooth", block:"start"});
+        }
+
+        // photo preview
+        (function(){
+          var f = $("photo");
+          var img = $("photoPreview");
+          if(!f || !img) return;
+
+          f.addEventListener("change", function(){
+            var file = f.files && f.files[0];
+            if(!file){
+              img.removeAttribute("src");
+              img.style.display = "none";
+              return;
+            }
+            var url = URL.createObjectURL(file);
+            img.src = url;
+            img.style.display = "block";
+          });
+        })();
+
+        // validate on submit
+        (function(){
+          var form = $("roomTypeForm");
+          if(!form) return;
+
+          form.addEventListener("submit", function(e){
+            var ok = true;
+
+            var typeName = ($("typeName").value || "").trim();
+            var rate = ($("rate").value || "").trim();
+            var adults = ($("adultsCount").value || "").trim();
+            var children = ($("childrenCount").value || "").trim();
+            var rooms = ($("roomsCount").value || "").trim();
+
+            setErr("typeName","");
+            setErr("rate","");
+            setErr("adultsCount","");
+            setErr("childrenCount","");
+            setErr("roomsCount","");
+
+            if(!typeName){ ok=false; setErr("typeName","Room Name is required"); }
+            if(!rate){ ok=false; setErr("rate","Nightly Rate is required"); }
+            if(!adults){ ok=false; setErr("adultsCount","Adults Count is required"); }
+            if(!children){ ok=false; setErr("childrenCount","Children Count is required"); }
+            if(!rooms){ ok=false; setErr("roomsCount","Rooms Count is required"); }
+
+            if(!ok) e.preventDefault();
+          });
+        })();
+
+        // toast messages from query param msg
+        (function(){
+          var msg = (new URLSearchParams(window.location.search).get("msg") || "").trim();
+          var err = (new URLSearchParams(window.location.search).get("error") || "").trim();
+
+          if(err){ showToast(decodeURIComponent(err), true); cleanUrl(); return; }
+
+          if(msg === "saved"){ showToast("Room type created successfully.", false); cleanUrl(); }
+          if(msg === "updated"){ showToast("Room type updated successfully.", false); cleanUrl(); }
+          if(msg === "deleted"){ showToast("Room type deleted successfully.", false); cleanUrl(); }
+          if(msg === "editing"){ showToast("Edit mode enabled. Update and click Save Changes.", false); cleanUrl(); }
+          if(msg === "toggled"){ showToast("Status updated.", false); cleanUrl(); }
+        })();
+        ]]>
+      </script>
 
     </body>
   </html>
