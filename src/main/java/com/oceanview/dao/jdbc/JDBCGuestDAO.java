@@ -5,6 +5,8 @@ import com.oceanview.dao.GuestDAO;
 import com.oceanview.model.Guest;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class JDBCGuestDAO implements GuestDAO {
 
@@ -108,6 +110,28 @@ public class JDBCGuestDAO implements GuestDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Guest updatePassword failed", e);
+        }
+    }
+    
+    @Override
+    public List<Guest> findAll() {
+
+        String sql = "SELECT * FROM guests ORDER BY created_at DESC";
+
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            List<Guest> guests = new ArrayList<>();
+
+            while(rs.next()){
+                guests.add(map(rs));
+            }
+
+            return guests;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Guest findAll failed", e);
         }
     }
 }
