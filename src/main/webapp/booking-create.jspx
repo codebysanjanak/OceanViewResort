@@ -20,10 +20,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono&amp;display=swap" rel="stylesheet"/>
 
         <style>
-            body {
-                margin: 0;
-                background: #f6f8fb;
-            }
+            body { margin: 0; background: #f6f8fb; }
 
             .headerRow {
                 padding: 1rem 1.5rem;
@@ -36,13 +33,7 @@
                 background-color: var(--primary-color);
                 box-sizing: border-box;
             }
-
-            .headerRow h2 {
-                font-size: 1.4rem;
-                font-family: "Roboto", sans-serif;
-                margin: 0;
-            }
-
+            .headerRow h2 { font-size: 1.4rem; font-family: "Roboto", sans-serif; margin: 0; }
             .headerActions {
                 display: flex;
                 gap: 1.2rem;
@@ -50,25 +41,10 @@
                 font-size: 1.1rem;
                 flex-wrap: wrap;
             }
+            .headerRow a { color: var(--primary-contrast); text-decoration: none; }
 
-            .headerRow a {
-                color: var(--primary-contrast);
-                text-decoration: none;
-            }
-
-            .content {
-                padding: 2rem 5rem;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .greeting {
-                font-family: "Montserrat", sans-serif;
-                font-size: 1.2rem;
-                color: var(--primary-color);
-                margin-bottom: 0.2rem;
-            }
-
+            .content { padding: 2rem 5rem; width: 100%; box-sizing: border-box; }
+            .greeting { font-family: "Montserrat", sans-serif; font-size: 1.2rem; color: var(--primary-color); margin-bottom: 0.2rem; }
             .content h2 {
                 margin: 0 0 1.2rem;
                 color: var(--primary-color);
@@ -84,7 +60,6 @@
                 gap: 1.2rem;
                 flex-wrap: wrap;
             }
-
             .actionsTop a {
                 color: var(--primary-color);
                 text-decoration: none;
@@ -100,12 +75,7 @@
                 gap: 1.2rem;
                 align-items: start;
             }
-
-            @media (max-width: 1000px) {
-                .grid {
-                    grid-template-columns: 1fr;
-                }
-            }
+            @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } }
 
             .card {
                 background: #fff;
@@ -121,17 +91,8 @@
                 gap: 8px;
                 margin-bottom: 1.2rem;
             }
-
-            .label {
-                font-weight: 700;
-                color: rgba(0, 0, 0, 0.85);
-            }
-
-            .requiredMark {
-                color: var(--danger-color);
-                margin-left: 4px;
-                font-weight: 900;
-            }
+            .label { font-weight: 700; color: rgba(0, 0, 0, 0.85); }
+            .requiredMark { color: var(--danger-color); margin-left: 4px; font-weight: 900; }
 
             select, input[type="date"] {
                 width: 100%;
@@ -145,10 +106,7 @@
                 background: #fff;
             }
 
-            .inputError {
-                border: 1px solid var(--danger-color) !important;
-            }
-
+            .inputError { border: 1px solid var(--danger-color) !important; }
             .fieldError {
                 margin: 0.2rem 0 0;
                 color: var(--danger-color);
@@ -157,13 +115,30 @@
                 min-height: 16px;
             }
 
+            /* ===== NEW: cost summary row ===== */
+            .costRow {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-top: -2px;
+                margin-bottom: 14px; /* sits just above buttons */
+            }
+            .costBox {
+                border: 1px solid rgba(0, 0, 0, 0.10);
+                border-radius: 12px;
+                padding: 10px 12px;
+                background: rgba(0, 0, 0, 0.02);
+            }
+            .costLabel { font-size: 0.85rem; opacity: 0.75; }
+            .costVal { font-weight: 900; margin-top: 4px; color: rgba(0,0,0,0.88); }
+            .costHint { font-size: 0.82rem; opacity: 0.70; margin-top: 6px; }
+
             .actionRow {
                 display: flex;
                 justify-content: flex-end;
                 gap: 1rem;
-                margin-top: 0.8rem;
+                margin-top: 0.2rem;
             }
-
             .btn {
                 width: 260px;
                 height: 45px;
@@ -175,7 +150,6 @@
                 background: var(--primary-color);
                 color: var(--primary-contrast);
             }
-
             .btnGhost {
                 width: auto;
                 padding: 0 16px;
@@ -191,7 +165,6 @@
                 color: var(--primary-color);
                 margin: 0 0 0.6rem;
             }
-
             .previewImg {
                 width: 100%;
                 height: 220px;
@@ -200,31 +173,20 @@
                 border: 1px solid rgba(0, 0, 0, 0.08);
                 background: rgba(0, 0, 0, 0.03);
             }
-
             .previewMeta {
                 margin-top: 0.9rem;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 0.7rem;
             }
-
             .metaBox {
                 border: 1px solid rgba(0, 0, 0, 0.10);
                 border-radius: 12px;
                 padding: 10px 12px;
                 background: rgba(0, 0, 0, 0.02);
             }
-
-            .metaLabel {
-                font-size: 0.85rem;
-                opacity: 0.75;
-            }
-
-            .metaVal {
-                font-weight: 800;
-                margin-top: 4px;
-            }
-
+            .metaLabel { font-size: 0.85rem; opacity: 0.75; }
+            .metaVal { font-weight: 800; margin-top: 4px; }
             .previewDesc {
                 margin-top: 0.9rem;
                 color: rgba(0, 0, 0, 0.75);
@@ -251,56 +213,15 @@
                 font-family: "Montserrat", sans-serif;
                 box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
             }
-
             #snackbar.show {
                 visibility: visible;
                 -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
                 animation: fadein 0.5s, fadeout 0.5s 4.5s;
             }
-
-            @-webkit-keyframes fadein {
-                from {
-                    bottom: 0;
-                    opacity: 0;
-                }
-                to {
-                    bottom: 30px;
-                    opacity: 1;
-                }
-            }
-
-            @keyframes fadein {
-                from {
-                    bottom: 0;
-                    opacity: 0;
-                }
-                to {
-                    bottom: 30px;
-                    opacity: 1;
-                }
-            }
-
-            @-webkit-keyframes fadeout {
-                from {
-                    bottom: 30px;
-                    opacity: 1;
-                }
-                to {
-                    bottom: 0;
-                    opacity: 0;
-                }
-            }
-
-            @keyframes fadeout {
-                from {
-                    bottom: 30px;
-                    opacity: 1;
-                }
-                to {
-                    bottom: 0;
-                    opacity: 0;
-                }
-            }
+            @-webkit-keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+            @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+            @-webkit-keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+            @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
         </style>
     </head>
 
@@ -367,6 +288,19 @@
                         <p id="err-checkOut" class="fieldError"></p>
                     </div>
 
+                    <div class="costRow">
+                        <div class="costBox">
+                            <div class="costLabel">Nights</div>
+                            <div class="costVal" id="pvNights">—</div>
+                            <div class="costHint">Calculated from check-in and check-out</div>
+                        </div>
+                        <div class="costBox">
+                            <div class="costLabel">Total Cost</div>
+                            <div class="costVal" id="pvTotal">—</div>
+                            <div class="costHint">Based on room rate × nights</div>
+                        </div>
+                    </div>
+
                     <div class="actionRow">
                         <button type="button" class="btn btnGhost" onclick="clearForm()">Clear</button>
                         <button class="btn" type="submit">Create Booking</button>
@@ -422,8 +356,10 @@
         <![CDATA[
         (function () {
             const roomTypeId = document.getElementById("roomTypeId");
+            const checkIn = document.getElementById("checkIn");
+            const checkOut = document.getElementById("checkOut");
 
-            // preview nodes
+            // preview
             const pvTitle = document.getElementById("pvTitle");
             const pvImg = document.getElementById("pvImg");
             const pvRate = document.getElementById("pvRate");
@@ -434,9 +370,10 @@
             const pvId = document.getElementById("pvId");
             const pvDesc = document.getElementById("pvDesc");
 
-            function safe(v) {
-                return (v || "").toString().trim();
-            }
+            const pvNights = document.getElementById("pvNights");
+            const pvTotal = document.getElementById("pvTotal");
+
+            function safe(v) { return (v || "").toString().trim(); }
 
             function normalizePhotoPath(p) {
                 p = safe(p);
@@ -444,6 +381,34 @@
                 if (p.startsWith("http://") || p.startsWith("https://")) return p;
                 if (p.startsWith("/")) return "${pageContext.request.contextPath}" + p;
                 return "${pageContext.request.contextPath}/" + p;
+            }
+
+            function parseDate(v) {
+                v = safe(v);
+                if (!v) return null;
+                const d = new Date(v + "T00:00:00");
+                return isNaN(d.getTime()) ? null : d;
+            }
+
+            function diffNights(inDate, outDate) {
+                if (!inDate || !outDate) return 0;
+                const ms = outDate.getTime() - inDate.getTime();
+                const nights = Math.floor(ms / (1000 * 60 * 60 * 24));
+                return nights > 0 ? nights : 0;
+            }
+
+            function toMoneyLKR(n) {
+                if (n == null || isNaN(n)) return "—";
+                return "LKR " + Number(n).toFixed(2);
+            }
+
+            function updateCosts(rate) {
+                const inD = parseDate(checkIn.value);
+                const outD = parseDate(checkOut.value);
+                const nights = diffNights(inD, outD);
+
+                pvNights.textContent = nights ? nights.toString() : "—";
+                pvTotal.textContent = nights ? toMoneyLKR(nights * rate) : "—";
             }
 
             function updatePreview() {
@@ -460,11 +425,12 @@
                     pvId.textContent = "—";
                     pvDesc.textContent = "Choose a room type to see photo and description.";
                     pvImg.src = "${pageContext.request.contextPath}/images/room-placeholder.jpg";
+                    updateCosts(0);
                     return;
                 }
 
                 const name = safe(opt.getAttribute("data-name"));
-                const rate = safe(opt.getAttribute("data-rate"));
+                const rateStr = safe(opt.getAttribute("data-rate"));
                 const desc = safe(opt.getAttribute("data-desc"));
 
                 const adults = parseInt(safe(opt.getAttribute("data-adults")) || "0", 10) || 0;
@@ -472,10 +438,11 @@
                 const rooms = parseInt(safe(opt.getAttribute("data-rooms")) || "0", 10) || 0;
                 const guests = adults + children;
 
+                const rate = parseFloat(rateStr || "0") || 0;
                 const photo = normalizePhotoPath(opt.getAttribute("data-photo"));
 
                 pvTitle.textContent = name || ("Room Type " + id);
-                pvRate.textContent = rate ? ("LKR " + rate + " / night") : "—";
+                pvRate.textContent = rate ? ("LKR " + rate.toFixed(2) + " / night") : "—";
                 pvAdults.textContent = adults.toString();
                 pvChildren.textContent = children.toString();
                 pvGuests.textContent = guests.toString();
@@ -483,20 +450,46 @@
                 pvId.textContent = id;
 
                 pvDesc.textContent = desc || "No description available.";
-
                 pvImg.src = photo || "${pageContext.request.contextPath}/images/room-placeholder.jpg";
+
+                // update nights/total using selected rate
+                updateCosts(rate);
             }
 
-            // update on change + initial load
+            // update on room change + date change
             roomTypeId.addEventListener("change", updatePreview);
+            checkIn.addEventListener("change", updatePreview);
+            checkOut.addEventListener("change", updatePreview);
+            checkIn.addEventListener("input", updatePreview);
+            checkOut.addEventListener("input", updatePreview);
+
+            // initial load
             updatePreview();
 
             window.clearForm = function () {
                 roomTypeId.value = "";
-                document.getElementById("checkIn").value = "";
-                document.getElementById("checkOut").value = "";
+                checkIn.value = "";
+                checkOut.value = "";
                 updatePreview();
             }
+
+            const form = document.getElementById("bookingForm");
+            form.addEventListener("submit", function (e) {
+                const id = safe(roomTypeId.value);
+                const inD = parseDate(checkIn.value);
+                const outD = parseDate(checkOut.value);
+                const nights = diffNights(inD, outD);
+
+                if (!id) {
+                    e.preventDefault();
+                    alert("Please select a room type.");
+                    return;
+                }
+                if (!inD || !outD || nights <= 0) {
+                    e.preventDefault();
+                    alert("Check-out must be after check-in.");
+                }
+            });
         })();
         ]]>
     </script>

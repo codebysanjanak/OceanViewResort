@@ -28,7 +28,7 @@
           box-sizing: border-box;
         }
         .headerRow h2{ font-size: 1.4rem; font-family: "Roboto", sans-serif; }
-        .headerRow .headerActions{ display:flex; font-family:"Montserrat",sans-serif; font-size:1.1rem; gap:1.2rem; }
+        .headerRow .headerActions{ display:flex; font-family:"Montserrat",sans-serif; font-size:1.1rem; gap:1.2rem; flex-wrap:wrap; }
         .headerRow a{ color: var(--primary-contrast); text-decoration:none; }
 
         .content{ padding: 2rem 5rem; width:100%; box-sizing:border-box; }
@@ -42,7 +42,17 @@
           font-family: "Cascadia Mono", sans-serif;
         }
 
-        .actionsTop{ margin:0 0 1.4rem; font-family:"Montserrat",sans-serif; display:flex; gap:1.2rem; flex-wrap:wrap; }
+        /* actions row: button + search */
+        .actionsTop{
+          margin:0 0 1.4rem;
+          font-family:"Montserrat",sans-serif;
+          display:flex;
+          gap:1.0rem;
+          flex-wrap:wrap;
+          align-items:center;
+          justify-content: space-between;
+        }
+        .actionsLeft{ display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
         .actionsTop a{
           color: var(--primary-color);
           text-decoration: none;
@@ -50,6 +60,41 @@
           padding: 10px 14px;
           border-radius: 10px;
           display: inline-block;
+          font-weight: 700;
+        }
+
+        .searchWrap{
+          display:flex;
+          gap:10px;
+          align-items:center;
+          flex-wrap:wrap;
+        }
+        .searchWrap input{
+          width: 320px;
+          max-width: 80vw;
+          height: 42px;
+          padding: 0 12px;
+          border-radius: 10px;
+          border: 1px solid rgba(0,0,0,0.18);
+          font-family: "Montserrat", sans-serif;
+          font-size: 1rem;
+          outline: none;
+          box-sizing: border-box;
+        }
+        .searchWrap input:focus{
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 4px rgba(0, 87, 184, 0.12);
+        }
+        .clearBtn{
+          height: 42px;
+          padding: 0 12px;
+          border-radius: 10px;
+          border: 1px solid var(--primary-color);
+          background: #fff;
+          color: var(--primary-color);
+          font-family: "Montserrat", sans-serif;
+          font-weight: 800;
+          cursor: pointer;
         }
 
         .emptyBox{
@@ -67,6 +112,17 @@
         th{ background: rgba(0,0,0,0.04); font-weight:700; }
 
         .cancelLink{ color: var(--danger-color); text-decoration:none; font-weight:700; }
+
+        /* filtered empty message (client-side) */
+        .noMatchBox{
+          display:none;
+          border: 1px dashed rgba(0,0,0,0.25);
+          border-radius: 12px;
+          padding: 16px;
+          margin: 0 0 1.4rem;
+          font-family: "Montserrat", sans-serif;
+          color: rgba(0,0,0,0.72);
+        }
 
         #snackbar{
           visibility:hidden;
@@ -116,43 +172,63 @@
 
         <h2>My Bookings</h2>
 
+        <!-- ✅ Button + Searchbar Row -->
         <div class="actionsTop">
-          <a href="${pageContext.request.contextPath}/guest/booking/create">Create New Booking</a>
+          <div class="actionsLeft">
+            <a href="${pageContext.request.contextPath}/guest/booking/create">Create New Booking</a>
+          </div>
+
+          <div class="searchWrap">
+            <input id="bookingSearch"
+                   type="text"
+                   placeholder="Search bookings (reservation no, room type, status...)"/>
+            <button type="button" class="clearBtn" id="clearSearchBtn">Clear</button>
+          </div>
         </div>
 
+        <!-- server-side empty -->
         <c:if test="${empty bookings}">
           <div class="emptyBox">
             You don’t have any reservations yet. Click <b>Create New Booking</b> to make your first reservation.
           </div>
         </c:if>
 
-        <c:if test="${not empty bookings}">
-          <table>
-            <tr>
-              <th>Reservation No</th>
-              <th>Room Type</th>
-              <th>Check In</th>
-              <th>Check Out</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
+        <!-- ✅ client-side empty (filtering result) -->
+        <div class="noMatchBox" id="noMatchBox">
+          No bookings match your search. Try another keyword.
+        </div>
 
-            <c:forEach items="${bookings}" var="r">
+        <c:if test="${not empty bookings}">
+          <table id="bookingsTable">
+            <thead>
               <tr>
-                <td>${r.reservationNo}</td>
-                <td>${r.roomTypeId}</td>
-                <td>${r.checkIn}</td>
-                <td>${r.checkOut}</td>
-                <td>${r.status}</td>
-                <td>
-                  <a class="cancelLink"
-                     href="${pageContext.request.contextPath}/guest/bookings?action=cancel&amp;reservationNo=${r.reservationNo}"
-                     onclick="return confirm('Cancel reservation ${r.reservationNo}?');">
-                    Cancel
-                  </a>
-                </td>
+                <th>Reservation No</th>
+                <th>Room Type</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            </c:forEach>
+            </thead>
+
+            <tbody id="bookingsTbody">
+              <c:forEach items="${bookings}" var="r">
+                <tr class="bookingRow">
+                  <td>${r.reservationNo}</td>
+                  <td>${r.roomTypeId}</td>
+                  <td>${r.checkIn}</td>
+                  <td>${r.checkOut}</td>
+                  <td>${r.status}</td>
+                  <td>
+                    <a class="cancelLink"
+                       href="${pageContext.request.contextPath}/guest/bookings?action=cancel&amp;reservationNo=${r.reservationNo}"
+                       onclick="return confirm('Cancel reservation ${r.reservationNo}?');">
+                      Cancel
+                    </a>
+                  </td>
+                </tr>
+              </c:forEach>
+            </tbody>
           </table>
         </c:if>
       </div>
@@ -162,22 +238,66 @@
       <script type="text/javascript">
         <![CDATA[
           (function () {
+            // ===== toast =====
             const bar = document.getElementById("snackbar");
-            if (!bar) return;
+            if (bar) {
+              const successMsg = (bar.getAttribute("data-success") || "").trim();
+              const errorMsg = (bar.getAttribute("data-error") || "").trim();
 
-            const successMsg = (bar.getAttribute("data-success") || "").trim();
-            const errorMsg = (bar.getAttribute("data-error") || "").trim();
+              function showToast(msg, isError) {
+                if (!msg) return;
+                bar.textContent = msg;
+                bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+                bar.classList.add("show");
+                setTimeout(() => bar.classList.remove("show"), 5000);
+              }
 
-            function showToast(msg, isError) {
-              if (!msg) return;
-              bar.textContent = msg;
-              bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-              bar.classList.add("show");
-              setTimeout(() => bar.classList.remove("show"), 5000);
+              if (errorMsg.length > 0) showToast(errorMsg, true);
+              else if (successMsg.length > 0) showToast(successMsg, false);
             }
 
-            if (errorMsg.length > 0) showToast(errorMsg, true);
-            else if (successMsg.length > 0) showToast(successMsg, false);
+            // ===== search filter =====
+            const search = document.getElementById("bookingSearch");
+            const clearBtn = document.getElementById("clearSearchBtn");
+            const tbody = document.getElementById("bookingsTbody");
+            const noMatchBox = document.getElementById("noMatchBox");
+
+            // If there is no table (no bookings), do nothing.
+            if (!search || !tbody) return;
+
+            function normalize(s) {
+              return (s || "").toString().toLowerCase().trim();
+            }
+
+            function applyFilter() {
+              const q = normalize(search.value);
+              const rows = tbody.querySelectorAll("tr.bookingRow");
+              let visibleCount = 0;
+
+              rows.forEach(row => {
+                const text = normalize(row.innerText);
+                const ok = q.length === 0 || text.includes(q);
+                row.style.display = ok ? "" : "none";
+                if (ok) visibleCount++;
+              });
+
+              if (noMatchBox) {
+                noMatchBox.style.display = (rows.length > 0 && visibleCount === 0) ? "block" : "none";
+              }
+            }
+
+            search.addEventListener("input", applyFilter);
+
+            if (clearBtn) {
+              clearBtn.addEventListener("click", () => {
+                search.value = "";
+                applyFilter();
+                search.focus();
+              });
+            }
+
+            // initial
+            applyFilter();
           })();
         ]]>
       </script>
