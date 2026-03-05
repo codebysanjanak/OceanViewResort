@@ -196,6 +196,7 @@
           <a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a>
           <a class="active" href="${pageContext.request.contextPath}/admin/guests">Guests</a>
           <a href="${pageContext.request.contextPath}/admin/staff">Staff</a>
+          <a href="${pageContext.request.contextPath}/admin/help">Help</a>
           <a class="primaryBtn" href="${pageContext.request.contextPath}/admin/logout">Logout</a>
         </div>
       </div>
