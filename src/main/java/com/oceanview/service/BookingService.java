@@ -31,7 +31,6 @@ public class BookingService {
 
         int overlaps = reservationDAO.countOverlaps(roomTypeId, in, out);
 
-        // 🔥 use roomsCount instead of capacity
         if (overlaps >= rt.getRoomsCount())
             throw new IllegalArgumentException("Selected room type is not available for these dates");
     }

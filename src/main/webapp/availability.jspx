@@ -1,313 +1,421 @@
 <jsp:root
-  xmlns:jsp="http://java.sun.com/JSP/Page"
-  xmlns:c="jakarta.tags.core"
-  xmlns:fn="jakarta.tags.functions"
-  version="2.0">
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-  <jsp:directive.page isELIgnored="false"/>
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <jsp:directive.page isELIgnored="false"/>
 
-  <html>
+    <html>
     <head>
-      <title>Check Availability • Ocean View Resort</title>
+        <title>Check Availability • Ocean View Resort</title>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com"/>
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
+              rel="stylesheet"/>
 
-      <style>
-        body{ margin:0; background:#f6f8fb; }
+        <style>
+            body {
+                margin: 0;
+                background: #f6f8fb;
+            }
 
-        :root{
-          --p:#0057b8;
-          --pc:#ffffff;
-          --s:#008234;
-          --d:#f56700;
-        }
+            :root {
+                --p: #0057b8;
+                --pc: #ffffff;
+                --s: #008234;
+                --d: #f56700;
+            }
 
-        .nav{
-          position: sticky; top: 0; z-index: 99;
-          background: var(--p); color: var(--pc);
-          display:flex; align-items:center; justify-content:space-between;
-          padding: 14px 26px; box-sizing:border-box;
-        }
-        .brand{ display:flex; flex-direction:column; gap: 2px; }
-        .brand .title{ font-family:"Roboto",sans-serif; font-weight:900; font-size:1.25rem; margin:0; }
-        .brand .sub{ font-family:"Montserrat",sans-serif; font-size:0.88rem; opacity:0.9; }
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: var(--p);
+                color: var(--pc);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 26px;
+                box-sizing: border-box;
+            }
 
-        .navLinks{ display:flex; gap: 10px; flex-wrap:wrap; font-family:"Montserrat",sans-serif; }
-        .navLinks a{
-          color: var(--pc); text-decoration:none;
-          padding: 10px 12px; border-radius: 12px;
-          border: 1px solid rgba(255,255,255,0.28);
-          transition: 0.15s ease;
-        }
-        .navLinks a:hover{ background: rgba(255,255,255,0.12); }
-        .navLinks .primaryBtn{
-          border: none; background: var(--s); color: var(--pc);
-          font-weight: 800;
-        }
+            .brand {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
 
-        .wrap{ max-width: 1250px; margin: 0 auto; padding: 26px; box-sizing:border-box; }
+            .brand .title {
+                font-family: "Roboto", sans-serif;
+                font-weight: 900;
+                font-size: 1.25rem;
+                margin: 0;
+            }
 
-        .pageHeader{
-          background:#fff; border-radius: 18px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-          padding: 18px 18px;
-          display:flex; align-items:flex-start; justify-content:space-between;
-          gap: 14px; flex-wrap:wrap;
-        }
-        .pageHeader h1{
-          margin:0; color: var(--p);
-          font-family:"Cascadia Mono",sans-serif;
-          font-size: 1.8rem;
-        }
-        .pageHeader p{
-          margin: 6px 0 0;
-          color: rgba(0,0,0,0.70);
-          font-family:"Montserrat",sans-serif;
-          line-height: 1.6;
-        }
+            .brand .sub {
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.88rem;
+                opacity: 0.9;
+            }
 
-        .formCard{
-          margin-top: 14px;
-          background:#fff; border-radius: 18px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-          padding: 16px;
-        }
+            .navLinks {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                font-family: "Montserrat", sans-serif;
+            }
 
-        .formRow{
-          display:grid;
-          grid-template-columns: 1fr 1fr auto;
-          gap: 12px;
-          align-items:end;
-        }
-        @media (max-width: 900px){
-          .formRow{ grid-template-columns: 1fr; }
-        }
+            .navLinks a {
+                color: var(--pc);
+                text-decoration: none;
+                padding: 10px 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                transition: 0.15s ease;
+            }
 
-        label{
-          display:block;
-          font-family:"Montserrat",sans-serif;
-          font-size: 0.9rem;
-          color: rgba(0,0,0,0.70);
-          margin-bottom: 6px;
-        }
-        input[type="date"]{
-          width:100%;
-          padding: 12px 12px;
-          border-radius: 14px;
-          border: 1px solid rgba(0,0,0,0.18);
-          font-family:"Montserrat",sans-serif;
-          font-size: 1rem;
-          outline: none;
-        }
-        input[type="date"]:focus{
-          border-color: var(--p);
-          box-shadow: 0 0 0 3px rgba(0,87,184,0.12);
-        }
+            .navLinks a:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
 
-        .btn{
-          padding: 12px 16px;
-          border-radius: 14px;
-          border: none;
-          font-family:"Montserrat",sans-serif;
-          font-weight: 800;
-          cursor:pointer;
-          background: var(--p);
-          color: var(--pc);
-          min-width: 180px;
-        }
-        .btn:hover{ filter: brightness(0.96); }
+            .navLinks .primaryBtn {
+                border: none;
+                background: var(--s);
+                color: var(--pc);
+                font-weight: 800;
+            }
 
-        .alert{
-          margin-top: 12px;
-          padding: 12px 14px;
-          border-radius: 14px;
-          font-family:"Montserrat",sans-serif;
-          background: rgba(245,103,0,0.10);
-          border: 1px solid rgba(245,103,0,0.25);
-          color: rgba(0,0,0,0.78);
-        }
+            .wrap {
+                max-width: 1250px;
+                margin: 0 auto;
+                padding: 26px;
+                box-sizing: border-box;
+            }
 
-        .grid{
-          margin-top: 14px;
-          display:grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
-        }
-        @media (max-width: 1100px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-        @media (max-width: 700px){ .grid{ grid-template-columns: 1fr; } }
+            .pageHeader {
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+                padding: 18px 18px;
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
 
-        .card{
-          background:#fff; border-radius: 18px;
-          overflow:hidden;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-          display:flex; flex-direction:column;
-        }
-        .cardImg{
-          width:100%;
-          height: 190px;
-          object-fit: cover;
-          background: rgba(0,0,0,0.03);
-          border-bottom: 1px solid rgba(0,0,0,0.07);
-          display:block;
-        }
-        .cardBody{ padding: 14px 14px 16px; display:flex; flex-direction:column; gap: 10px; }
-        .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
-        .cardName{
-          margin:0; font-family:"Roboto",sans-serif;
-          font-size: 1.15rem; font-weight: 900;
-          color: rgba(0,0,0,0.88);
-        }
-        .pricePill{
-          background: rgba(0,0,0,0.05);
-          border: 1px solid rgba(0,0,0,0.10);
-          border-radius: 999px;
-          padding: 8px 10px;
-          font-family:"Montserrat",sans-serif;
-          font-weight: 800;
-          color: var(--p);
-          white-space: nowrap;
-        }
-        .status{
-          display:flex; justify-content:space-between; align-items:center;
-          gap: 10px;
-          padding: 10px 12px;
-          border-radius: 14px;
-          border: 1px solid rgba(0,0,0,0.10);
-          font-family:"Montserrat",sans-serif;
-          background: rgba(0,0,0,0.02);
-        }
-        .ok{ border-color: rgba(0,130,52,0.35); background: rgba(0,130,52,0.08); }
-        .no{ border-color: rgba(245,103,0,0.35); background: rgba(245,103,0,0.08); }
+            .pageHeader h1 {
+                margin: 0;
+                color: var(--p);
+                font-family: "Cascadia Mono", sans-serif;
+                font-size: 1.8rem;
+            }
 
-        .cardActions{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 4px; }
-        .cardActions a{
-          text-decoration:none;
-          font-family:"Montserrat",sans-serif;
-          font-weight: 800;
-          padding: 11px 14px;
-          border-radius: 14px;
-          border: 1px solid var(--p);
-          color: var(--p);
-          flex: 1;
-          text-align:center;
-        }
-        .cardActions a.primary{
-          background: var(--p);
-          color: var(--pc);
-          border: none;
-          flex: 1.2;
-        }
-        .cardActions a.disabled{
-          opacity: 0.45;
-          pointer-events: none;
-        }
-      </style>
+            .pageHeader p {
+                margin: 6px 0 0;
+                color: rgba(0, 0, 0, 0.70);
+                font-family: "Montserrat", sans-serif;
+                line-height: 1.6;
+            }
+
+            .formCard {
+                margin-top: 14px;
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+                padding: 16px;
+            }
+
+            .formRow {
+                display: grid;
+                grid-template-columns: 1fr 1fr auto;
+                gap: 12px;
+                align-items: end;
+            }
+
+            @media (max-width: 900px) {
+                .formRow {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            label {
+                display: block;
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.9rem;
+                color: rgba(0, 0, 0, 0.70);
+                margin-bottom: 6px;
+            }
+
+            input[type="date"] {
+                width: 100%;
+                padding: 12px 12px;
+                border-radius: 14px;
+                border: 1px solid rgba(0, 0, 0, 0.18);
+                font-family: "Montserrat", sans-serif;
+                font-size: 1rem;
+                outline: none;
+            }
+
+            input[type="date"]:focus {
+                border-color: var(--p);
+                box-shadow: 0 0 0 3px rgba(0, 87, 184, 0.12);
+            }
+
+            .btn {
+                padding: 12px 16px;
+                border-radius: 14px;
+                border: none;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 800;
+                cursor: pointer;
+                background: var(--p);
+                color: var(--pc);
+                min-width: 180px;
+            }
+
+            .btn:hover {
+                filter: brightness(0.96);
+            }
+
+            .alert {
+                margin-top: 12px;
+                padding: 12px 14px;
+                border-radius: 14px;
+                font-family: "Montserrat", sans-serif;
+                background: rgba(245, 103, 0, 0.10);
+                border: 1px solid rgba(245, 103, 0, 0.25);
+                color: rgba(0, 0, 0, 0.78);
+            }
+
+            .grid {
+                margin-top: 14px;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            @media (max-width: 1100px) {
+                .grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 700px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .card {
+                background: #fff;
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .cardImg {
+                width: 100%;
+                height: 190px;
+                object-fit: cover;
+                background: rgba(0, 0, 0, 0.03);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+                display: block;
+            }
+
+            .cardBody {
+                padding: 14px 14px 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .cardTop {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .cardName {
+                margin: 0;
+                font-family: "Roboto", sans-serif;
+                font-size: 1.15rem;
+                font-weight: 900;
+                color: rgba(0, 0, 0, 0.88);
+            }
+
+            .pricePill {
+                background: rgba(0, 0, 0, 0.05);
+                border: 1px solid rgba(0, 0, 0, 0.10);
+                border-radius: 999px;
+                padding: 8px 10px;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 800;
+                color: var(--p);
+                white-space: nowrap;
+            }
+
+            .status {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border-radius: 14px;
+                border: 1px solid rgba(0, 0, 0, 0.10);
+                font-family: "Montserrat", sans-serif;
+                background: rgba(0, 0, 0, 0.02);
+            }
+
+            .ok {
+                border-color: rgba(0, 130, 52, 0.35);
+                background: rgba(0, 130, 52, 0.08);
+            }
+
+            .no {
+                border-color: rgba(245, 103, 0, 0.35);
+                background: rgba(245, 103, 0, 0.08);
+            }
+
+            .cardActions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 4px;
+            }
+
+            .cardActions a {
+                text-decoration: none;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 800;
+                padding: 11px 14px;
+                border-radius: 14px;
+                border: 1px solid var(--p);
+                color: var(--p);
+                flex: 1;
+                text-align: center;
+            }
+
+            .cardActions a.primary {
+                background: var(--p);
+                color: var(--pc);
+                border: none;
+                flex: 1.2;
+            }
+
+            .cardActions a.disabled {
+                opacity: 0.45;
+                pointer-events: none;
+            }
+        </style>
     </head>
 
     <body>
-      <!-- NAV -->
-      <div class="nav">
+    <div class="nav">
         <div class="brand">
-          <div class="title">Ocean View Resort</div>
-          <div class="sub">Luxury stays • Sea breeze • Best offers</div>
+            <div class="title">Ocean View Resort</div>
+            <div class="sub">Luxury stays • Sea breeze • Best offers</div>
         </div>
 
         <div class="navLinks">
-          <a href="${pageContext.request.contextPath}/home">Home</a>
-          <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
-          <a class="primaryBtn" href="${pageContext.request.contextPath}/guest/login">Guest Login</a>
-          <a href="${pageContext.request.contextPath}/admin/login">Admin Login</a>
-          <a href="${pageContext.request.contextPath}/guest/register">Guest Register</a>
+            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
+            <a class="primaryBtn" href="${pageContext.request.contextPath}/guest/login">Guest Login</a>
+            <a href="${pageContext.request.contextPath}/admin/login">Admin Login</a>
+            <a href="${pageContext.request.contextPath}/guest/register">Guest Register</a>
         </div>
-      </div>
+    </div>
 
-      <div class="wrap">
+    <div class="wrap">
         <div class="pageHeader">
-          <div>
-            <h1>Check Availability</h1>
-            <p>Select your dates and see which room types are available.</p>
-          </div>
-        </div>
-
-        <!-- FORM -->
-        <div class="formCard">
-          <form method="get" action="${pageContext.request.contextPath}/availability">
-            <div class="formRow">
-              <div>
-                <label>Check-in</label>
-                <input type="date" name="checkIn" value="${checkIn}" required="required"/>
-              </div>
-
-              <div>
-                <label>Check-out</label>
-                <input type="date" name="checkOut" value="${checkOut}" required="required"/>
-              </div>
-
-              <div>
-                <button class="btn" type="submit">Search</button>
-              </div>
+            <div>
+                <h1>Check Availability</h1>
+                <p>Select your dates and see which room types are available.</p>
             </div>
-          </form>
-
-          <c:if test="${not empty error}">
-            <div class="alert">${error}</div>
-          </c:if>
         </div>
 
-        <!-- RESULTS -->
-        <c:if test="${not empty results}">
-          <div class="grid">
-            <c:forEach items="${results}" var="row">
-              <c:set var="rt" value="${row.roomType}" />
-
-              <!-- image (same logic as home) -->
-              <c:set var="imgSrc" value="${pageContext.request.contextPath}/images/room-placeholder.jpg" />
-              <c:if test="${not empty rt.photoPath}">
-                <c:set var="imgSrc" value="${pageContext.request.contextPath}${rt.photoPath}?v=${rt.roomTypeId}" />
-              </c:if>
-
-              <div class="card">
-                <img class="cardImg"
-                     src="${imgSrc}"
-                     alt="${rt.typeName}"
-                     onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/room-placeholder.jpg';" />
-
-                <div class="cardBody">
-                  <div class="cardTop">
-                    <h3 class="cardName">${rt.typeName}</h3>
-                    <div class="pricePill">LKR ${rt.nightlyRate} / night</div>
-                  </div>
-
-                  <div class="status ${row.available ? 'ok' : 'no'}">
-                    <div style="font-weight:900;">
-                      <c:choose>
-                        <c:when test="${row.available}">Available</c:when>
-                        <c:otherwise>Not Available</c:otherwise>
-                      </c:choose>
+        <div class="formCard">
+            <form method="get" action="${pageContext.request.contextPath}/availability">
+                <div class="formRow">
+                    <div>
+                        <label>Check-in</label>
+                        <input type="date" name="checkIn" value="${checkIn}" required="required"/>
                     </div>
-                    <div style="opacity:0.75; font-size:0.92rem;">
-                      ${row.reason}
-                    </div>
-                  </div>
 
-                  <div class="cardActions">
-                    <a href="${pageContext.request.contextPath}/availability?checkIn=${checkIn}&amp;checkOut=${checkOut}">Check Dates</a>
-                    <a class="primary ${row.available ? '' : 'disabled'}"
-                       href="${pageContext.request.contextPath}/guest/login">Book Now</a>
-                  </div>
+                    <div>
+                        <label>Check-out</label>
+                        <input type="date" name="checkOut" value="${checkOut}" required="required"/>
+                    </div>
+
+                    <div>
+                        <button class="btn" type="submit">Search</button>
+                    </div>
                 </div>
-              </div>
+            </form>
 
-            </c:forEach>
-          </div>
+            <c:if test="${not empty error}">
+                <div class="alert">${error}</div>
+            </c:if>
+        </div>
+
+        <c:if test="${not empty results}">
+            <div class="grid">
+                <c:forEach items="${results}" var="row">
+                    <c:set var="rt" value="${row.roomType}"/>
+
+                    <c:set var="imgSrc" value="${pageContext.request.contextPath}/images/room-placeholder.jpg"/>
+                    <c:if test="${not empty rt.photoPath}">
+                        <c:set var="imgSrc"
+                               value="${pageContext.request.contextPath}${rt.photoPath}?v=${rt.roomTypeId}"/>
+                    </c:if>
+
+                    <div class="card">
+                        <img class="cardImg"
+                             src="${imgSrc}"
+                             alt="${rt.typeName}"
+                             onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/room-placeholder.jpg';"/>
+
+                        <div class="cardBody">
+                            <div class="cardTop">
+                                <h3 class="cardName">${rt.typeName}</h3>
+                                <div class="pricePill">LKR ${rt.nightlyRate} / night</div>
+                            </div>
+
+                            <div class="status ${row.available ? 'ok' : 'no'}">
+                                <div style="font-weight:900;">
+                                    <c:choose>
+                                        <c:when test="${row.available}">Available</c:when>
+                                        <c:otherwise>Not Available</c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div style="opacity:0.75; font-size:0.92rem;">
+                                    ${row.reason}
+                                </div>
+                            </div>
+
+                            <div class="cardActions">
+                                <a href="${pageContext.request.contextPath}/availability?checkIn=${checkIn}&amp;checkOut=${checkOut}">Check Dates</a>
+                                <a class="primary ${row.available ? '' : 'disabled'}"
+                                   href="${pageContext.request.contextPath}/guest/login">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </c:forEach>
+            </div>
         </c:if>
 
-      </div>
+    </div>
     </body>
-  </html>
+    </html>
 </jsp:root>

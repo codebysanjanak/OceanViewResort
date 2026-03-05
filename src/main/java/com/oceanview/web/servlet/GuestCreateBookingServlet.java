@@ -31,15 +31,12 @@ public class GuestCreateBookingServlet extends HttpServlet {
             return;
         }
 
-        // PRG query messages -> attributes for JSP toast
         req.setAttribute("success", trim(req.getParameter("success")));
         req.setAttribute("error", trim(req.getParameter("error")));
 
-        // load room types (you can filter active if you have that DAO method)
         List<RoomType> rooms = DAOFactory.roomTypeDAO().findAll();
         req.setAttribute("rooms", rooms);
 
-        // keep previously entered values (nice UX when error)
         req.setAttribute("selectedRoomTypeId", trim(req.getParameter("roomTypeId")));
         req.setAttribute("checkInVal", trim(req.getParameter("checkIn")));
         req.setAttribute("checkOutVal", trim(req.getParameter("checkOut")));
@@ -71,19 +68,17 @@ public class GuestCreateBookingServlet extends HttpServlet {
             if (checkOutStr.isBlank()) throw new IllegalArgumentException("Check-out date is required");
 
             int roomTypeId = Integer.parseInt(roomTypeIdStr);
-            LocalDate checkIn = LocalDate.parse(checkInStr);   // expects YYYY-MM-DD
-            LocalDate checkOut = LocalDate.parse(checkOutStr); // expects YYYY-MM-DD
+            LocalDate checkIn = LocalDate.parse(checkInStr);
+            LocalDate checkOut = LocalDate.parse(checkOutStr);
 
             String reservationNo = bookingFacade.createBooking(guestId, roomTypeId, checkIn, checkOut);
 
-            // PRG redirect to bookings page (toast reads ?success=)
             resp.sendRedirect(req.getContextPath() + "/guest/bookings?success=" +
                     urlEncode("Booking created: " + reservationNo));
             return;
 
         } catch (Exception e) {
 
-            // ✅ redirect back to create page with error + keep entered values
             String roomTypeIdStr = trim(req.getParameter("roomTypeId"));
             String checkInStr = trim(req.getParameter("checkIn"));
             String checkOutStr = trim(req.getParameter("checkOut"));

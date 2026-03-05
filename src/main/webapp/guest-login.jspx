@@ -1,426 +1,401 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 
-<jsp:directive.page contentType="text/html; charset=UTF-8"
-                    pageEncoding="UTF-8"/>
-
-<html>
-<head>
-
-<link rel="stylesheet"
-      type="text/css"
-      href="${pageContext.request.contextPath}/styles/global.css"/>
-
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
-      rel="stylesheet"/>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
-      rel="stylesheet"/>
-
-<link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
-      rel="stylesheet"/>
-
-<style>
-
-/* ===== RESET ===== */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-/* ===== ROOT COLORS ===== */
-
-:root{
---primary-color:#0057b8;
---primary-contrast:#ffffff;
-
---secondary-color:#008234;
---secondary-contrast:#ffffff;
-
---warning-color:#ffb700;
---danger-color:#f56700;
-}
-
-/* ===== BODY ===== */
-
-body{
-background:#f6f8fb;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-}
-
-/* ===== HEADER ===== */
-
-.headerRow{
-padding:1rem 2rem;
-display:flex;
-align-items:center;
-justify-content:space-between;
-background:var(--primary-color);
-color:white;
-}
-
-.headerRow h2{
-font-family:"Roboto",sans-serif;
-font-size:1.6rem;
-}
-
-.headerActions{
-display:flex;
-gap:1.4rem;
-font-family:"Montserrat",sans-serif;
-font-size:1rem;
-}
-
-.headerActions a{
-color:white;
-text-decoration:none;
-padding:6px 10px;
-border-radius:8px;
-}
-
-.headerActions a:hover{
-background:rgba(255,255,255,0.15);
-}
-
-/* ===== PAGE CENTER ===== */
-
-.pageWrapper{
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:40px 20px;
-}
-
-/* ===== LOGIN CARD ===== */
-
-.loginCard{
-background:white;
-width:420px;
-padding:32px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
-
-.loginCard h2{
-margin-bottom:20px;
-color:var(--primary-color);
-font-family:"Cascadia Mono",sans-serif;
-}
-
-/* ===== INPUTS ===== */
-
-.dataRow{
-margin-bottom:20px;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.label{
-font-family:"Montserrat",sans-serif;
-font-weight:600;
-}
-
-.requiredMark{
-color:var(--danger-color);
-margin-left:4px;
-}
-
-input{
-height:45px;
-padding:0 14px;
-border-radius:8px;
-border:1px solid #ccc;
-font-size:1rem;
-}
-
-input:focus{
-border-color:var(--primary-color);
-outline:none;
-}
-
-/* ===== PASSWORD ROW ===== */
-
-.passwordRow{
-display:flex;
-gap:10px;
-align-items:center;
-}
-
-.toggleBtn{
-border:1px solid var(--primary-color);
-background:white;
-color:var(--primary-color);
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-}
-
-/* ===== ERRORS ===== */
-
-.fieldError{
-color:var(--danger-color);
-font-size:0.9rem;
-font-family:"Montserrat",sans-serif;
-}
-
-.inputError{
-border:1px solid var(--danger-color) !important;
-}
-
-/* ===== BUTTON ===== */
-
-.actionRow{
-display:flex;
-justify-content:center;
-margin-top:10px;
-}
-
-.actionRow button{
-width:100%;
-height:48px;
-border:none;
-border-radius:10px;
-background:var(--primary-color);
-color:white;
-font-size:1.1rem;
-cursor:pointer;
-}
-
-/* ===== FOOTER ===== */
-
-.footer{
-background:#0d2440;
-color:white;
-padding:26px;
-margin-top:auto;
-}
-
-.footerInner{
-max-width:1200px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-flex-wrap:wrap;
-gap:20px;
-font-family:"Montserrat",sans-serif;
-}
-
-.footer h3{
-font-family:"Roboto",sans-serif;
-margin-bottom:8px;
-}
-
-.footerBottom{
-text-align:center;
-margin-top:10px;
-opacity:0.8;
-}
-
-/* ===== SNACKBAR ===== */
-
-#snackbar{
-visibility:hidden;
-min-width:320px;
-margin-left:-160px;
-background:var(--secondary-color);
-color:white;
-text-align:center;
-border-radius:10px;
-padding:16px;
-position:fixed;
-left:50%;
-bottom:30px;
-font-family:"Montserrat",sans-serif;
-box-shadow:0 8px 22px rgba(0,0,0,0.25);
-}
-
-#snackbar.show{
-visibility:visible;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- HEADER -->
-
-<div class="headerRow">
-
-<h2>Ocean View Resort</h2>
-
-<div class="headerActions">
-<a href="${pageContext.request.contextPath}/home">Home</a>
-<a href="${pageContext.request.contextPath}/availability">Check Availability</a>
-<a href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
-</div>
-
-</div>
-
-
-<!-- CENTER FORM -->
-
-<div class="pageWrapper">
-
-<div class="loginCard">
-
-<h2>Account Sign In</h2>
-
-<form id="loginForm"
-method="post"
-novalidate="novalidate"
-action="${pageContext.request.contextPath}/guest/login">
-
-<div class="dataRow">
-<span class="label">Email<span class="requiredMark">*</span></span>
-
-<input id="email" type="email" name="email"/>
-
-<p id="err-email" class="fieldError"></p>
-</div>
-
-
-<div class="dataRow">
-<span class="label">Password<span class="requiredMark">*</span></span>
-
-<div class="passwordRow">
-<input id="password" type="password" name="password"/>
-<button type="button" class="toggleBtn" data-toggle="password">Show</button>
-</div>
-
-<p id="err-password" class="fieldError"></p>
-</div>
-
-
-<div class="actionRow">
-<button type="submit">Login</button>
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-
-<!-- FOOTER -->
-
-<div class="footer">
-
-<div class="footerInner">
-
-<div>
-<h3>Ocean View Resort</h3>
-<p>Luxury stays with beautiful ocean views and premium service.</p>
-</div>
-
-<div>
-<h3>Quick Links</h3>
-<p><a href="${pageContext.request.contextPath}/home" style="color:white">Home</a></p>
-<p><a href="${pageContext.request.contextPath}/availability" style="color:white">Check Availability</a></p>
-</div>
-
-<div>
-<h3>Contact</h3>
-<p>Negombo, Sri Lanka</p>
-<p>Phone: +94 77 123 4567</p>
-</div>
-
-</div>
-
-<div class="footerBottom">
-© Ocean View Resort
-</div>
-
-</div>
-
-
-<div id="snackbar"
-data-success="${success}"
-data-error="${error}"></div>
-
-
-<!-- SCRIPT (UNCHANGED) -->
-
-<script type="text/javascript">
-<![CDATA[
-(function () {
-const form = document.getElementById("loginForm");
-if (!form) return;
-
-function setErr(id, text) {
-const p = document.getElementById("err-" + id);
-const input = document.getElementById(id);
-if (p) p.textContent = text || "";
-if (input) input.classList.toggle("inputError", !!text);
-}
-
-document.querySelectorAll("[data-toggle]").forEach(btn => {
-btn.addEventListener("click", () => {
-const id = btn.getAttribute("data-toggle");
-const input = document.getElementById(id);
-if (!input) return;
-
-const hidden = input.type === "password";
-input.type = hidden ? "text" : "password";
-btn.textContent = hidden ? "Hide" : "Show";
-});
-});
-
-["email", "password"].forEach(id => {
-const input = document.getElementById(id);
-if (!input) return;
-input.addEventListener("input", () => setErr(id, ""));
-});
-
-form.addEventListener("submit", function (e) {
-let ok = true;
-
-const email = (document.getElementById("email").value || "").trim();
-const password = (document.getElementById("password").value || "").trim();
-
-if (!email) { ok = false; setErr("email", "Email is required"); }
-if (!password) { ok = false; setErr("password", "Password is required"); }
-
-if (!ok) e.preventDefault();
-});
-
-const bar = document.getElementById("snackbar");
-if (!bar) return;
-
-const successMsg = (bar.getAttribute("data-success") || "").trim();
-const errorMsg = (bar.getAttribute("data-error") || "").trim();
-const redirectUrl = "${redirectUrl}";
-
-function showToast(msg, isError) {
-bar.textContent = msg;
-bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-bar.classList.add("show");
-setTimeout(() => {
-bar.classList.remove("show");
-if (!isError && redirectUrl) window.location.href = redirectUrl;
-}, 5000);
-}
-
-if (errorMsg.length > 0) {
-showToast(errorMsg, true);
-} else if (successMsg.length > 0) {
-showToast(successMsg, false);
-}
-})();
-]]>
-</script>
-
-</body>
-</html>
+    <jsp:directive.page contentType="text/html; charset=UTF-8"
+                        pageEncoding="UTF-8"/>
+
+    <html>
+    <head>
+
+        <link rel="stylesheet"
+              type="text/css"
+              href="${pageContext.request.contextPath}/styles/global.css"/>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
+              rel="stylesheet"/>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
+              rel="stylesheet"/>
+
+        <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
+              rel="stylesheet"/>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --primary-color: #0057b8;
+                --primary-contrast: #ffffff;
+
+                --secondary-color: #008234;
+                --secondary-contrast: #ffffff;
+
+                --warning-color: #ffb700;
+                --danger-color: #f56700;
+            }
+
+            body {
+                background: #f6f8fb;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .headerRow {
+                padding: 1rem 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--primary-color);
+                color: white;
+            }
+
+            .headerRow h2 {
+                font-family: "Roboto", sans-serif;
+                font-size: 1.6rem;
+            }
+
+            .headerActions {
+                display: flex;
+                gap: 1.4rem;
+                font-family: "Montserrat", sans-serif;
+                font-size: 1rem;
+            }
+
+            .headerActions a {
+                color: white;
+                text-decoration: none;
+                padding: 6px 10px;
+                border-radius: 8px;
+            }
+
+            .headerActions a:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .pageWrapper {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 20px;
+            }
+
+
+            .loginCard {
+                background: white;
+                width: 420px;
+                padding: 32px;
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .loginCard h2 {
+                margin-bottom: 20px;
+                color: var(--primary-color);
+                font-family: "Cascadia Mono", sans-serif;
+            }
+
+            .dataRow {
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .label {
+                font-family: "Montserrat", sans-serif;
+                font-weight: 600;
+            }
+
+            .requiredMark {
+                color: var(--danger-color);
+                margin-left: 4px;
+            }
+
+            input {
+                height: 45px;
+                padding: 0 14px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 1rem;
+            }
+
+            input:focus {
+                border-color: var(--primary-color);
+                outline: none;
+            }
+
+            .passwordRow {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .toggleBtn {
+                border: 1px solid var(--primary-color);
+                background: white;
+                color: var(--primary-color);
+                padding: 8px 14px;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            .fieldError {
+                color: var(--danger-color);
+                font-size: 0.9rem;
+                font-family: "Montserrat", sans-serif;
+            }
+
+            .inputError {
+                border: 1px solid var(--danger-color) !important;
+            }
+
+            .actionRow {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .actionRow button {
+                width: 100%;
+                height: 48px;
+                border: none;
+                border-radius: 10px;
+                background: var(--primary-color);
+                color: white;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+
+            .footer {
+                background: #0d2440;
+                color: white;
+                padding: 26px;
+                margin-top: auto;
+            }
+
+            .footerInner {
+                max-width: 1200px;
+                margin: auto;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 20px;
+                font-family: "Montserrat", sans-serif;
+            }
+
+            .footer h3 {
+                font-family: "Roboto", sans-serif;
+                margin-bottom: 8px;
+            }
+
+            .footerBottom {
+                text-align: center;
+                margin-top: 10px;
+                opacity: 0.8;
+            }
+
+            #snackbar {
+                visibility: hidden;
+                min-width: 320px;
+                margin-left: -160px;
+                background: var(--secondary-color);
+                color: white;
+                text-align: center;
+                border-radius: 10px;
+                padding: 16px;
+                position: fixed;
+                left: 50%;
+                bottom: 30px;
+                font-family: "Montserrat", sans-serif;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+            }
+
+            #snackbar.show {
+                visibility: visible;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+
+    <div class="headerRow">
+
+        <h2>Ocean View Resort</h2>
+
+        <div class="headerActions">
+            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
+            <a href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
+        </div>
+
+    </div>
+
+
+    <div class="pageWrapper">
+
+        <div class="loginCard">
+
+            <h2>Account Sign In</h2>
+
+            <form id="loginForm"
+                  method="post"
+                  novalidate="novalidate"
+                  action="${pageContext.request.contextPath}/guest/login">
+
+                <div class="dataRow">
+                    <span class="label">Email<span class="requiredMark">*</span></span>
+
+                    <input id="email" type="email" name="email"/>
+
+                    <p id="err-email" class="fieldError"></p>
+                </div>
+
+
+                <div class="dataRow">
+                    <span class="label">Password<span class="requiredMark">*</span></span>
+
+                    <div class="passwordRow">
+                        <input id="password" type="password" name="password"/>
+                        <button type="button" class="toggleBtn" data-toggle="password">Show</button>
+                    </div>
+
+                    <p id="err-password" class="fieldError"></p>
+                </div>
+
+
+                <div class="actionRow">
+                    <button type="submit">Login</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        <div class="footerInner">
+
+            <div>
+                <h3>Ocean View Resort</h3>
+                <p>Luxury stays with beautiful ocean views and premium service.</p>
+            </div>
+
+            <div>
+                <h3>Quick Links</h3>
+                <p><a href="${pageContext.request.contextPath}/home" style="color:white">Home</a></p>
+                <p><a href="${pageContext.request.contextPath}/availability" style="color:white">Check Availability</a>
+                </p>
+            </div>
+
+            <div>
+                <h3>Contact</h3>
+                <p>Negombo, Sri Lanka</p>
+                <p>Phone: +94 77 123 4567</p>
+            </div>
+
+        </div>
+
+        <div class="footerBottom">
+            © Ocean View Resort
+        </div>
+
+    </div>
+
+
+    <div id="snackbar"
+         data-success="${success}"
+         data-error="${error}"></div>
+
+
+    <script type="text/javascript">
+        <![CDATA[
+        (function () {
+            const form = document.getElementById("loginForm");
+            if (!form) return;
+
+            function setErr(id, text) {
+                const p = document.getElementById("err-" + id);
+                const input = document.getElementById(id);
+                if (p) p.textContent = text || "";
+                if (input) input.classList.toggle("inputError", !!text);
+            }
+
+            document.querySelectorAll("[data-toggle]").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-toggle");
+                    const input = document.getElementById(id);
+                    if (!input) return;
+
+                    const hidden = input.type === "password";
+                    input.type = hidden ? "text" : "password";
+                    btn.textContent = hidden ? "Hide" : "Show";
+                });
+            });
+
+            ["email", "password"].forEach(id => {
+                const input = document.getElementById(id);
+                if (!input) return;
+                input.addEventListener("input", () => setErr(id, ""));
+            });
+
+            form.addEventListener("submit", function (e) {
+                let ok = true;
+
+                const email = (document.getElementById("email").value || "").trim();
+                const password = (document.getElementById("password").value || "").trim();
+
+                if (!email) {
+                    ok = false;
+                    setErr("email", "Email is required");
+                }
+                if (!password) {
+                    ok = false;
+                    setErr("password", "Password is required");
+                }
+
+                if (!ok) e.preventDefault();
+            });
+
+            const bar = document.getElementById("snackbar");
+            if (!bar) return;
+
+            const successMsg = (bar.getAttribute("data-success") || "").trim();
+            const errorMsg = (bar.getAttribute("data-error") || "").trim();
+            const redirectUrl = "${redirectUrl}";
+
+            function showToast(msg, isError) {
+                bar.textContent = msg;
+                bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+                bar.classList.add("show");
+                setTimeout(() => {
+                    bar.classList.remove("show");
+                    if (!isError && redirectUrl) window.location.href = redirectUrl;
+                }, 5000);
+            }
+
+            if (errorMsg.length > 0) {
+                showToast(errorMsg, true);
+            } else if (successMsg.length > 0) {
+                showToast(successMsg, false);
+            }
+        })();
+        ]]>
+    </script>
+
+    </body>
+    </html>
 
 </jsp:root>

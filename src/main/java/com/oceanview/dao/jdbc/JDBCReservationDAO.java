@@ -30,9 +30,9 @@ public class JDBCReservationDAO implements ReservationDAO {
     @Override
     public int create(Reservation r) {
         String sql = """
-            INSERT INTO reservations(reservation_no, guest_id, room_type_id, check_in, check_out, status)
-            VALUES (?,?,?,?,?,?)
-        """;
+                    INSERT INTO reservations(reservation_no, guest_id, room_type_id, check_in, check_out, status)
+                    VALUES (?,?,?,?,?,?)
+                """;
         try (Connection con = DataSourceProvider.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -122,12 +122,12 @@ public class JDBCReservationDAO implements ReservationDAO {
     public int countOverlaps(int roomTypeId, LocalDate checkIn, LocalDate checkOut) {
         // overlap rule: newCheckIn < existingCheckOut AND newCheckOut > existingCheckIn
         String sql = """
-            SELECT COUNT(*) AS c
-            FROM reservations
-            WHERE room_type_id=?
-              AND status='BOOKED'
-              AND (? < check_out AND ? > check_in)
-        """;
+                    SELECT COUNT(*) AS c
+                    FROM reservations
+                    WHERE room_type_id=?
+                      AND status='BOOKED'
+                      AND (? < check_out AND ? > check_in)
+                """;
         try (Connection con = DataSourceProvider.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 

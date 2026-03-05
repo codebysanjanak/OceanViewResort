@@ -112,7 +112,7 @@ public class JDBCGuestDAO implements GuestDAO {
             throw new RuntimeException("Guest updatePassword failed", e);
         }
     }
-    
+
     @Override
     public List<Guest> findAll() {
 
@@ -124,7 +124,7 @@ public class JDBCGuestDAO implements GuestDAO {
 
             List<Guest> guests = new ArrayList<>();
 
-            while(rs.next()){
+            while (rs.next()) {
                 guests.add(map(rs));
             }
 

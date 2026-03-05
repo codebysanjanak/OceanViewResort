@@ -14,30 +14,75 @@ public class RoomType {
     private int roomsCount;
     private String photoPath;
 
-    public int getRoomTypeId() { return roomTypeId; }
-    public void setRoomTypeId(int roomTypeId) { this.roomTypeId = roomTypeId; }
+    public int getRoomTypeId() {
+        return roomTypeId;
+    }
 
-    public String getTypeName() { return typeName; }
-    public void setTypeName(String typeName) { this.typeName = typeName; }
+    public void setRoomTypeId(int roomTypeId) {
+        this.roomTypeId = roomTypeId;
+    }
 
-    public BigDecimal getNightlyRate() { return nightlyRate; }
-    public void setNightlyRate(BigDecimal nightlyRate) { this.nightlyRate = nightlyRate; }
+    public String getTypeName() {
+        return typeName;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public BigDecimal getNightlyRate() {
+        return nightlyRate;
+    }
 
-    public int getAdultsCount() { return adultsCount; }
-    public void setAdultsCount(int adultsCount) { this.adultsCount = adultsCount; }
+    public void setNightlyRate(BigDecimal nightlyRate) {
+        this.nightlyRate = nightlyRate;
+    }
 
-    public int getChildrenCount() { return childrenCount; }
-    public void setChildrenCount(int childrenCount) { this.childrenCount = childrenCount; }
+    public boolean isActive() {
+        return active;
+    }
 
-    public int getRoomsCount() { return roomsCount; }
-    public void setRoomsCount(int roomsCount) { this.roomsCount = roomsCount; }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-    public String getPhotoPath() { return photoPath; }
-    public void setPhotoPath(String photoPath) { this.photoPath = photoPath; }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getAdultsCount() {
+        return adultsCount;
+    }
+
+    public void setAdultsCount(int adultsCount) {
+        this.adultsCount = adultsCount;
+    }
+
+    public int getChildrenCount() {
+        return childrenCount;
+    }
+
+    public void setChildrenCount(int childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    public int getRoomsCount() {
+        return roomsCount;
+    }
+
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
 }

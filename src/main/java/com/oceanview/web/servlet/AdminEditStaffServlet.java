@@ -25,8 +25,8 @@ public class AdminEditStaffServlet extends HttpServlet {
             int id = Integer.parseInt(idStr);
             Admin staff = service.getAdmin(id);
 
-            req.setAttribute("editStaff", staff);       // used by JSP to fill form
-            req.setAttribute("staff", service.getAllStaff()); // keep table list
+            req.setAttribute("editStaff", staff);
+            req.setAttribute("staff", service.getAllStaff());
 
             req.getRequestDispatcher("/staff.jspx").forward(req, resp);
 

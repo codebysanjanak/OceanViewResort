@@ -28,13 +28,13 @@ public class ProfileService {
     }
 
     public void changeGuestPassword(int guestId, String oldPw, String newPw) {
-        if (newPw == null || newPw.length() < 6) throw new IllegalArgumentException("New password must be at least 6 characters");
+        if (newPw == null || newPw.length() < 6)
+            throw new IllegalArgumentException("New password must be at least 6 characters");
         Guest g = getGuest(guestId);
         if (!hasher.verify(oldPw, g.getPasswordHash())) throw new IllegalArgumentException("Old password is incorrect");
         guestDAO.updatePassword(guestId, hasher.hash(newPw));
     }
 
-    // Admin profile usage
     public Admin getAdmin(int adminId) {
         Admin a = adminDAO.findById(adminId);
         if (a == null) throw new IllegalArgumentException("Admin not found");

@@ -29,14 +29,14 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "SELECT * FROM admins WHERE username=?";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
-            if(!rs.next()) return null;
+            if (!rs.next()) return null;
 
             return map(rs);
 
@@ -50,14 +50,14 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "SELECT * FROM admins WHERE admin_id=?";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, adminId);
 
             ResultSet rs = ps.executeQuery();
 
-            if(!rs.next()) return null;
+            if (!rs.next()) return null;
 
             return map(rs);
 
@@ -71,13 +71,13 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "SELECT * FROM admins ORDER BY created_at DESC";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             List<Admin> list = new ArrayList<>();
 
-            while(rs.next()){
+            while (rs.next()) {
                 list.add(map(rs));
             }
 
@@ -93,8 +93,8 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "INSERT INTO admins(username,password_hash,role) VALUES(?,?,?)";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, admin.getUsername());
             ps.setString(2, admin.getPasswordHash());
@@ -104,7 +104,7 @@ public class JDBCAdminDAO implements AdminDAO {
 
             ResultSet keys = ps.getGeneratedKeys();
 
-            if(keys.next()) return keys.getInt(1);
+            if (keys.next()) return keys.getInt(1);
 
             throw new SQLException("No key generated");
 
@@ -118,8 +118,8 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "UPDATE admins SET username=?, role=? WHERE admin_id=?";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, admin.getUsername());
             ps.setString(2, admin.getRole());
@@ -137,8 +137,8 @@ public class JDBCAdminDAO implements AdminDAO {
 
         String sql = "UPDATE admins SET password_hash=? WHERE admin_id=?";
 
-        try(Connection con = DataSourceProvider.getInstance().getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DataSourceProvider.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, passwordHash);
             ps.setInt(2, adminId);

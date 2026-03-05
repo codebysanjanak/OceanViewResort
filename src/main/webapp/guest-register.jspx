@@ -1,541 +1,626 @@
 <jsp:root
-  xmlns:jsp="http://java.sun.com/JSP/Page"
-  xmlns:c="jakarta.tags.core"
-  version="2.0">
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:c="jakarta.tags.core"
+        version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8"
-                      pageEncoding="UTF-8" />
-  <jsp:directive.page isELIgnored="false"/>
+    <jsp:directive.page contentType="text/html; charset=UTF-8"
+                        pageEncoding="UTF-8"/>
+    <jsp:directive.page isELIgnored="false"/>
 
-  <html>
+    <html>
     <head>
-      <link rel="stylesheet"
-            type="text/css"
-            href="${pageContext.request.contextPath}/styles/global.css" />
+        <link rel="stylesheet"
+              type="text/css"
+              href="${pageContext.request.contextPath}/styles/global.css"/>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
 
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
-            rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
-            rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
-            rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
+              rel="stylesheet"/>
 
-      <style>
-        body{ margin:0; background:#f6f8fb; min-height:100vh; display:flex; flex-direction:column; }
+        <style>
+            body {
+                margin: 0;
+                background: #f6f8fb;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-        :root{
-          --primary-color:#0057b8;
-          --primary-contrast:#ffffff;
+            :root {
+                --primary-color: #0057b8;
+                --primary-contrast: #ffffff;
 
-          --secondary-color:#008234;
-          --secondary-contrast:#ffffff;
+                --secondary-color: #008234;
+                --secondary-contrast: #ffffff;
 
-          --warning-color:#ffb700;
-          --warning-contrast:#ffffff;
+                --warning-color: #ffb700;
+                --warning-contrast: #ffffff;
 
-          --danger-color:#f56700;
-          --danger-contrast:#ffffff;
-        }
+                --danger-color: #f56700;
+                --danger-contrast: #ffffff;
+            }
 
-        /* ===== NAV (match home) ===== */
-        .nav{
-          position: sticky;
-          top: 0;
-          z-index: 99;
-          background: var(--primary-color);
-          color: var(--primary-contrast);
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          padding: 14px 26px;
-          box-sizing:border-box;
-        }
-        .brand{ display:flex; flex-direction:column; gap:2px; }
-        .brand .title{
-          font-family:"Roboto",sans-serif;
-          font-weight:900;
-          font-size:1.25rem;
-          margin:0;
-        }
-        .brand .sub{
-          font-family:"Montserrat",sans-serif;
-          font-size:0.88rem;
-          opacity:0.9;
-        }
-        .navLinks{
-          display:flex;
-          gap:10px;
-          flex-wrap:wrap;
-          font-family:"Montserrat",sans-serif;
-          align-items:center;
-        }
-        .navLinks a{
-          color: var(--primary-contrast);
-          text-decoration:none;
-          padding: 10px 12px;
-          border-radius: 12px;
-          border: 1px solid rgba(255,255,255,0.28);
-          transition: 0.15s ease;
-        }
-        .navLinks a:hover{ background: rgba(255,255,255,0.12); }
-        .navLinks .primaryBtn{
-          border: none;
-          background: var(--secondary-color);
-          color: var(--primary-contrast);
-          font-weight: 800;
-        }
+            /* ===== NAV (match home) ===== */
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: var(--primary-color);
+                color: var(--primary-contrast);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 26px;
+                box-sizing: border-box;
+            }
 
-        /* ===== PAGE WRAPPER ===== */
-        .pageWrap{
-          flex: 1;
-          display:flex;
-          justify-content:center;
-          padding: 40px 20px 30px;
-          box-sizing:border-box;
-        }
+            .brand {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
 
-        /* ===== CARD ===== */
-        .card{
-          width: 100%;
-          max-width: 760px;
-          background:#fff;
-          border-radius: 18px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-          overflow:hidden;
-        }
+            .brand .title {
+                font-family: "Roboto", sans-serif;
+                font-weight: 900;
+                font-size: 1.25rem;
+                margin: 0;
+            }
 
-        .cardHeader{
-          padding: 22px 22px 14px;
-          border-bottom: 1px solid rgba(0,0,0,0.07);
-          background: linear-gradient(135deg, rgba(0,87,184,0.08), rgba(0,130,52,0.05));
-        }
-        .cardHeader h1{
-          margin:0;
-          font-family:"Cascadia Mono",sans-serif;
-          color: var(--primary-color);
-          font-size: 1.9rem;
-          line-height:1.2;
-        }
-        .cardHeader p{
-          margin: 10px 0 0;
-          font-family:"Montserrat",sans-serif;
-          color: rgba(0,0,0,0.70);
-          line-height:1.6;
-        }
+            .brand .sub {
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.88rem;
+                opacity: 0.9;
+            }
 
-        .cardBody{
-          padding: 22px;
-          box-sizing:border-box;
-        }
+            .navLinks {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                font-family: "Montserrat", sans-serif;
+                align-items: center;
+            }
 
-        /* ===== FORM GRID ===== */
-        form{
-          display:grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
-        @media (max-width: 760px){
-          form{ grid-template-columns: 1fr; }
-        }
+            .navLinks a {
+                color: var(--primary-contrast);
+                text-decoration: none;
+                padding: 10px 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                transition: 0.15s ease;
+            }
 
-        .dataRow{
-          display:flex;
-          flex-direction:column;
-          gap: 8px;
-        }
-        .label{
-          font-family:"Montserrat",sans-serif;
-          font-weight: 700;
-          color: rgba(0,0,0,0.82);
-        }
-        .requiredMark{
-          color: var(--danger-color);
-          margin-left: 4px;
-          font-weight: 900;
-        }
+            .navLinks a:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
 
-        input{
-          width:100%;
-          height: 46px;
-          padding: 0 14px;
-          border-radius: 12px;
-          border: 1px solid rgba(0,0,0,0.18);
-          font-size: 1rem;
-          font-family:"Montserrat",sans-serif;
-          box-sizing:border-box;
-          outline:none;
-        }
-        input:focus{
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 4px rgba(0,87,184,0.12);
-        }
+            .navLinks .primaryBtn {
+                border: none;
+                background: var(--secondary-color);
+                color: var(--primary-contrast);
+                font-weight: 800;
+            }
 
-        .fieldError{
-          margin: 0;
-          color: var(--danger-color);
-          font-family: "Montserrat", sans-serif;
-          font-size: 0.95rem;
-        }
-        .inputError{
-          border: 1px solid var(--danger-color) !important;
-          box-shadow: 0 0 0 4px rgba(245,103,0,0.14) !important;
-        }
+            .pageWrap {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                padding: 40px 20px 30px;
+                box-sizing: border-box;
+            }
 
-        .passwordRow{
-          display:flex;
-          align-items:center;
-          gap: 10px;
-        }
-        .toggleBtn{
-          background: transparent;
-          border: 1px solid var(--primary-color);
-          color: var(--primary-color);
-          padding: 10px 14px;
-          border-radius: 12px;
-          cursor: pointer;
-          font-family: "Montserrat", sans-serif;
-          font-size: 0.95rem;
-          white-space: nowrap;
-        }
-        .toggleBtn:hover{ background: rgba(0,87,184,0.08); }
+            .card {
+                width: 100%;
+                max-width: 760px;
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+                overflow: hidden;
+            }
 
-        .span2{ grid-column: 1 / -1; }
+            .cardHeader {
+                padding: 22px 22px 14px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+                background: linear-gradient(135deg, rgba(0, 87, 184, 0.08), rgba(0, 130, 52, 0.05));
+            }
 
-        .actionRow{
-          grid-column: 1 / -1;
-          display:flex;
-          gap: 10px;
-          justify-content:flex-end;
-          padding-top: 6px;
-        }
-        .btn{
-          height: 46px;
-          padding: 0 16px;
-          border-radius: 14px;
-          font-family:"Montserrat",sans-serif;
-          font-weight: 800;
-          cursor:pointer;
-          border: 1px solid var(--primary-color);
-          background: transparent;
-          color: var(--primary-color);
-        }
-        .btnPrimary{
-          border: none;
-          background: var(--primary-color);
-          color: var(--primary-contrast);
-          min-width: 200px;
-        }
+            .cardHeader h1 {
+                margin: 0;
+                font-family: "Cascadia Mono", sans-serif;
+                color: var(--primary-color);
+                font-size: 1.9rem;
+                line-height: 1.2;
+            }
 
-        .topError{
-          margin: 0 0 14px;
-          padding: 12px 14px;
-          border-radius: 14px;
-          background: rgba(245,103,0,0.10);
-          border: 1px solid rgba(245,103,0,0.25);
-          color: rgba(0,0,0,0.75);
-          font-family:"Montserrat",sans-serif;
-        }
+            .cardHeader p {
+                margin: 10px 0 0;
+                font-family: "Montserrat", sans-serif;
+                color: rgba(0, 0, 0, 0.70);
+                line-height: 1.6;
+            }
 
-        .footer{
-          margin-top: 26px;
-          background: #0d2440;
-          color: #fff;
-          padding: 26px 26px;
-        }
-        .footerInner{
-          max-width: 1250px;
-          margin: 0 auto;
-          display:grid;
-          grid-template-columns: 1.2fr 1fr 1fr;
-          gap: 18px;
-        }
-        @media (max-width: 900px){ .footerInner{ grid-template-columns: 1fr; } }
-        .footer h3{
-          margin:0 0 10px;
-          font-family:"Roboto",sans-serif;
-          font-weight: 900;
-        }
-        .footer p, .footer a{
-          font-family:"Montserrat",sans-serif;
-          color: rgba(255,255,255,0.86);
-          text-decoration:none;
-          line-height: 1.6;
-          margin: 0 0 6px;
-        }
-        .footer a:hover{ text-decoration: underline; }
-        .footerBottom{
-          max-width:1250px;
-          margin: 12px auto 0;
-          padding-top: 12px;
-          border-top: 1px solid rgba(255,255,255,0.18);
-          font-family:"Montserrat",sans-serif;
-          color: rgba(255,255,255,0.78);
-          display:flex;
-          justify-content:space-between;
-          gap: 10px;
-          flex-wrap:wrap;
-        }
+            .cardBody {
+                padding: 22px;
+                box-sizing: border-box;
+            }
 
-        #snackbar{
-          visibility:hidden;
-          min-width: 320px;
-          margin-left: -160px;
-          background-color: var(--secondary-color);
-          color: #fff;
-          text-align: center;
-          border-radius: 10px;
-          padding: 16px;
-          position: fixed;
-          z-index: 9999;
-          left: 50%;
-          bottom: 30px;
-          font-size: 17px;
-          font-family: "Montserrat", sans-serif;
-          box-shadow: 0 8px 22px rgba(0,0,0,0.25);
-        }
-        #snackbar.show{
-          visibility: visible;
-          -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
-          animation: fadein 0.5s, fadeout 0.5s 4.5s;
-        }
-        @-webkit-keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @-webkit-keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
-        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
-      </style>
+            form {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            @media (max-width: 760px) {
+                form {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .dataRow {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .label {
+                font-family: "Montserrat", sans-serif;
+                font-weight: 700;
+                color: rgba(0, 0, 0, 0.82);
+            }
+
+            .requiredMark {
+                color: var(--danger-color);
+                margin-left: 4px;
+                font-weight: 900;
+            }
+
+            input {
+                width: 100%;
+                height: 46px;
+                padding: 0 14px;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.18);
+                font-size: 1rem;
+                font-family: "Montserrat", sans-serif;
+                box-sizing: border-box;
+                outline: none;
+            }
+
+            input:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(0, 87, 184, 0.12);
+            }
+
+            .fieldError {
+                margin: 0;
+                color: var(--danger-color);
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.95rem;
+            }
+
+            .inputError {
+                border: 1px solid var(--danger-color) !important;
+                box-shadow: 0 0 0 4px rgba(245, 103, 0, 0.14) !important;
+            }
+
+            .passwordRow {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .toggleBtn {
+                background: transparent;
+                border: 1px solid var(--primary-color);
+                color: var(--primary-color);
+                padding: 10px 14px;
+                border-radius: 12px;
+                cursor: pointer;
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.95rem;
+                white-space: nowrap;
+            }
+
+            .toggleBtn:hover {
+                background: rgba(0, 87, 184, 0.08);
+            }
+
+            .span2 {
+                grid-column: 1 / -1;
+            }
+
+            .actionRow {
+                grid-column: 1 / -1;
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                padding-top: 6px;
+            }
+
+            .btn {
+                height: 46px;
+                padding: 0 16px;
+                border-radius: 14px;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 800;
+                cursor: pointer;
+                border: 1px solid var(--primary-color);
+                background: transparent;
+                color: var(--primary-color);
+            }
+
+            .btnPrimary {
+                border: none;
+                background: var(--primary-color);
+                color: var(--primary-contrast);
+                min-width: 200px;
+            }
+
+            .topError {
+                margin: 0 0 14px;
+                padding: 12px 14px;
+                border-radius: 14px;
+                background: rgba(245, 103, 0, 0.10);
+                border: 1px solid rgba(245, 103, 0, 0.25);
+                color: rgba(0, 0, 0, 0.75);
+                font-family: "Montserrat", sans-serif;
+            }
+
+            .footer {
+                margin-top: 26px;
+                background: #0d2440;
+                color: #fff;
+                padding: 26px 26px;
+            }
+
+            .footerInner {
+                max-width: 1250px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: 1.2fr 1fr 1fr;
+                gap: 18px;
+            }
+
+            @media (max-width: 900px) {
+                .footerInner {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .footer h3 {
+                margin: 0 0 10px;
+                font-family: "Roboto", sans-serif;
+                font-weight: 900;
+            }
+
+            .footer p, .footer a {
+                font-family: "Montserrat", sans-serif;
+                color: rgba(255, 255, 255, 0.86);
+                text-decoration: none;
+                line-height: 1.6;
+                margin: 0 0 6px;
+            }
+
+            .footer a:hover {
+                text-decoration: underline;
+            }
+
+            .footerBottom {
+                max-width: 1250px;
+                margin: 12px auto 0;
+                padding-top: 12px;
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
+                font-family: "Montserrat", sans-serif;
+                color: rgba(255, 255, 255, 0.78);
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            #snackbar {
+                visibility: hidden;
+                min-width: 320px;
+                margin-left: -160px;
+                background-color: var(--secondary-color);
+                color: #fff;
+                text-align: center;
+                border-radius: 10px;
+                padding: 16px;
+                position: fixed;
+                z-index: 9999;
+                left: 50%;
+                bottom: 30px;
+                font-size: 17px;
+                font-family: "Montserrat", sans-serif;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+            }
+
+            #snackbar.show {
+                visibility: visible;
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+                animation: fadein 0.5s, fadeout 0.5s 4.5s;
+            }
+
+            @-webkit-keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @-webkit-keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+
+            @keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+        </style>
     </head>
 
     <body>
 
-      <div class="nav">
+    <div class="nav">
         <div class="brand">
-          <div class="title">Ocean View Resort</div>
-          <div class="sub">Create your guest profile to manage bookings</div>
+            <div class="title">Ocean View Resort</div>
+            <div class="sub">Create your guest profile to manage bookings</div>
         </div>
 
         <div class="navLinks">
-          <a href="${pageContext.request.contextPath}/home">Home</a>
-          <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
-          <a href="${pageContext.request.contextPath}/guest/login">Sign In</a>
-          <a class="primaryBtn" href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
+            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
+            <a href="${pageContext.request.contextPath}/guest/login">Sign In</a>
+            <a class="primaryBtn" href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
         </div>
-      </div>
+    </div>
 
-      <div class="pageWrap">
+    <div class="pageWrap">
         <div class="card">
-          <div class="cardHeader">
-            <h1>Your Profile</h1>
-            <p>Create your account to view, change, or cancel your reservations.</p>
-          </div>
+            <div class="cardHeader">
+                <h1>Your Profile</h1>
+                <p>Create your account to view, change, or cancel your reservations.</p>
+            </div>
 
-          <div class="cardBody">
+            <div class="cardBody">
 
-            <c:if test="${not empty error}">
-              <div class="topError">${error}</div>
-            </c:if>
+                <c:if test="${not empty error}">
+                    <div class="topError">${error}</div>
+                </c:if>
 
-            <form id="registerForm"
-                  method="post"
-                  novalidate="novalidate"
-                  action="${pageContext.request.contextPath}/guest/register">
+                <form id="registerForm"
+                      method="post"
+                      novalidate="novalidate"
+                      action="${pageContext.request.contextPath}/guest/register">
 
-              <div class="dataRow">
-                <span class="label">Name<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <input id="name" type="text" name="name" value="${form.name}" />
-                  <p id="err-name" class="fieldError">${errors.name}</p>
-                </div>
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Name<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <input id="name" type="text" name="name" value="${form.name}"/>
+                            <p id="err-name" class="fieldError">${errors.name}</p>
+                        </div>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Email<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <input id="email" type="email" name="email" value="${form.email}" />
-                  <p id="err-email" class="fieldError">${errors.email}</p>
-                </div>
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Email<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <input id="email" type="email" name="email" value="${form.email}"/>
+                            <p id="err-email" class="fieldError">${errors.email}</p>
+                        </div>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Phone<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <input id="phone" type="text" name="phone" value="${form.phone}" />
-                  <p id="err-phone" class="fieldError">${errors.phone}</p>
-                </div>
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Phone<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <input id="phone" type="text" name="phone" value="${form.phone}"/>
+                            <p id="err-phone" class="fieldError">${errors.phone}</p>
+                        </div>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Address<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <input id="address" type="text" name="address" value="${form.address}" />
-                  <p id="err-address" class="fieldError">${errors.address}</p>
-                </div>
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Address<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <input id="address" type="text" name="address" value="${form.address}"/>
+                            <p id="err-address" class="fieldError">${errors.address}</p>
+                        </div>
+                    </div>
 
-              <div class="dataRow span2">
-                <span class="label">Password<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <div class="passwordRow">
-                    <input id="password" type="password" name="password" />
-                    <button type="button" class="toggleBtn" data-toggle="password">Show</button>
-                  </div>
-                  <p id="err-password" class="fieldError">${errors.password}</p>
-                </div>
-              </div>
+                    <div class="dataRow span2">
+                        <span class="label">Password<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <div class="passwordRow">
+                                <input id="password" type="password" name="password"/>
+                                <button type="button" class="toggleBtn" data-toggle="password">Show</button>
+                            </div>
+                            <p id="err-password" class="fieldError">${errors.password}</p>
+                        </div>
+                    </div>
 
-              <div class="dataRow span2">
-                <span class="label">Confirm Password<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <div class="passwordRow">
-                    <input id="confirmPassword" type="password" name="confirmPassword" />
-                    <button type="button" class="toggleBtn" data-toggle="confirmPassword">Show</button>
-                  </div>
-                  <p id="err-confirmPassword" class="fieldError">${errors.confirmPassword}</p>
-                </div>
-              </div>
+                    <div class="dataRow span2">
+                        <span class="label">Confirm Password<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <div class="passwordRow">
+                                <input id="confirmPassword" type="password" name="confirmPassword"/>
+                                <button type="button" class="toggleBtn" data-toggle="confirmPassword">Show</button>
+                            </div>
+                            <p id="err-confirmPassword" class="fieldError">${errors.confirmPassword}</p>
+                        </div>
+                    </div>
 
-              <div class="actionRow">
-                <button type="button"
-                        class="btn"
-                        onclick="window.location.href='${pageContext.request.contextPath}/'">
-                  Cancel
-                </button>
-                <button type="submit" class="btn btnPrimary">Create Profile</button>
-              </div>
+                    <div class="actionRow">
+                        <button type="button"
+                                class="btn"
+                                onclick="window.location.href='${pageContext.request.contextPath}/'">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btnPrimary">Create Profile</button>
+                    </div>
 
-            </form>
-          </div>
+                </form>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="footer">
+    <div class="footer">
         <div class="footerInner">
-          <div>
-            <h3>Ocean View Resort</h3>
-            <p>Luxury stays with ocean views, modern rooms, and friendly service.</p>
-          </div>
+            <div>
+                <h3>Ocean View Resort</h3>
+                <p>Luxury stays with ocean views, modern rooms, and friendly service.</p>
+            </div>
 
-          <div>
-            <h3>Quick Links</h3>
-            <p><a href="${pageContext.request.contextPath}/home">Home</a></p>
-            <p><a href="${pageContext.request.contextPath}/availability">Check Availability</a></p>
-            <p><a href="${pageContext.request.contextPath}/guest/login">Sign In</a></p>
-          </div>
+            <div>
+                <h3>Quick Links</h3>
+                <p><a href="${pageContext.request.contextPath}/home">Home</a></p>
+                <p><a href="${pageContext.request.contextPath}/availability">Check Availability</a></p>
+                <p><a href="${pageContext.request.contextPath}/guest/login">Sign In</a></p>
+            </div>
 
-          <div>
-            <h3>Contact</h3>
-            <p>Negombo, Sri Lanka</p>
-            <p>Phone: +94 77 123 4567</p>
-            <p>Email: info@oceanviewresort.com</p>
-          </div>
+            <div>
+                <h3>Contact</h3>
+                <p>Negombo, Sri Lanka</p>
+                <p>Phone: +94 77 123 4567</p>
+                <p>Email: info@oceanviewresort.com</p>
+            </div>
         </div>
 
         <div class="footerBottom">
-          <div>© Ocean View Resort</div>
-          <div>Designed By Ishara Sanjana</div>
+            <div>© Ocean View Resort</div>
+            <div>Designed By Ishara Sanjana</div>
         </div>
-      </div>
+    </div>
 
-      <div id="snackbar">${success}</div>
+    <div id="snackbar">${success}</div>
 
-      <!-- KEEP YOUR SCRIPT UNCHANGED -->
-      <script type="text/javascript">
+    <script type="text/javascript">
         <![CDATA[
-          (function () {
+        (function () {
             const form = document.getElementById("registerForm");
             if (!form) return;
 
             const fields = [
-              { name: "name", msg: "Name is required" },
-              { name: "email", msg: "Email is required" },
-              { name: "phone", msg: "Phone is required" },
-              { name: "address", msg: "Address is required" },
-              { name: "password", msg: "Password is required" },
-              { name: "confirmPassword", msg: "Confirm password is required" }
+                {name: "name", msg: "Name is required"},
+                {name: "email", msg: "Email is required"},
+                {name: "phone", msg: "Phone is required"},
+                {name: "address", msg: "Address is required"},
+                {name: "password", msg: "Password is required"},
+                {name: "confirmPassword", msg: "Confirm password is required"}
             ];
 
             function setErr(name, text) {
-              const p = document.getElementById("err-" + name);
-              const input = document.getElementById(name);
-              if (p) p.textContent = text || "";
-              if (input) input.classList.toggle("inputError", !!text);
+                const p = document.getElementById("err-" + name);
+                const input = document.getElementById(name);
+                if (p) p.textContent = text || "";
+                if (input) input.classList.toggle("inputError", !!text);
             }
 
             function emailValid(v) {
-              return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
             }
 
             fields.forEach(f => {
-              const input = document.getElementById(f.name);
-              if (!input) return;
-              input.addEventListener("input", () => setErr(f.name, ""));
+                const input = document.getElementById(f.name);
+                if (!input) return;
+                input.addEventListener("input", () => setErr(f.name, ""));
             });
 
             document.querySelectorAll("[data-toggle]").forEach(btn => {
-              btn.addEventListener("click", () => {
-                const id = btn.getAttribute("data-toggle");
-                const input = document.getElementById(id);
-                if (!input) return;
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-toggle");
+                    const input = document.getElementById(id);
+                    if (!input) return;
 
-                const hidden = input.type === "password";
-                input.type = hidden ? "text" : "password";
-                btn.textContent = hidden ? "Hide" : "Show";
-              });
+                    const hidden = input.type === "password";
+                    input.type = hidden ? "text" : "password";
+                    btn.textContent = hidden ? "Hide" : "Show";
+                });
             });
 
             form.addEventListener("submit", function (e) {
-              let ok = true;
+                let ok = true;
 
-              fields.forEach(f => {
-                const input = document.getElementById(f.name);
-                const v = (input && input.value ? input.value : "").trim();
-                if (!v) {
-                  ok = false;
-                  setErr(f.name, f.msg);
+                fields.forEach(f => {
+                    const input = document.getElementById(f.name);
+                    const v = (input && input.value ? input.value : "").trim();
+                    if (!v) {
+                        ok = false;
+                        setErr(f.name, f.msg);
+                    }
+                });
+
+                const email = document.getElementById("email");
+                const ev = (email && email.value ? email.value : "").trim();
+                if (ev && !emailValid(ev)) {
+                    ok = false;
+                    setErr("email", "Enter a valid email address");
                 }
-              });
 
-              const email = document.getElementById("email");
-              const ev = (email && email.value ? email.value : "").trim();
-              if (ev && !emailValid(ev)) {
-                ok = false;
-                setErr("email", "Enter a valid email address");
-              }
+                const pw = document.getElementById("password");
+                const pv = (pw && pw.value ? pw.value : "");
+                if (pv && pv.length < 6) {
+                    ok = false;
+                    setErr("password", "Password must be at least 6 characters");
+                }
 
-              const pw = document.getElementById("password");
-              const pv = (pw && pw.value ? pw.value : "");
-              if (pv && pv.length < 6) {
-                ok = false;
-                setErr("password", "Password must be at least 6 characters");
-              }
+                const cpw = document.getElementById("confirmPassword");
+                const cv = (cpw && cpw.value ? cpw.value : "");
+                if (pv && cv && pv !== cv) {
+                    ok = false;
+                    setErr("confirmPassword", "Passwords do not match");
+                }
 
-              const cpw = document.getElementById("confirmPassword");
-              const cv = (cpw && cpw.value ? cpw.value : "");
-              if (pv && cv && pv !== cv) {
-                ok = false;
-                setErr("confirmPassword", "Passwords do not match");
-              }
-
-              if (!ok) e.preventDefault();
+                if (!ok) e.preventDefault();
             });
 
             const successMsg = "${success}";
             if (successMsg && successMsg.trim().length > 0) {
-              const bar = document.getElementById("snackbar");
-              if (bar) {
-                bar.classList.add("show");
-                setTimeout(() => {
-                  window.location.href = "${pageContext.request.contextPath}/guest/login";
-                }, 5000);
-              }
+                const bar = document.getElementById("snackbar");
+                if (bar) {
+                    bar.classList.add("show");
+                    setTimeout(() => {
+                        window.location.href = "${pageContext.request.contextPath}/guest/login";
+                    }, 5000);
+                }
             }
-          })();
+        })();
         ]]>
-      </script>
+    </script>
 
     </body>
-  </html>
+    </html>
 
 </jsp:root>

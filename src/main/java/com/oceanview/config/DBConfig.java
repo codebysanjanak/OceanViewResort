@@ -5,5 +5,7 @@ public final class DBConfig {
             "jdbc:mysql://localhost:3306/ocean_view_resort?useSSL=false&serverTimezone=UTC";
     public static final String USER = "root";
     public static final String PASS = "root";
-    private DBConfig() {}
+
+    private DBConfig() {
+    }
 }

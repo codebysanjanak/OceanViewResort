@@ -11,7 +11,15 @@ public class AvailabilityResult {
         this.overlaps = overlaps;
     }
 
-    public RoomType getRoomType() { return roomType; }
-    public boolean isAvailable() { return available; }
-    public int getOverlaps() { return overlaps; }
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public int getOverlaps() {
+        return overlaps;
+    }
 }

@@ -1,524 +1,686 @@
 <jsp:root
-  xmlns:jsp="http://java.sun.com/JSP/Page"
-  xmlns:c="jakarta.tags.core"
-  version="2.0">
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:c="jakarta.tags.core"
+        version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
-  <jsp:directive.page isELIgnored="false" />
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <jsp:directive.page isELIgnored="false"/>
 
-  <html>
+    <html>
     <head>
-      <title>Staff</title>
+        <title>Staff</title>
 
-      <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/global.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/global.css"/>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com"/>
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
+              rel="stylesheet"/>
 
-      <style>
-        body{
-          margin:0;
-          background:#f6f8fb;
-          min-height:100vh;
-          display:flex;
-          flex-direction:column;
-          font-family:"Montserrat",sans-serif;
-        }
+        <style>
+            body {
+                margin: 0;
+                background: #f6f8fb;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                font-family: "Montserrat", sans-serif;
+            }
 
-        .nav{
-          position: sticky; top: 0; z-index: 100;
-          background: var(--primary-color);
-          color:#fff;
-          display:flex; align-items:center; justify-content:space-between;
-          padding:14px 26px; box-sizing:border-box;
-        }
-        .brand{ display:flex; flex-direction:column; gap:2px; }
-        .brand .title{ font-family:"Roboto",sans-serif; font-weight:900; font-size:1.25rem; margin:0; }
-        .brand .sub{ font-family:"Montserrat",sans-serif; font-size:0.88rem; opacity:0.9; }
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: var(--primary-color);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 26px;
+                box-sizing: border-box;
+            }
 
-        .navLinks{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-        .navLinks a{
-          color:#fff; text-decoration:none;
-          padding:10px 12px; border-radius:12px;
-          border:1px solid rgba(255,255,255,0.28);
-          transition:0.15s ease;
-          font-weight:800;
-        }
-        .navLinks a:hover{ background: rgba(255,255,255,0.12); }
-        .navLinks .active{
-          background: rgba(255,255,255,0.14);
-          border-color: rgba(255,255,255,0.45);
-        }
-        .navLinks .primaryBtn{ border:none; background: var(--secondary-color); font-weight:900; }
+            .brand {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
 
-        .container{
-          max-width:1200px;
-          margin:40px auto;
-          padding:0 20px;
-          width:100%;
-          box-sizing:border-box;
-          flex:1;
-        }
+            .brand .title {
+                font-family: "Roboto", sans-serif;
+                font-weight: 900;
+                font-size: 1.25rem;
+                margin: 0;
+            }
 
-        .topRow{
-          display:flex;
-          justify-content:space-between;
-          align-items:flex-end;
-          gap:14px;
-          margin-bottom:14px;
-          flex-wrap:wrap;
-        }
+            .brand .sub {
+                font-family: "Montserrat", sans-serif;
+                font-size: 0.88rem;
+                opacity: 0.9;
+            }
 
-        h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin:0; }
-        .subtitle{ margin:6px 0 0; color:#475569; font-size:0.95rem; font-weight:600; }
+            .navLinks {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
 
-        .card{
-          background:#fff;
-          padding:22px;
-          border-radius:16px;
-          box-shadow:0 8px 25px rgba(0,0,0,0.06);
-        }
+            .navLinks a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                transition: 0.15s ease;
+                font-weight: 800;
+            }
 
-        .editBadge{
-          display:inline-flex;
-          align-items:center;
-          gap:8px;
-          padding:8px 12px;
-          border-radius:999px;
-          background:#f1f5f9;
-          border:1px solid #e2e8f0;
-          color:#0f172a;
-          font-size:13px;
-          font-weight:900;
-          margin-bottom:12px;
-        }
+            .navLinks a:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
 
-        .formGrid{
-          display:grid;
-          grid-template-columns: 1.2fr 1.2fr 0.9fr auto;
-          gap:12px;
-          align-items:end;
-          margin-top:12px;
-        }
-        @media(max-width:980px){
-          .formGrid{ grid-template-columns:1fr; }
-        }
+            .navLinks .active {
+                background: rgba(255, 255, 255, 0.14);
+                border-color: rgba(255, 255, 255, 0.45);
+            }
 
-        .label{ font-weight:900; margin-bottom:6px; display:block; color:#0f172a; }
-        .requiredMark{ color:var(--danger-color); }
+            .navLinks .primaryBtn {
+                border: none;
+                background: var(--secondary-color);
+                font-weight: 900;
+            }
 
-        .inputRow input, .inputRow select{
-          width:100%;
-          padding:12px;
-          border-radius:12px;
-          border:1px solid rgba(0,0,0,0.18);
-          font-family:"Montserrat",sans-serif;
-          font-size:15px;
-          box-sizing:border-box;
-          outline:none;
-        }
+            .container {
+                max-width: 1200px;
+                margin: 40px auto;
+                padding: 0 20px;
+                width: 100%;
+                box-sizing: border-box;
+                flex: 1;
+            }
 
-        .inputError{ border:1px solid var(--danger-color) !important; }
-        .fieldError{
-          margin:6px 0 0;
-          color:var(--danger-color);
-          font-size:13px;
-          font-weight:800;
-          min-height:16px;
-        }
+            .topRow {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 14px;
+                margin-bottom: 14px;
+                flex-wrap: wrap;
+            }
 
-        .btn{
-          display:inline-block;
-          padding:12px 16px;
-          border-radius:12px;
-          border:none;
-          cursor:pointer;
-          font-family:"Montserrat",sans-serif;
-          font-weight:900;
-          white-space:nowrap;
-        }
-        .btnPrimary{ background:var(--secondary-color); color:#fff; }
-        .btnPrimary:hover{ filter:brightness(0.95); }
-        .btnGhost{
-          background:#fff;
-          color:#0f172a;
-          border:1px solid #e5e7eb;
-        }
+            h2 {
+                font-family: "Cascadia Mono", sans-serif;
+                color: var(--primary-color);
+                margin: 0;
+            }
 
-        .tableCard{ margin-top:16px; overflow:auto; }
-        table{ width:100%; border-collapse:collapse; min-width: 980px; }
-        th, td{
-          padding:12px;
-          border-bottom:1px solid #edf2f7;
-          text-align:left;
-          vertical-align:top;
-          font-size:0.95rem;
-        }
-        th{
-          background:#f3f6fb;
-          font-weight:900;
-          color:#334155;
-          white-space:nowrap;
-        }
-        .muted{ color:#64748b; font-weight:700; }
+            .subtitle {
+                margin: 6px 0 0;
+                color: #475569;
+                font-size: 0.95rem;
+                font-weight: 600;
+            }
 
-        .role{
-          display:inline-flex;
-          align-items:center;
-          padding:6px 10px;
-          border-radius:999px;
-          font-size:12px;
-          font-weight:900;
-          color:#fff;
-          white-space:nowrap;
-        }
-        .roleAdmin{ background:#2563eb; }
-        .roleManager{ background:#16a34a; }
-        .roleOther{ background:#64748b; }
+            .card {
+                background: #fff;
+                padding: 22px;
+                border-radius: 16px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            }
 
-        .actionBtn{
-          display:inline-block;
-          padding:8px 12px;
-          border-radius:12px;
-          border:none;
-          color:#fff;
-          cursor:pointer;
-          text-decoration:none;
-          font-size:13px;
-          font-weight:900;
-          white-space:nowrap;
-          background:#2563eb;
-        }
-        .actionBtn:hover{ filter:brightness(0.95); }
+            .editBadge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                border-radius: 999px;
+                background: #f1f5f9;
+                border: 1px solid #e2e8f0;
+                color: #0f172a;
+                font-size: 13px;
+                font-weight: 900;
+                margin-bottom: 12px;
+            }
 
-        .emptyRow{
-          text-align:center;
-          padding:18px;
-          color:#64748b;
-          font-weight:800;
-        }
+            .formGrid {
+                display: grid;
+                grid-template-columns: 1.2fr 1.2fr 0.9fr auto;
+                gap: 12px;
+                align-items: end;
+                margin-top: 12px;
+            }
 
-        /* Toast */
-        #toast{
-          position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
-          padding:14px 22px; border-radius:12px; color:#fff; display:none; z-index:99999;
-          box-shadow:0 10px 26px rgba(0,0,0,0.25);
-          font-family:"Montserrat",sans-serif;
-          min-width:320px; text-align:center;
-          font-weight:900;
-        }
+            @media (max-width: 980px) {
+                .formGrid {
+                    grid-template-columns:1fr;
+                }
+            }
 
-        .footer{
-          margin-top:40px; background:#0d2440; color:#fff; padding:26px;
-        }
-        .footerInner{
-          max-width:1200px; margin:auto;
-          display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:20px;
-        }
-        @media(max-width:900px){ .footerInner{ grid-template-columns:1fr; } }
-        .footer h3{ font-family:"Roboto",sans-serif; margin:0 0 10px; font-weight:900; }
-        .footer p,.footer a{
-          font-family:"Montserrat",sans-serif;
-          color:rgba(255,255,255,.85);
-          text-decoration:none;
-          line-height:1.6;
-          margin:0 0 8px;
-        }
-        .footer a:hover{ text-decoration: underline; }
-        .footerBottom{
-          max-width:1200px; margin:16px auto 0; padding-top:10px;
-          border-top:1px solid rgba(255,255,255,.2);
-          display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-          font-family:"Montserrat",sans-serif;
-          color:rgba(255,255,255,.78);
-          font-weight:700;
-        }
-      </style>
+            .label {
+                font-weight: 900;
+                margin-bottom: 6px;
+                display: block;
+                color: #0f172a;
+            }
+
+            .requiredMark {
+                color: var(--danger-color);
+            }
+
+            .inputRow input, .inputRow select {
+                width: 100%;
+                padding: 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.18);
+                font-family: "Montserrat", sans-serif;
+                font-size: 15px;
+                box-sizing: border-box;
+                outline: none;
+            }
+
+            .inputError {
+                border: 1px solid var(--danger-color) !important;
+            }
+
+            .fieldError {
+                margin: 6px 0 0;
+                color: var(--danger-color);
+                font-size: 13px;
+                font-weight: 800;
+                min-height: 16px;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 12px 16px;
+                border-radius: 12px;
+                border: none;
+                cursor: pointer;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 900;
+                white-space: nowrap;
+            }
+
+            .btnPrimary {
+                background: var(--secondary-color);
+                color: #fff;
+            }
+
+            .btnPrimary:hover {
+                filter: brightness(0.95);
+            }
+
+            .btnGhost {
+                background: #fff;
+                color: #0f172a;
+                border: 1px solid #e5e7eb;
+            }
+
+            .tableCard {
+                margin-top: 16px;
+                overflow: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 980px;
+            }
+
+            th, td {
+                padding: 12px;
+                border-bottom: 1px solid #edf2f7;
+                text-align: left;
+                vertical-align: top;
+                font-size: 0.95rem;
+            }
+
+            th {
+                background: #f3f6fb;
+                font-weight: 900;
+                color: #334155;
+                white-space: nowrap;
+            }
+
+            .muted {
+                color: #64748b;
+                font-weight: 700;
+            }
+
+            .role {
+                display: inline-flex;
+                align-items: center;
+                padding: 6px 10px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 900;
+                color: #fff;
+                white-space: nowrap;
+            }
+
+            .roleAdmin {
+                background: #2563eb;
+            }
+
+            .roleManager {
+                background: #16a34a;
+            }
+
+            .roleOther {
+                background: #64748b;
+            }
+
+            .actionBtn {
+                display: inline-block;
+                padding: 8px 12px;
+                border-radius: 12px;
+                border: none;
+                color: #fff;
+                cursor: pointer;
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 900;
+                white-space: nowrap;
+                background: #2563eb;
+            }
+
+            .actionBtn:hover {
+                filter: brightness(0.95);
+            }
+
+            .emptyRow {
+                text-align: center;
+                padding: 18px;
+                color: #64748b;
+                font-weight: 800;
+            }
+
+            /* Toast */
+            #toast {
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 14px 22px;
+                border-radius: 12px;
+                color: #fff;
+                display: none;
+                z-index: 99999;
+                box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+                font-family: "Montserrat", sans-serif;
+                min-width: 320px;
+                text-align: center;
+                font-weight: 900;
+            }
+
+            .footer {
+                margin-top: 40px;
+                background: #0d2440;
+                color: #fff;
+                padding: 26px;
+            }
+
+            .footerInner {
+                max-width: 1200px;
+                margin: auto;
+                display: grid;
+                grid-template-columns:1.2fr 1fr 1fr;
+                gap: 20px;
+            }
+
+            @media (max-width: 900px) {
+                .footerInner {
+                    grid-template-columns:1fr;
+                }
+            }
+
+            .footer h3 {
+                font-family: "Roboto", sans-serif;
+                margin: 0 0 10px;
+                font-weight: 900;
+            }
+
+            .footer p, .footer a {
+                font-family: "Montserrat", sans-serif;
+                color: rgba(255, 255, 255, .85);
+                text-decoration: none;
+                line-height: 1.6;
+                margin: 0 0 8px;
+            }
+
+            .footer a:hover {
+                text-decoration: underline;
+            }
+
+            .footerBottom {
+                max-width: 1200px;
+                margin: 16px auto 0;
+                padding-top: 10px;
+                border-top: 1px solid rgba(255, 255, 255, .2);
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: wrap;
+                font-family: "Montserrat", sans-serif;
+                color: rgba(255, 255, 255, .78);
+                font-weight: 700;
+            }
+        </style>
     </head>
 
     <body>
 
-      <div class="nav">
+    <div class="nav">
         <div class="brand">
-          <div class="title">Ocean View Resort</div>
-          <div class="sub">Admin Dashboard</div>
+            <div class="title">Ocean View Resort</div>
+            <div class="sub">Admin Dashboard</div>
         </div>
 
         <div class="navLinks">
-          <a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a>
-          <a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a>
-          <a href="${pageContext.request.contextPath}/admin/guests">Guests</a>
-          <a class="active" href="${pageContext.request.contextPath}/admin/staff">Staff</a>
-          <a href="${pageContext.request.contextPath}/admin/help">Help</a>
-          <a class="primaryBtn" href="${pageContext.request.contextPath}/admin/logout">Logout</a>
+            <a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a>
+            <a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a>
+            <a href="${pageContext.request.contextPath}/admin/guests">Guests</a>
+            <a class="active" href="${pageContext.request.contextPath}/admin/staff">Staff</a>
+            <a href="${pageContext.request.contextPath}/admin/help">Help</a>
+            <a class="primaryBtn" href="${pageContext.request.contextPath}/admin/logout">Logout</a>
         </div>
-      </div>
+    </div>
 
-      <div class="container">
+    <div class="container">
 
         <div class="topRow">
-          <div>
-            <h2>Staff</h2>
-            <p class="subtitle">Manage staff accounts and roles.</p>
-          </div>
+            <div>
+                <h2>Staff</h2>
+                <p class="subtitle">Manage staff accounts and roles.</p>
+            </div>
         </div>
 
         <div class="card" id="formCard">
 
-          <c:if test="${not empty editStaff}">
-            <div class="editBadge">
-              Editing Staff ID: <span>#${editStaff.adminId}</span>
-              <a class="btn btnGhost" style="padding:7px 10px; border-radius:999px; text-decoration:none;"
-                 href="${pageContext.request.contextPath}/admin/staff">New</a>
-            </div>
-          </c:if>
-
-          <!-- ✅ JSPX SAFE: compute action in JSTL -->
-          <c:choose>
-            <c:when test="${not empty editStaff}">
-              <c:set var="formAction" value="/admin/staff/update" />
-            </c:when>
-            <c:otherwise>
-              <c:set var="formAction" value="/admin/staff/add" />
-            </c:otherwise>
-          </c:choose>
-
-          <form id="staffForm" method="post"
-                action="${pageContext.request.contextPath}${formAction}">
-
             <c:if test="${not empty editStaff}">
-              <input type="hidden" name="adminId" id="adminId" value="${editStaff.adminId}" />
+                <div class="editBadge">
+                    Editing Staff ID: <span>#${editStaff.adminId}</span>
+                    <a class="btn btnGhost" style="padding:7px 10px; border-radius:999px; text-decoration:none;"
+                       href="${pageContext.request.contextPath}/admin/staff">New</a>
+                </div>
             </c:if>
 
-            <div class="formGrid">
+            <c:choose>
+                <c:when test="${not empty editStaff}">
+                    <c:set var="formAction" value="/admin/staff/update"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="formAction" value="/admin/staff/add"/>
+                </c:otherwise>
+            </c:choose>
 
-              <div>
-                <span class="label">Username<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-                  <input id="username" name="username"
-                         value="${not empty editStaff ? editStaff.username : ''}"
-                         placeholder="e.g. manager01"/>
-                  <p id="err-username" class="fieldError"></p>
-                </div>
-              </div>
+            <form id="staffForm" method="post"
+                  action="${pageContext.request.contextPath}${formAction}">
 
-              <div>
+                <c:if test="${not empty editStaff}">
+                    <input type="hidden" name="adminId" id="adminId" value="${editStaff.adminId}"/>
+                </c:if>
+
+                <div class="formGrid">
+
+                    <div>
+                        <span class="label">Username<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+                            <input id="username" name="username"
+                                   value="${not empty editStaff ? editStaff.username : ''}"
+                                   placeholder="e.g. manager01"/>
+                            <p id="err-username" class="fieldError"></p>
+                        </div>
+                    </div>
+
+                    <div>
                 <span class="label">
                   Password
                   <c:if test="${empty editStaff}">
                     <span class="requiredMark">*</span>
                   </c:if>
                 </span>
-                <div class="inputRow">
-                  <input id="password" name="password" type="password"
-                         placeholder="${empty editStaff ? 'Min 6 characters' : 'Leave blank to keep current password'}"/>
-                  <p id="err-password" class="fieldError"></p>
+                        <div class="inputRow">
+                            <input id="password" name="password" type="password"
+                                   placeholder="${empty editStaff ? 'Min 6 characters' : 'Leave blank to keep current password'}"/>
+                            <p id="err-password" class="fieldError"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="label">Role<span class="requiredMark">*</span></span>
+                        <div class="inputRow">
+
+                            <select id="role" name="role">
+
+                                <c:choose>
+                                    <c:when test="${not empty editStaff and editStaff.role == 'ADMIN'}">
+                                        <option value="ADMIN" selected="selected">ADMIN</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="ADMIN">ADMIN</option>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when test="${empty editStaff or (not empty editStaff and editStaff.role == 'MANAGER')}">
+                                        <option value="MANAGER" selected="selected">MANAGER</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="MANAGER">MANAGER</option>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </select>
+
+                            <p id="err-role" class="fieldError"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btnPrimary" type="submit">
+                            <c:choose>
+                                <c:when test="${not empty editStaff}">Save Changes</c:when>
+                                <c:otherwise>+ Add Staff</c:otherwise>
+                            </c:choose>
+                        </button>
+                    </div>
+
                 </div>
-              </div>
-
-              <div>
-                <span class="label">Role<span class="requiredMark">*</span></span>
-                <div class="inputRow">
-
-                  <!-- ✅ JSPX SAFE selected option rendering -->
-                  <select id="role" name="role">
-
-                    <c:choose>
-                      <c:when test="${not empty editStaff and editStaff.role == 'ADMIN'}">
-                        <option value="ADMIN" selected="selected">ADMIN</option>
-                      </c:when>
-                      <c:otherwise>
-                        <option value="ADMIN">ADMIN</option>
-                      </c:otherwise>
-                    </c:choose>
-
-                    <c:choose>
-                      <c:when test="${empty editStaff or (not empty editStaff and editStaff.role == 'MANAGER')}">
-                        <option value="MANAGER" selected="selected">MANAGER</option>
-                      </c:when>
-                      <c:otherwise>
-                        <option value="MANAGER">MANAGER</option>
-                      </c:otherwise>
-                    </c:choose>
-
-                  </select>
-
-                  <p id="err-role" class="fieldError"></p>
-                </div>
-              </div>
-
-              <div>
-                <button class="btn btnPrimary" type="submit">
-                  <c:choose>
-                    <c:when test="${not empty editStaff}">Save Changes</c:when>
-                    <c:otherwise>+ Add Staff</c:otherwise>
-                  </c:choose>
-                </button>
-              </div>
-
-            </div>
-          </form>
+            </form>
         </div>
 
-        <!-- STAFF LIST -->
         <div class="card tableCard">
-          <table>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Role</th>
-              <th>Created</th>
-              <th>Action</th>
-            </tr>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
 
-            <c:if test="${empty staff}">
-              <tr><td class="emptyRow" colspan="5">No staff found.</td></tr>
-            </c:if>
+                <c:if test="${empty staff}">
+                    <tr>
+                        <td class="emptyRow" colspan="5">No staff found.</td>
+                    </tr>
+                </c:if>
 
-            <c:forEach items="${staff}" var="s">
-              <tr>
-                <td class="muted">${s.adminId}</td>
-                <td><strong>${s.username}</strong></td>
+                <c:forEach items="${staff}" var="s">
+                    <tr>
+                        <td class="muted">${s.adminId}</td>
+                        <td><strong>${s.username}</strong></td>
 
-                <td>
-                  <c:choose>
-                    <c:when test="${s.role == 'ADMIN'}">
-                      <span class="role roleAdmin">ADMIN</span>
-                    </c:when>
-                    <c:when test="${s.role == 'MANAGER'}">
-                      <span class="role roleManager">MANAGER</span>
-                    </c:when>
-                    <c:otherwise>
-                      <span class="role roleOther">${s.role}</span>
-                    </c:otherwise>
-                  </c:choose>
-                </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${s.role == 'ADMIN'}">
+                                    <span class="role roleAdmin">ADMIN</span>
+                                </c:when>
+                                <c:when test="${s.role == 'MANAGER'}">
+                                    <span class="role roleManager">MANAGER</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="role roleOther">${s.role}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
 
-                <td class="muted">${s.createdAt}</td>
+                        <td class="muted">${s.createdAt}</td>
 
-                <td>
-                  <a class="actionBtn"
-                     href="${pageContext.request.contextPath}/admin/staff/edit?id=${s.adminId}">
-                    Edit
-                  </a>
-                </td>
-              </tr>
-            </c:forEach>
-          </table>
+                        <td>
+                            <a class="actionBtn"
+                               href="${pageContext.request.contextPath}/admin/staff/edit?id=${s.adminId}">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
         </div>
 
-      </div>
+    </div>
 
-      <div id="toast"></div>
+    <div id="toast"></div>
 
-      <div class="footer">
+    <div class="footer">
         <div class="footerInner">
-          <div>
-            <h3>Ocean View Resort</h3>
-            <p>Admin system for managing rooms, guests, and reservations.</p>
-          </div>
+            <div>
+                <h3>Ocean View Resort</h3>
+                <p>Admin system for managing rooms, guests, and reservations.</p>
+            </div>
 
-          <div>
-            <h3>Quick Links</h3>
-            <p><a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a></p>
-            <p><a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a></p>
-            <p><a href="${pageContext.request.contextPath}/admin/guests">Guests</a></p>
-            <p><a href="${pageContext.request.contextPath}/admin/staff">Staff</a></p>
-          </div>
+            <div>
+                <h3>Quick Links</h3>
+                <p><a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a></p>
+                <p><a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a></p>
+                <p><a href="${pageContext.request.contextPath}/admin/guests">Guests</a></p>
+                <p><a href="${pageContext.request.contextPath}/admin/staff">Staff</a></p>
+            </div>
 
-          <div>
-            <h3>Contact</h3>
-            <p>Negombo, Sri Lanka</p>
-            <p>Phone: +94 77 123 4567</p>
-            <p>Email: info@oceanviewresort.com</p>
-          </div>
+            <div>
+                <h3>Contact</h3>
+                <p>Negombo, Sri Lanka</p>
+                <p>Phone: +94 77 123 4567</p>
+                <p>Email: info@oceanviewresort.com</p>
+            </div>
         </div>
 
         <div class="footerBottom">
-          <div>© Ocean View Resort</div>
-          <div>Admin Management System</div>
+            <div>© Ocean View Resort</div>
+            <div>Admin Management System</div>
         </div>
-      </div>
+    </div>
 
-      <script type="text/javascript">
+    <script type="text/javascript">
         <![CDATA[
-        function $(id){ return document.getElementById(id); }
-
-        function showToast(msg, isError){
-          var t = $("toast");
-          if(!t || !msg) return;
-
-          t.textContent = msg;
-          t.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-          t.style.display = "block";
-          t.style.opacity = "1";
-
-          setTimeout(function(){
-            t.style.opacity = "0";
-            setTimeout(function(){ t.style.display = "none"; }, 250);
-          }, 3500);
+        function $(id) {
+            return document.getElementById(id);
         }
 
-        function setErr(fieldId, msg){
-          var el = $(fieldId);
-          var p = $("err-" + fieldId);
-          if(p) p.textContent = msg || "";
-          if(el) el.classList.toggle("inputError", !!msg);
+        function showToast(msg, isError) {
+            var t = $("toast");
+            if (!t || !msg) return;
+
+            t.textContent = msg;
+            t.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+            t.style.display = "block";
+            t.style.opacity = "1";
+
+            setTimeout(function () {
+                t.style.opacity = "0";
+                setTimeout(function () {
+                    t.style.display = "none";
+                }, 250);
+            }, 3500);
+        }
+
+        function setErr(fieldId, msg) {
+            var el = $(fieldId);
+            var p = $("err-" + fieldId);
+            if (p) p.textContent = msg || "";
+            if (el) el.classList.toggle("inputError", !!msg);
         }
 
         // client validation to prevent 500
-        (function(){
-          var form = $("staffForm");
-          if(!form) return;
+        (function () {
+            var form = $("staffForm");
+            if (!form) return;
 
-          var isEdit = ${not empty editStaff ? "true" : "false"};
-
-          form.addEventListener("submit", function(e){
-            var ok = true;
-
-            var u = ($("username").value || "").trim();
-            var pw = ($("password").value || "");
-            var role = ($("role").value || "").trim();
-
-            setErr("username",""); setErr("password",""); setErr("role","");
-
-            if(!u){ ok=false; setErr("username","Username is required"); }
-            if(!role){ ok=false; setErr("role","Role is required"); }
-
-            // password required only in add mode
-            if(!isEdit){
-              if(!pw){ ok=false; setErr("password","Password is required"); }
-              else if(pw.length < 6){ ok=false; setErr("password","Password must be 6+ characters"); }
-            }else{
-              // edit: if entered, must be 6+
-              if(pw && pw.length < 6){ ok=false; setErr("password","Password must be 6+ characters"); }
+            var isEdit = $
+            {
+                not
+                empty
+                editStaff ? "true" : "false"
             }
+            ;
 
-            if(!ok) e.preventDefault();
-          });
+            form.addEventListener("submit", function (e) {
+                var ok = true;
+
+                var u = ($("username").value || "").trim();
+                var pw = ($("password").value || "");
+                var role = ($("role").value || "").trim();
+
+                setErr("username", "");
+                setErr("password", "");
+                setErr("role", "");
+
+                if (!u) {
+                    ok = false;
+                    setErr("username", "Username is required");
+                }
+                if (!role) {
+                    ok = false;
+                    setErr("role", "Role is required");
+                }
+
+                // password required only in add mode
+                if (!isEdit) {
+                    if (!pw) {
+                        ok = false;
+                        setErr("password", "Password is required");
+                    } else if (pw.length < 6) {
+                        ok = false;
+                        setErr("password", "Password must be 6+ characters");
+                    }
+                } else {
+                    // edit: if entered, must be 6+
+                    if (pw && pw.length < 6) {
+                        ok = false;
+                        setErr("password", "Password must be 6+ characters");
+                    }
+                }
+
+                if (!ok) e.preventDefault();
+            });
         })();
 
         // toast from query params
-        (function(){
-          var msg = ("${param.msg}" || "").trim();
-          var err = ("${param.error}" || "").trim();
+        (function () {
+            var msg = ("${param.msg}" || "").trim();
+            var err = ("${param.error}" || "").trim();
 
-          try { err = decodeURIComponent(err); } catch(e){}
+            try {
+                err = decodeURIComponent(err);
+            } catch (e) {
+            }
 
-          if(err){
-            showToast(err, true);
-            return;
-          }
+            if (err) {
+                showToast(err, true);
+                return;
+            }
 
-          if(msg === "created") showToast("Staff created successfully.", false);
-          if(msg === "updated") showToast("Staff updated successfully.", false);
+            if (msg === "created") showToast("Staff created successfully.", false);
+            if (msg === "updated") showToast("Staff updated successfully.", false);
         })();
         ]]>
-      </script>
+    </script>
 
     </body>
-  </html>
+    </html>
 </jsp:root>

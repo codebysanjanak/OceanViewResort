@@ -1,226 +1,322 @@
 <jsp:root
-  xmlns:jsp="http://java.sun.com/JSP/Page"
-  xmlns:c="jakarta.tags.core"
-  version="2.0">
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:c="jakarta.tags.core"
+        version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
-  <jsp:directive.page isELIgnored="false" />
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <jsp:directive.page isELIgnored="false"/>
 
-  <html>
+    <html>
     <head>
-      <title>My Profile</title>
+        <title>My Profile</title>
 
-      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/global.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/global.css"/>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-      <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono&amp;display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono&amp;display=swap" rel="stylesheet"/>
 
-      <style>
-        body{ margin:0; background:#f6f8fb; }
+        <style>
+            body {
+                margin: 0;
+                background: #f6f8fb;
+            }
 
-        .headerRow{
-          padding: 1rem 1.5rem;
-          display:flex; align-items:center; justify-content:space-between;
-          width:100%; height:10vh;
-          color: var(--primary-contrast);
-          background-color: var(--primary-color);
-          box-sizing:border-box;
-        }
-        .headerRow h2{ font-size:1.4rem; font-family:"Roboto",sans-serif; margin:0; }
-        .headerActions{ display:flex; gap:1.2rem; font-family:"Montserrat",sans-serif; font-size:1.1rem; flex-wrap:wrap; }
-        .headerRow a{ color: var(--primary-contrast); text-decoration:none; }
+            .headerRow {
+                padding: 1rem 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: 10vh;
+                color: var(--primary-contrast);
+                background-color: var(--primary-color);
+                box-sizing: border-box;
+            }
 
-        .content{ padding: 2rem 5rem; width:100%; box-sizing:border-box; }
-        .greeting{ font-family:"Montserrat",sans-serif; font-size:1.2rem; color:var(--primary-color); margin-bottom:0.2rem; }
-        .content h2{
-          margin: 0 0 1.2rem;
-          color: var(--primary-color);
-          font-size: 1.8rem;
-          font-weight: 700;
-          font-family: "Cascadia Mono", sans-serif;
-        }
+            .headerRow h2 {
+                font-size: 1.4rem;
+                font-family: "Roboto", sans-serif;
+                margin: 0;
+            }
 
-        .grid{
-          display:grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.2rem;
-          align-items:start;
-        }
-        @media (max-width: 1000px){
-          .grid{ grid-template-columns: 1fr; }
-        }
+            .headerActions {
+                display: flex;
+                gap: 1.2rem;
+                font-family: "Montserrat", sans-serif;
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
 
-        .card{
-          background:#fff;
-          border-radius:14px;
-          box-shadow:0 8px 25px rgba(0,0,0,0.06);
-          padding: 1.6rem 1.8rem;
-          font-family:"Montserrat",sans-serif;
-        }
+            .headerRow a {
+                color: var(--primary-contrast);
+                text-decoration: none;
+            }
 
-        .card h3{
-          margin: 0 0 1rem;
-          font-size: 1.2rem;
-          color: var(--primary-color);
-          font-family: "Cascadia Mono", sans-serif;
-        }
+            .content {
+                padding: 2rem 5rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
 
-        .dataRow{ display:flex; flex-direction:column; gap:8px; margin-bottom:1.1rem; }
-        .label{ font-weight:700; color: rgba(0,0,0,0.85); }
+            .greeting {
+                font-family: "Montserrat", sans-serif;
+                font-size: 1.2rem;
+                color: var(--primary-color);
+                margin-bottom: 0.2rem;
+            }
 
-        input, textarea{
-          width:100%;
-          padding:12px 12px;
-          border-radius:10px;
-          border:1px solid rgba(0,0,0,0.2);
-          outline:none;
-          font-size:1.05rem;
-          font-family:"Montserrat",sans-serif;
-          box-sizing:border-box;
-          background:#fff;
-        }
-        textarea{ min-height: 90px; resize: vertical; }
+            .content h2 {
+                margin: 0 0 1.2rem;
+                color: var(--primary-color);
+                font-size: 1.8rem;
+                font-weight: 700;
+                font-family: "Cascadia Mono", sans-serif;
+            }
 
-        .actionRow{ display:flex; justify-content:flex-end; gap:1rem; margin-top:0.6rem; flex-wrap:wrap; }
-        .btn{
-          width: 260px;
-          height: 45px;
-          border-radius:12px;
-          cursor:pointer;
-          font-size:1.15rem;
-          font-family:"Montserrat",sans-serif;
-          border:none;
-          background:var(--primary-color);
-          color:var(--primary-contrast);
-        }
-        .btnDanger{
-          background: var(--danger-color);
-        }
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.2rem;
+                align-items: start;
+            }
 
-        .muted{
-          color: rgba(0,0,0,0.65);
-          font-size: 0.95rem;
-          margin-top: -0.5rem;
-          margin-bottom: 1rem;
-        }
+            @media (max-width: 1000px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
+            }
 
-        #snackbar{
-          visibility:hidden;
-          min-width:320px;
-          margin-left:-160px;
-          background-color:var(--secondary-color);
-          color:#fff;
-          text-align:center;
-          border-radius:10px;
-          padding:16px;
-          position:fixed;
-          z-index:9999;
-          left:50%;
-          bottom:30px;
-          font-size:17px;
-          font-family:"Montserrat",sans-serif;
-          box-shadow:0 8px 22px rgba(0,0,0,0.25);
-        }
-        #snackbar.show{
-          visibility:visible;
-          -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
-          animation: fadein 0.5s, fadeout 0.5s 4.5s;
-        }
-        @-webkit-keyframes fadein { from{bottom:0;opacity:0;} to{bottom:30px;opacity:1;} }
-        @keyframes fadein { from{bottom:0;opacity:0;} to{bottom:30px;opacity:1;} }
-        @-webkit-keyframes fadeout { from{bottom:30px;opacity:1;} to{bottom:0;opacity:0;} }
-        @keyframes fadeout { from{bottom:30px;opacity:1;} to{bottom:0;opacity:0;} }
-      </style>
+            .card {
+                background: #fff;
+                border-radius: 14px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+                padding: 1.6rem 1.8rem;
+                font-family: "Montserrat", sans-serif;
+            }
+
+            .card h3 {
+                margin: 0 0 1rem;
+                font-size: 1.2rem;
+                color: var(--primary-color);
+                font-family: "Cascadia Mono", sans-serif;
+            }
+
+            .dataRow {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 1.1rem;
+            }
+
+            .label {
+                font-weight: 700;
+                color: rgba(0, 0, 0, 0.85);
+            }
+
+            input, textarea {
+                width: 100%;
+                padding: 12px 12px;
+                border-radius: 10px;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                outline: none;
+                font-size: 1.05rem;
+                font-family: "Montserrat", sans-serif;
+                box-sizing: border-box;
+                background: #fff;
+            }
+
+            textarea {
+                min-height: 90px;
+                resize: vertical;
+            }
+
+            .actionRow {
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+                margin-top: 0.6rem;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                width: 260px;
+                height: 45px;
+                border-radius: 12px;
+                cursor: pointer;
+                font-size: 1.15rem;
+                font-family: "Montserrat", sans-serif;
+                border: none;
+                background: var(--primary-color);
+                color: var(--primary-contrast);
+            }
+
+            .btnDanger {
+                background: var(--danger-color);
+            }
+
+            .muted {
+                color: rgba(0, 0, 0, 0.65);
+                font-size: 0.95rem;
+                margin-top: -0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            #snackbar {
+                visibility: hidden;
+                min-width: 320px;
+                margin-left: -160px;
+                background-color: var(--secondary-color);
+                color: #fff;
+                text-align: center;
+                border-radius: 10px;
+                padding: 16px;
+                position: fixed;
+                z-index: 9999;
+                left: 50%;
+                bottom: 30px;
+                font-size: 17px;
+                font-family: "Montserrat", sans-serif;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+            }
+
+            #snackbar.show {
+                visibility: visible;
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+                animation: fadein 0.5s, fadeout 0.5s 4.5s;
+            }
+
+            @-webkit-keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @-webkit-keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+
+            @keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+        </style>
     </head>
 
     <body>
-      <div class="headerRow">
+    <div class="headerRow">
         <h2>Ocean View Resort</h2>
         <div class="headerActions">
-          <a href="${pageContext.request.contextPath}/guest/bookings">My Bookings</a>
-          <a href="${pageContext.request.contextPath}/guest/profile">My Profile</a>
-          <a href="${pageContext.request.contextPath}/">Offers</a>
-          <a href="${pageContext.request.contextPath}/">About Us</a>
-          <a href="${pageContext.request.contextPath}/guest/logout">Logout</a>
+            <a href="${pageContext.request.contextPath}/guest/bookings">My Bookings</a>
+            <a href="${pageContext.request.contextPath}/guest/profile">My Profile</a>
+            <a href="${pageContext.request.contextPath}/">Offers</a>
+            <a href="${pageContext.request.contextPath}/">About Us</a>
+            <a href="${pageContext.request.contextPath}/guest/logout">Logout</a>
         </div>
-      </div>
+    </div>
 
-      <div class="content">
+    <div class="content">
         <div class="greeting">Hi ${sessionScope.guestName}</div>
         <h2>My Profile</h2>
 
         <div class="grid">
 
-          <!-- ✅ Update details -->
-          <div class="card">
-            <h3>Profile Details</h3>
-            <p class="muted">Update your name, phone number and address.</p>
+            <div class="card">
+                <h3>Profile Details</h3>
+                <p class="muted">Update your name, phone number and address.</p>
 
-            <form method="post" action="${pageContext.request.contextPath}/guest/profile">
-              <div class="dataRow">
-                <span class="label">Name</span>
-                <input type="text" name="name" value="${guest.name}" required="required" />
-              </div>
+                <form method="post" action="${pageContext.request.contextPath}/guest/profile">
+                    <div class="dataRow">
+                        <span class="label">Name</span>
+                        <input type="text" name="name" value="${guest.name}" required="required"/>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Email (readonly)</span>
-                <input type="text" value="${guest.email}" readonly="readonly" />
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Email (readonly)</span>
+                        <input type="text" value="${guest.email}" readonly="readonly"/>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Phone</span>
-                <input type="text" name="phone" value="${guest.phone}" />
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Phone</span>
+                        <input type="text" name="phone" value="${guest.phone}"/>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Address</span>
-                <textarea name="address">${guest.address}</textarea>
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Address</span>
+                        <textarea name="address">${guest.address}</textarea>
+                    </div>
 
-              <div class="actionRow">
-                <button class="btn" type="submit">Save Changes</button>
-              </div>
-            </form>
-          </div>
+                    <div class="actionRow">
+                        <button class="btn" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
 
-          <!-- ✅ Change password -->
-          <div class="card">
-            <h3>Change Password</h3>
-            <p class="muted">For security, use a strong password (min 6 characters).</p>
+            <div class="card">
+                <h3>Change Password</h3>
+                <p class="muted">For security, use a strong password (min 6 characters).</p>
 
-            <form method="post" action="${pageContext.request.contextPath}/guest/password">
-              <div class="dataRow">
-                <span class="label">Old Password</span>
-                <input type="password" name="oldPassword" required="required" />
-              </div>
+                <form method="post" action="${pageContext.request.contextPath}/guest/password">
+                    <div class="dataRow">
+                        <span class="label">Old Password</span>
+                        <input type="password" name="oldPassword" required="required"/>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">New Password</span>
-                <input type="password" name="newPassword" required="required" minlength="6" />
-              </div>
+                    <div class="dataRow">
+                        <span class="label">New Password</span>
+                        <input type="password" name="newPassword" required="required" minlength="6"/>
+                    </div>
 
-              <div class="dataRow">
-                <span class="label">Confirm New Password</span>
-                <input type="password" name="confirmPassword" required="required" minlength="6" />
-              </div>
+                    <div class="dataRow">
+                        <span class="label">Confirm New Password</span>
+                        <input type="password" name="confirmPassword" required="required" minlength="6"/>
+                    </div>
 
-              <div class="actionRow">
-                <button class="btn btnDanger" type="submit">Change Password</button>
-              </div>
-            </form>
-          </div>
+                    <div class="actionRow">
+                        <button class="btn btnDanger" type="submit">Change Password</button>
+                    </div>
+                </form>
+            </div>
 
         </div>
-      </div>
+    </div>
 
-      <div id="snackbar" data-success="${success}" data-error="${error}"></div>
+    <div id="snackbar" data-success="${success}" data-error="${error}"></div>
 
-      <script type="text/javascript">
+    <script type="text/javascript">
         <![CDATA[
-          (function () {
+        (function () {
             const bar = document.getElementById("snackbar");
             if (!bar) return;
 
@@ -228,18 +324,18 @@
             const errorMsg = (bar.getAttribute("data-error") || "").trim();
 
             function showToast(msg, isError) {
-              if (!msg) return;
-              bar.textContent = msg;
-              bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-              bar.classList.add("show");
-              setTimeout(() => bar.classList.remove("show"), 5000);
+                if (!msg) return;
+                bar.textContent = msg;
+                bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+                bar.classList.add("show");
+                setTimeout(() => bar.classList.remove("show"), 5000);
             }
 
             if (errorMsg.length > 0) showToast(errorMsg, true);
             else if (successMsg.length > 0) showToast(successMsg, false);
-          })();
+        })();
         ]]>
-      </script>
+    </script>
     </body>
-  </html>
+    </html>
 </jsp:root>

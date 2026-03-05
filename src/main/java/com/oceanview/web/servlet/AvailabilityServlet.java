@@ -29,9 +29,17 @@ public class AvailabilityServlet extends HttpServlet {
             this.reason = reason;
         }
 
-        public RoomType getRoomType() { return roomType; }
-        public boolean isAvailable() { return available; }
-        public String getReason() { return reason; }
+        public RoomType getRoomType() {
+            return roomType;
+        }
+
+        public boolean isAvailable() {
+            return available;
+        }
+
+        public String getReason() {
+            return reason;
+        }
     }
 
     @Override
@@ -74,5 +82,7 @@ public class AvailabilityServlet extends HttpServlet {
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
-    private static String trim(String s) { return (s == null) ? "" : s.trim(); }
+    private static String trim(String s) {
+        return (s == null) ? "" : s.trim();
+    }
 }

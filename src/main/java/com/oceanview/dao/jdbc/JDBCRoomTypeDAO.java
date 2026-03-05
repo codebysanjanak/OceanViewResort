@@ -80,11 +80,11 @@ public class JDBCRoomTypeDAO implements RoomTypeDAO {
     @Override
     public int create(RoomType rt) {
         String sql = """
-            INSERT INTO room_types(
-              type_name, nightly_rate, active,
-              description, adults_count, children_count, rooms_count, photo_path
-            ) VALUES(?,?,?,?,?,?,?,?)
-        """;
+                    INSERT INTO room_types(
+                      type_name, nightly_rate, active,
+                      description, adults_count, children_count, rooms_count, photo_path
+                    ) VALUES(?,?,?,?,?,?,?,?)
+                """;
 
         try (Connection con = DataSourceProvider.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -114,11 +114,11 @@ public class JDBCRoomTypeDAO implements RoomTypeDAO {
     @Override
     public void update(RoomType rt) {
         String sql = """
-            UPDATE room_types SET
-              type_name=?, nightly_rate=?, active=?,
-              description=?, adults_count=?, children_count=?, rooms_count=?, photo_path=?
-            WHERE room_type_id=?
-        """;
+                    UPDATE room_types SET
+                      type_name=?, nightly_rate=?, active=?,
+                      description=?, adults_count=?, children_count=?, rooms_count=?, photo_path=?
+                    WHERE room_type_id=?
+                """;
 
         try (Connection con = DataSourceProvider.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

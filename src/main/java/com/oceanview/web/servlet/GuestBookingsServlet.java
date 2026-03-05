@@ -31,7 +31,6 @@ public class GuestBookingsServlet extends HttpServlet {
         }
 
         try {
-            // ✅ handle cancel action (optional - your JSP has cancel link)
             String action = trim(req.getParameter("action"));
             String reservationNo = trim(req.getParameter("reservationNo"));
 
@@ -43,11 +42,9 @@ public class GuestBookingsServlet extends HttpServlet {
                 return;
             }
 
-            // ✅ PRG toast messages
             req.setAttribute("success", trim(req.getParameter("success")));
             req.setAttribute("error", trim(req.getParameter("error")));
 
-            // ✅ THIS IS THE MISSING PART (load bookings from DB)
             List<Reservation> bookings = bookingFacade.getGuestBookings(guestId);
             req.setAttribute("bookings", bookings);
 

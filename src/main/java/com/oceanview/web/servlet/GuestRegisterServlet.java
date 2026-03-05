@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.ServletException;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,6 @@ public class GuestRegisterServlet extends HttpServlet {
                     req.getParameter("confirmPassword")
             );
 
-            // stay on register page, show toast, then JS will redirect
             req.setAttribute("success", "Registered successfully!, You'll redirect to login..");
             req.getRequestDispatcher("/guest-register.jspx").forward(req, resp);
 

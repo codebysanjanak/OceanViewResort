@@ -33,7 +33,6 @@ public class GuestProfileServlet extends HttpServlet {
             Guest g = profileService.getGuest(guestId);
             req.setAttribute("guest", g);
 
-            // PRG messages
             req.setAttribute("success", trim(req.getParameter("success")));
             req.setAttribute("error", trim(req.getParameter("error")));
 
@@ -64,7 +63,7 @@ public class GuestProfileServlet extends HttpServlet {
 
             profileService.updateGuestProfile(guestId, name, phone, address);
 
-            // update session name (so header greeting updates)
+            // update session name
             session.setAttribute("guestName", name);
 
             resp.sendRedirect(req.getContextPath() + "/guest/profile?success=" +

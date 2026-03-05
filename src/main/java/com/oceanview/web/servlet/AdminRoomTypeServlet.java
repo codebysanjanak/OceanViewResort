@@ -25,7 +25,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
 
     private static final String VIEW = "/admin-roomtypes.jspx";
 
-    // stored in DB
     private static final String URL_DIR = "/images/room-types";
 
     @Override
@@ -71,13 +70,13 @@ public class AdminRoomTypeServlet extends HttpServlet {
             req.setCharacterEncoding("UTF-8");
 
             String roomTypeId = trim(req.getParameter("roomTypeId"));
-            String typeName   = trim(req.getParameter("typeName"));
-            String rateStr    = trim(req.getParameter("rate"));
-            String adultsStr  = trim(req.getParameter("adultsCount"));
-            String childrenStr= trim(req.getParameter("childrenCount"));
-            String roomsStr   = trim(req.getParameter("roomsCount"));
-            String description= trim(req.getParameter("description"));
-            boolean active    = "true".equals(req.getParameter("active"));
+            String typeName = trim(req.getParameter("typeName"));
+            String rateStr = trim(req.getParameter("rate"));
+            String adultsStr = trim(req.getParameter("adultsCount"));
+            String childrenStr = trim(req.getParameter("childrenCount"));
+            String roomsStr = trim(req.getParameter("roomsCount"));
+            String description = trim(req.getParameter("description"));
+            boolean active = "true".equals(req.getParameter("active"));
 
             if (typeName.isBlank()) throw new IllegalArgumentException("Room Name is required");
             if (rateStr.isBlank()) throw new IllegalArgumentException("Nightly Rate is required");
@@ -99,7 +98,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
             rt.setDescription(description);
             rt.setActive(active);
 
-            // keep existing photo if no new upload
             String existingPhotoPath = trim(req.getParameter("existingPhotoPath"));
             if (!existingPhotoPath.isBlank()) rt.setPhotoPath(existingPhotoPath);
 
@@ -115,7 +113,6 @@ public class AdminRoomTypeServlet extends HttpServlet {
 
                 String fileName = "rt_" + UUID.randomUUID() + ext;
 
-                // Real folder inside deployed webapp
                 String realDir = getServletContext().getRealPath(URL_DIR);
                 if (realDir == null) {
                     throw new IllegalStateException("Cannot resolve real path for " + URL_DIR);
@@ -132,8 +129,8 @@ public class AdminRoomTypeServlet extends HttpServlet {
 
                 rt.setPhotoPath(URL_DIR + "/" + fileName);
 
-                System.out.println("✅ Saved image to = " + target);
-                System.out.println("✅ DB photo_path  = " + rt.getPhotoPath());
+                System.out.println("Saved image to = " + target);
+                System.out.println("DB photo_path  = " + rt.getPhotoPath());
             }
 
             if (!roomTypeId.isBlank()) {
@@ -151,7 +148,9 @@ public class AdminRoomTypeServlet extends HttpServlet {
         }
     }
 
-    private static String trim(String s) { return (s == null) ? "" : s.trim(); }
+    private static String trim(String s) {
+        return (s == null) ? "" : s.trim();
+    }
 
     private static String messageOf(Exception e) {
         String m = (e == null) ? "" : e.getMessage();

@@ -20,7 +20,8 @@ public class GuestAuthService {
         if (phone == null || phone.isBlank()) errors.put("phone", "Phone is required");
         if (address == null || address.isBlank()) errors.put("address", "Address is required");
         if (password == null || password.isBlank()) errors.put("password", "Password is required");
-        if (confirmPassword == null || confirmPassword.isBlank()) errors.put("confirmPassword", "Confirm password is required");
+        if (confirmPassword == null || confirmPassword.isBlank())
+            errors.put("confirmPassword", "Confirm password is required");
 
         if (email != null && !email.isBlank()) {
             String e = email.trim().toLowerCase();
