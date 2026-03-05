@@ -117,6 +117,71 @@
                 flex-wrap: wrap;
             }
 
+            /* ✅ Searchbar (will be placed above table, inside table card) */
+            .searchRow {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin: 0 0 14px;
+            }
+
+            .searchRow .hint {
+                font-family: "Montserrat", sans-serif;
+                color: rgba(0, 0, 0, 0.65);
+                font-weight: 700;
+            }
+
+            .searchWrap {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .searchWrap input {
+                width: 360px;
+                max-width: 86vw;
+                height: 42px;
+                padding: 0 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.18);
+                font-family: "Montserrat", sans-serif;
+                font-size: 1rem;
+                outline: none;
+                box-sizing: border-box;
+                background: #fff;
+            }
+
+            .searchWrap input:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(0, 87, 184, 0.12);
+            }
+
+            .clearBtn {
+                height: 42px;
+                padding: 0 14px;
+                border-radius: 12px;
+                border: 1px solid var(--primary-color);
+                background: #fff;
+                color: var(--primary-color);
+                font-family: "Montserrat", sans-serif;
+                font-weight: 900;
+                cursor: pointer;
+            }
+
+            .noMatchBox {
+                display: none;
+                border: 1px dashed rgba(0, 0, 0, 0.25);
+                border-radius: 12px;
+                padding: 16px;
+                margin: 0 0 14px;
+                font-family: "Montserrat", sans-serif;
+                color: rgba(0, 0, 0, 0.70);
+                background: #fff;
+            }
+
             .card {
                 background: #fff;
                 padding: 28px;
@@ -127,13 +192,13 @@
 
             .grid {
                 display: grid;
-                grid-template-columns:1fr 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 18px;
             }
 
             @media (max-width: 820px) {
                 .grid {
-                    grid-template-columns:1fr;
+                    grid-template-columns: 1fr;
                 }
             }
 
@@ -262,17 +327,9 @@
                 font-weight: 800;
             }
 
-            .btnEdit {
-                background: var(--secondary-color);
-            }
-
-            .btnPreview {
-                background: #64748b;
-            }
-
-            .btnDelete {
-                background: var(--danger-color);
-            }
+            .btnEdit { background: var(--secondary-color); }
+            .btnPreview { background: #64748b; }
+            .btnDelete { background: var(--danger-color); }
 
             .modal {
                 display: none;
@@ -287,13 +344,8 @@
                 padding: 18px;
             }
 
-            #previewModal {
-                z-index: 9999;
-            }
-
-            #deleteModal {
-                z-index: 10000;
-            }
+            #previewModal { z-index: 9999; }
+            #deleteModal { z-index: 10000; }
 
             .modalContent {
                 background: #fff;
@@ -334,9 +386,7 @@
                 font-weight: 900;
             }
 
-            .statusBadge.inactive {
-                background: #ef4444;
-            }
+            .statusBadge.inactive { background: #ef4444; }
 
             .closeBtn {
                 border: none;
@@ -348,9 +398,7 @@
                 border-radius: 10px;
             }
 
-            .closeBtn:hover {
-                background: #f3f4f6;
-            }
+            .closeBtn:hover { background: #f3f4f6; }
 
             .modalBody {
                 display: grid;
@@ -360,9 +408,7 @@
             }
 
             @media (max-width: 880px) {
-                .modalBody {
-                    grid-template-columns:1fr;
-                }
+                .modalBody { grid-template-columns: 1fr; }
             }
 
             .modalImg {
@@ -375,17 +421,9 @@
                 display: block;
             }
 
-            .infoCard {
-                border: 1px solid #eee;
-                border-radius: 14px;
-                padding: 14px;
-            }
+            .infoCard { border: 1px solid #eee; border-radius: 14px; padding: 14px; }
 
-            .infoGrid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
+            .infoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
             .kv {
                 background: #f8fafc;
@@ -394,33 +432,11 @@
                 padding: 10px;
             }
 
-            .k {
-                font-size: 12px;
-                color: #64748b;
-                margin-bottom: 4px;
-                font-weight: 900;
-            }
+            .k { font-size: 12px; color: #64748b; margin-bottom: 4px; font-weight: 900; }
+            .v { font-size: 14px; color: #0f172a; font-weight: 900; }
 
-            .v {
-                font-size: 14px;
-                color: #0f172a;
-                font-weight: 900;
-            }
-
-            .descBox {
-                margin-top: 12px;
-                background: #fff;
-                border: 1px solid #eef2f7;
-                border-radius: 12px;
-                padding: 12px;
-            }
-
-            .descTitle {
-                font-weight: 900;
-                font-size: 13px;
-                color: #334155;
-                margin-bottom: 8px;
-            }
+            .descBox { margin-top: 12px; background: #fff; border: 1px solid #eef2f7; border-radius: 12px; padding: 12px; }
+            .descTitle { font-weight: 900; font-size: 13px; color: #334155; margin-bottom: 8px; }
 
             .descText {
                 white-space: pre-wrap;
@@ -433,13 +449,8 @@
                 word-break: break-word;
             }
 
-            .modalContent.sm {
-                width: 520px;
-            }
-
-            .modalBodySm {
-                padding: 18px;
-            }
+            .modalContent.sm { width: 520px; }
+            .modalBodySm { padding: 18px; }
 
             .warn {
                 background: #fff7ed;
@@ -459,7 +470,6 @@
                 border-top: 1px solid #eee;
             }
 
-            /* Toast */
             #toast {
                 position: fixed;
                 bottom: 30px;
@@ -477,7 +487,6 @@
                 font-weight: 800;
             }
 
-            /* Footer */
             .footer {
                 margin-top: 40px;
                 background: #0d2440;
@@ -489,22 +498,15 @@
                 max-width: 1200px;
                 margin: auto;
                 display: grid;
-                grid-template-columns:1.2fr 1fr 1fr;
+                grid-template-columns: 1.2fr 1fr 1fr;
                 gap: 20px;
             }
 
             @media (max-width: 900px) {
-                .footerInner {
-                    grid-template-columns:1fr;
-                }
+                .footerInner { grid-template-columns: 1fr; }
             }
 
-            .footer h3 {
-                font-family: "Roboto", sans-serif;
-                margin: 0 0 10px;
-                font-weight: 900;
-            }
-
+            .footer h3 { font-family: "Roboto", sans-serif; margin: 0 0 10px; font-weight: 900; }
             .footer p, .footer a {
                 font-family: "Montserrat", sans-serif;
                 color: rgba(255, 255, 255, .85);
@@ -513,9 +515,7 @@
                 margin: 0 0 8px;
             }
 
-            .footer a:hover {
-                text-decoration: underline;
-            }
+            .footer a:hover { text-decoration: underline; }
 
             .footerBottom {
                 max-width: 1200px;
@@ -638,8 +638,7 @@
                     <div style="grid-column:1 / -1;">
                         <span class="label">Description</span>
                         <div class="inputRow">
-                            <textarea id="description" name="description"><c:out
-                                    value="${form.description}"/></textarea>
+                            <textarea id="description" name="description"><c:out value="${form.description}"/></textarea>
                         </div>
                     </div>
 
@@ -686,8 +685,23 @@
             </form>
         </div>
 
+        <!-- ✅ TABLE CARD (Searchbar is placed HERE, above the table) -->
         <div class="card">
-            <table>
+
+            <div class="searchRow">
+                <div class="hint">Search room types (ID, name, rate, status, etc.)</div>
+                <div class="searchWrap">
+                    <input id="roomTypeSearch" type="text" placeholder="Search..." />
+                    <button type="button" class="clearBtn" id="clearRoomTypeSearch">Clear</button>
+                </div>
+            </div>
+
+            <div class="noMatchBox" id="noMatchBox">
+                No room types match your search. Try a different keyword.
+            </div>
+
+            <table id="roomTypesTable">
+                <thead>
                 <tr>
                     <th>ID</th>
                     <th>Photo</th>
@@ -699,7 +713,9 @@
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
+                </thead>
 
+                <tbody id="roomTypesTbody">
                 <c:if test="${empty rooms}">
                     <tr>
                         <td colspan="9" style="text-align:center; padding:18px;">No records found.</td>
@@ -707,7 +723,7 @@
                 </c:if>
 
                 <c:forEach items="${rooms}" var="rt">
-                    <tr>
+                    <tr class="rtRow">
                         <td><c:out value="${rt.roomTypeId}"/></td>
 
                         <td>
@@ -743,15 +759,15 @@
                             </a>
 
                             <span id="rt-${rt.roomTypeId}" style="display:none;">
-                    <span class="rt-name"><c:out value="${rt.typeName}"/></span>
-                    <span class="rt-rate"><c:out value="${rt.nightlyRate}"/></span>
-                    <span class="rt-adults"><c:out value="${rt.adultsCount}"/></span>
-                    <span class="rt-children"><c:out value="${rt.childrenCount}"/></span>
-                    <span class="rt-rooms"><c:out value="${rt.roomsCount}"/></span>
-                    <span class="rt-active"><c:out value="${rt.active}"/></span>
-                    <span class="rt-photo"><c:out value="${rt.photoPath}"/></span>
-                    <span class="rt-desc"><c:out value="${rt.description}"/></span>
-                  </span>
+                                <span class="rt-name"><c:out value="${rt.typeName}"/></span>
+                                <span class="rt-rate"><c:out value="${rt.nightlyRate}"/></span>
+                                <span class="rt-adults"><c:out value="${rt.adultsCount}"/></span>
+                                <span class="rt-children"><c:out value="${rt.childrenCount}"/></span>
+                                <span class="rt-rooms"><c:out value="${rt.roomsCount}"/></span>
+                                <span class="rt-active"><c:out value="${rt.active}"/></span>
+                                <span class="rt-photo"><c:out value="${rt.photoPath}"/></span>
+                                <span class="rt-desc"><c:out value="${rt.description}"/></span>
+                            </span>
 
                             <button type="button" class="actionBtn btnPreview"
                                     onclick="openPreviewById('${rt.roomTypeId}')">
@@ -765,11 +781,13 @@
                         </td>
                     </tr>
                 </c:forEach>
+                </tbody>
             </table>
         </div>
 
     </div>
 
+    <!-- Preview Modal -->
     <div id="previewModal" class="modal" onclick="closePreviewModal()">
         <div class="modalContent" onclick="event.stopPropagation()">
             <div class="modalHeader">
@@ -785,22 +803,10 @@
 
                 <div class="infoCard">
                     <div class="infoGrid">
-                        <div class="kv">
-                            <div class="k">Rate</div>
-                            <div class="v" id="pmRate"></div>
-                        </div>
-                        <div class="kv">
-                            <div class="k">Rooms</div>
-                            <div class="v" id="pmRooms"></div>
-                        </div>
-                        <div class="kv">
-                            <div class="k">Adults</div>
-                            <div class="v" id="pmAdults"></div>
-                        </div>
-                        <div class="kv">
-                            <div class="k">Children</div>
-                            <div class="v" id="pmChildren"></div>
-                        </div>
+                        <div class="kv"><div class="k">Rate</div><div class="v" id="pmRate"></div></div>
+                        <div class="kv"><div class="k">Rooms</div><div class="v" id="pmRooms"></div></div>
+                        <div class="kv"><div class="k">Adults</div><div class="v" id="pmAdults"></div></div>
+                        <div class="kv"><div class="k">Children</div><div class="v" id="pmChildren"></div></div>
                     </div>
 
                     <div class="descBox">
@@ -812,6 +818,7 @@
         </div>
     </div>
 
+    <!-- Delete Modal -->
     <div id="deleteModal" class="modal" onclick="closeDeleteModal()">
         <div class="modalContent sm" onclick="event.stopPropagation()">
             <div class="modalHeader">
@@ -867,19 +874,10 @@
 
     <script type="text/javascript">
         <![CDATA[
-        function $(id) {
-            return document.getElementById(id);
-        }
+        function $(id) { return document.getElementById(id); }
 
-        function closePreviewModal() {
-            var m = $("previewModal");
-            if (m) m.style.display = "none";
-        }
-
-        function closeDeleteModal() {
-            var m = $("deleteModal");
-            if (m) m.style.display = "none";
-        }
+        function closePreviewModal() { var m = $("previewModal"); if (m) m.style.display = "none"; }
+        function closeDeleteModal() { var m = $("deleteModal"); if (m) m.style.display = "none"; }
 
         function textOf(root, selector) {
             var el = root.querySelector(selector);
@@ -897,9 +895,7 @@
 
             setTimeout(function () {
                 t.style.opacity = "0";
-                setTimeout(function () {
-                    t.style.display = "none";
-                }, 250);
+                setTimeout(function () { t.style.display = "none"; }, 250);
             }, 3500);
         }
 
@@ -931,13 +927,8 @@
 
             var img = $("pmImg");
             var src = resolveImgSrc(photoPath);
-            if (src) {
-                img.src = src;
-                img.style.display = "";
-            } else {
-                img.removeAttribute("src");
-                img.style.display = "none";
-            }
+            if (src) { img.src = src; img.style.display = ""; }
+            else { img.removeAttribute("src"); img.style.display = "none"; }
 
             $("pmDesc").textContent = desc || "";
             modal.style.display = "flex";
@@ -998,10 +989,7 @@
             setErr("roomsCount", "");
 
             var img = $("photoPreview");
-            if (img) {
-                img.removeAttribute("src");
-                img.style.display = "none";
-            }
+            if (img) { img.removeAttribute("src"); img.style.display = "none"; }
 
             var card = $("formCard");
             if (card) card.scrollIntoView({behavior: "smooth", block: "start"});
@@ -1015,11 +1003,7 @@
 
             f.addEventListener("change", function () {
                 var file = f.files && f.files[0];
-                if (!file) {
-                    img.removeAttribute("src");
-                    img.style.display = "none";
-                    return;
-                }
+                if (!file) { img.removeAttribute("src"); img.style.display = "none"; return; }
                 var url = URL.createObjectURL(file);
                 img.src = url;
                 img.style.display = "block";
@@ -1046,26 +1030,11 @@
                 setErr("childrenCount", "");
                 setErr("roomsCount", "");
 
-                if (!typeName) {
-                    ok = false;
-                    setErr("typeName", "Room Name is required");
-                }
-                if (!rate) {
-                    ok = false;
-                    setErr("rate", "Nightly Rate is required");
-                }
-                if (!adults) {
-                    ok = false;
-                    setErr("adultsCount", "Adults Count is required");
-                }
-                if (!children) {
-                    ok = false;
-                    setErr("childrenCount", "Children Count is required");
-                }
-                if (!rooms) {
-                    ok = false;
-                    setErr("roomsCount", "Rooms Count is required");
-                }
+                if (!typeName) { ok = false; setErr("typeName", "Room Name is required"); }
+                if (!rate) { ok = false; setErr("rate", "Nightly Rate is required"); }
+                if (!adults) { ok = false; setErr("adultsCount", "Adults Count is required"); }
+                if (!children) { ok = false; setErr("childrenCount", "Children Count is required"); }
+                if (!rooms) { ok = false; setErr("roomsCount", "Rooms Count is required"); }
 
                 if (!ok) e.preventDefault();
             });
@@ -1076,21 +1045,56 @@
             var msg = ("${param.msg}" || "").trim();
             var err = ("${param.error}" || "").trim();
 
-            try {
-                err = decodeURIComponent(err);
-            } catch (e) {
-            }
+            try { err = decodeURIComponent(err); } catch (e) {}
 
-            if (err) {
-                showToast(err, true);
-                return;
-            }
+            if (err) { showToast(err, true); return; }
 
             if (msg === "saved") showToast("Room type created successfully.", false);
             if (msg === "updated") showToast("Room type updated successfully.", false);
             if (msg === "deleted") showToast("Room type deleted successfully.", false);
             if (msg === "editing") showToast("Edit mode enabled. Update and click Save Changes.", false);
             if (msg === "toggled") showToast("Status updated.", false);
+        })();
+
+        // ✅ Table search filter (searchbar is above table, inside table card)
+        (function () {
+            var input = $("roomTypeSearch");
+            var clearBtn = $("clearRoomTypeSearch");
+            var tbody = $("roomTypesTbody");
+            var noMatch = $("noMatchBox");
+
+            if (!input || !tbody) return;
+
+            function norm(s) { return (s || "").toString().toLowerCase().trim(); }
+
+            function applyFilter() {
+                var q = norm(input.value);
+                var rows = tbody.querySelectorAll("tr.rtRow");
+                var visible = 0;
+
+                rows.forEach(function (row) {
+                    var text = norm(row.innerText);
+                    var ok = (q.length === 0) || (text.indexOf(q) !== -1);
+                    row.style.display = ok ? "" : "none";
+                    if (ok) visible++;
+                });
+
+                if (noMatch) {
+                    noMatch.style.display = (rows.length > 0 && visible === 0) ? "block" : "none";
+                }
+            }
+
+            input.addEventListener("input", applyFilter);
+
+            if (clearBtn) {
+                clearBtn.addEventListener("click", function () {
+                    input.value = "";
+                    applyFilter();
+                    input.focus();
+                });
+            }
+
+            applyFilter();
         })();
         ]]>
     </script>

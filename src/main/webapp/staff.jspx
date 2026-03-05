@@ -496,7 +496,23 @@
         </div>
 
         <div class="card tableCard">
-            <table>
+
+            <!-- ADDED: search bar above table (inline only; no CSS changes) -->
+            <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+                <input id="staffSearch"
+                       type="text"
+                       placeholder="Search staff..."
+                       style="width:280px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:10px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none;"/>
+            </div>
+
+            <!-- ADDED: no-match message -->
+            <div id="staffNoMatch"
+                 class="emptyRow"
+                 style="display:none; margin-bottom:12px; border:1px dashed #cbd5e1; border-radius:10px;">
+                No matching staff found.
+            </div>
+
+            <table id="staffTable">
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
@@ -512,7 +528,8 @@
                 </c:if>
 
                 <c:forEach items="${staff}" var="s">
-                    <tr>
+                    <!-- ADDED: class for filtering -->
+                    <tr class="staffRow">
                         <td class="muted">${s.adminId}</td>
                         <td><strong>${s.username}</strong></td>
 
@@ -611,13 +628,7 @@
             var form = $("staffForm");
             if (!form) return;
 
-            var isEdit = $
-            {
-                not
-                empty
-                editStaff ? "true" : "false"
-            }
-            ;
+            var isEdit = "${not empty editStaff}" === "true";
 
             form.addEventListener("submit", function (e) {
                 var ok = true;
@@ -658,6 +669,33 @@
 
                 if (!ok) e.preventDefault();
             });
+        })();
+
+        // ADDED: staff table search filter (no UI changes)
+        (function () {
+            var input = $("staffSearch");
+            if (!input) return;
+
+            var rows = document.querySelectorAll(".staffRow");
+            var noMatch = $("staffNoMatch");
+
+            function filterRows() {
+                var q = (input.value || "").toLowerCase().trim();
+                var visible = 0;
+
+                rows.forEach(function (tr) {
+                    var txt = (tr.innerText || tr.textContent || "").toLowerCase();
+                    var ok = txt.indexOf(q) !== -1;
+                    tr.style.display = ok ? "" : "none";
+                    if (ok) visible++;
+                });
+
+                if (noMatch) {
+                    noMatch.style.display = (rows.length > 0 && visible === 0) ? "block" : "none";
+                }
+            }
+
+            input.addEventListener("input", filterRows);
         })();
 
         // toast from query params
