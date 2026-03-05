@@ -1,7 +1,8 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="jakarta.tags.core"
-          xmlns:fn="jakarta.tags.functions"
-          version="2.0">
+<jsp:root
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="jakarta.tags.core"
+  xmlns:fn="jakarta.tags.functions"
+  version="2.0">
 
   <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
   <jsp:directive.page isELIgnored="false" />
@@ -12,73 +13,207 @@
 
       <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/global.css"/>
 
-      <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono&amp;display=swap" rel="stylesheet"/>
+      <link rel="preconnect" href="https://fonts.googleapis.com"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
 
       <style>
-        body{ margin:0; background:#f6f8fb; }
-        .header{
-          height:70px; display:flex; justify-content:space-between; align-items:center;
-          padding:0 40px; background:var(--primary-color); color:#fff; font-family:"Roboto",sans-serif;
+        body{
+          margin:0;
+          background:#f6f8fb;
+          min-height:100vh;
+          display:flex;
+          flex-direction:column;
         }
-        .header a{ color:#fff; text-decoration:none; font-weight:600; }
 
-        .container{ max-width:1100px; margin:40px auto; padding:0 16px; font-family:"Montserrat",sans-serif; }
-        h2{ font-family:"Cascadia Mono",sans-serif; color:var(--primary-color); margin:0 0 14px; }
+        /* ===== TOP NAV (UPDATED) ===== */
+        .nav{
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          background: var(--primary-color);
+          color: #fff;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding: 14px 26px;
+          box-sizing:border-box;
+        }
+        .brand{ display:flex; flex-direction:column; gap:2px; }
+        .brand .title{
+          font-family:"Roboto",sans-serif;
+          font-weight:900;
+          font-size:1.25rem;
+          margin:0;
+        }
+        .brand .sub{
+          font-family:"Montserrat",sans-serif;
+          font-size:0.88rem;
+          opacity:0.9;
+        }
 
-        .topRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; }
+        .navLinks{
+          display:flex;
+          gap:10px;
+          flex-wrap:wrap;
+          font-family:"Montserrat",sans-serif;
+          align-items:center;
+        }
+        .navLinks a{
+          color:#fff;
+          text-decoration:none;
+          padding:10px 12px;
+          border-radius:12px;
+          border:1px solid rgba(255,255,255,0.28);
+          transition:0.15s ease;
+          font-weight:700;
+        }
+        .navLinks a:hover{ background: rgba(255,255,255,0.12); }
+        .navLinks .primaryBtn{
+          border:none;
+          background: var(--secondary-color);
+          color:#fff;
+          font-weight:900;
+        }
+
+        /* ===== PAGE ===== */
+        .container{
+          max-width:1200px;
+          margin:40px auto;
+          padding:0 20px;
+          width:100%;
+          box-sizing:border-box;
+          font-family:"Montserrat",sans-serif;
+          flex: 1;
+        }
+
+        h2{
+          font-family:"Cascadia Mono",sans-serif;
+          color:var(--primary-color);
+          margin:0 0 14px;
+        }
+
+        .topRow{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:10px;
+          margin-bottom:14px;
+          flex-wrap:wrap;
+        }
+
         .card{
-          background:#fff; padding:28px; border-radius:14px;
-          box-shadow:0 8px 25px rgba(0,0,0,0.06); margin-bottom:25px;
+          background:#fff;
+          padding:28px;
+          border-radius:16px;
+          box-shadow:0 8px 25px rgba(0,0,0,0.06);
+          margin-bottom:25px;
         }
 
         .grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
         @media(max-width:820px){ .grid{ grid-template-columns:1fr; } }
 
-        .label{ font-weight:600; margin-bottom:6px; display:block; }
+        .label{ font-weight:700; margin-bottom:6px; display:block; }
         .requiredMark{ color:var(--danger-color); }
 
         .inputRow input,.inputRow select,.inputRow textarea{
-          width:100%; padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.18);
-          font-family:"Montserrat",sans-serif; font-size:15px; box-sizing:border-box; outline:none;
+          width:100%;
+          padding:12px;
+          border-radius:12px;
+          border:1px solid rgba(0,0,0,0.18);
+          font-family:"Montserrat",sans-serif;
+          font-size:15px;
+          box-sizing:border-box;
+          outline:none;
         }
         .inputRow textarea{ min-height:100px; resize:vertical; }
 
         /* required error */
         .inputError{ border:1px solid var(--danger-color) !important; }
-        .fieldError{ margin:6px 0 0; color:var(--danger-color); font-size:13px; font-weight:600; min-height:16px; }
-
-        .actions{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
-        .btn{
-          padding:12px 18px; border-radius:10px; border:none;
-          background:var(--primary-color); color:#fff; cursor:pointer;
-          font-family:"Montserrat",sans-serif;
+        .fieldError{
+          margin:6px 0 0;
+          color:var(--danger-color);
+          font-size:13px;
+          font-weight:700;
+          min-height:16px;
         }
-        .btnSecondary{ background:#64748b; }
-        .btnGhost{ background:#fff; color:#0f172a; border:1px solid #e5e7eb; }
+
+        .actions{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:10px;
+          margin-top:15px;
+          flex-wrap:wrap;
+        }
+
+        .btn{
+          padding:12px 18px;
+          border-radius:12px;
+          border:none;
+          background:var(--primary-color);
+          color:#fff;
+          cursor:pointer;
+          font-family:"Montserrat",sans-serif;
+          font-weight:800;
+        }
+        .btnSecondary{
+          background:var(--secondary-color);
+          font-weight:800;
+        }
+        .btnGhost{
+          background:#fff;
+          color:#0f172a;
+          border:1px solid #e5e7eb;
+          font-weight:800;
+        }
 
         .editBadge{
-          display:inline-flex; align-items:center; gap:8px;
-          padding:8px 12px; border-radius:999px;
-          background:#f1f5f9; border:1px solid #e2e8f0;
-          color:#0f172a; font-size:13px; font-weight:700;
+          display:inline-flex;
+          align-items:center;
+          gap:8px;
+          padding:8px 12px;
+          border-radius:999px;
+          background:#f1f5f9;
+          border:1px solid #e2e8f0;
+          color:#0f172a;
+          font-size:13px;
+          font-weight:800;
           margin-bottom:14px;
         }
 
         table{ width:100%; border-collapse:collapse; }
         th,td{ padding:12px; border-bottom:1px solid #eee; vertical-align:top; }
-        th{ background:#f1f3f8; font-weight:700; }
+        th{
+          background:#f3f6fb;
+          font-weight:900;
+          color:#334155;
+        }
 
         .previewImg{
-          width:100px; height:70px; object-fit:cover; border-radius:10px;
-          border:1px solid #ddd; background:#fafafa; display:block;
+          width:100px;
+          height:70px;
+          object-fit:cover;
+          border-radius:12px;
+          border:1px solid #ddd;
+          background:#fafafa;
+          display:block;
         }
 
         .actionBtn{
-          display:inline-block; padding:7px 12px; border-radius:8px; font-size:13px;
-          color:#fff; text-decoration:none; margin-right:6px; cursor:pointer; border:none;
+          display:inline-block;
+          padding:7px 12px;
+          border-radius:10px;
+          font-size:13px;
+          color:#fff;
+          text-decoration:none;
+          margin-right:6px;
+          cursor:pointer;
+          border:none;
           font-family:"Montserrat",sans-serif;
+          font-weight:800;
         }
         .btnEdit{ background:var(--secondary-color); }
         .btnPreview{ background:#64748b; }
@@ -104,13 +239,14 @@
         }
         .modalHeader h3{
           margin:0; font-family:"Cascadia Mono",sans-serif; font-size:20px;
-          color:var(--primary-color); font-weight:800;
+          color:var(--primary-color); font-weight:900;
           display:flex; align-items:center; gap:10px;
         }
         .statusBadge{
           font-family:"Montserrat",sans-serif;
           font-size:12px; padding:4px 10px; border-radius:999px;
           color:#fff; background:#16a34a;
+          font-weight:900;
         }
         .statusBadge.inactive{ background:#ef4444; }
 
@@ -134,8 +270,8 @@
         .infoCard{ border:1px solid #eee; border-radius:14px; padding:14px; }
         .infoGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
         .kv{ background:#f8fafc; border:1px solid #eef2f7; border-radius:12px; padding:10px; }
-        .k{ font-size:12px; color:#64748b; margin-bottom:4px; font-weight:800; }
-        .v{ font-size:14px; color:#0f172a; font-weight:700; }
+        .k{ font-size:12px; color:#64748b; margin-bottom:4px; font-weight:900; }
+        .v{ font-size:14px; color:#0f172a; font-weight:900; }
 
         .descBox{
           margin-top:12px; background:#fff; border:1px solid #eef2f7; border-radius:12px;
@@ -154,7 +290,7 @@
         .modalBodySm{ padding:18px; }
         .warn{
           background:#fff7ed; border:1px solid #fed7aa; color:#9a3412;
-          padding:12px; border-radius:12px; margin-bottom:14px; font-weight:700;
+          padding:12px; border-radius:12px; margin-bottom:14px; font-weight:900;
         }
         .modalFooter{
           display:flex; justify-content:flex-end; gap:10px; padding:14px 18px;
@@ -168,15 +304,69 @@
           box-shadow:0 10px 26px rgba(0,0,0,0.25);
           font-family:"Montserrat",sans-serif;
           min-width:320px; text-align:center;
+          font-weight:800;
+        }
+
+        /* Footer */
+        .footer{
+          margin-top:40px;
+          background:#0d2440;
+          color:#fff;
+          padding:26px;
+        }
+        .footerInner{
+          max-width:1200px;
+          margin:auto;
+          display:grid;
+          grid-template-columns:1.2fr 1fr 1fr;
+          gap:20px;
+        }
+        @media(max-width:900px){ .footerInner{ grid-template-columns:1fr; } }
+
+        .footer h3{
+          font-family:"Roboto",sans-serif;
+          margin:0 0 10px;
+          font-weight:900;
+        }
+        .footer p,.footer a{
+          font-family:"Montserrat",sans-serif;
+          color:rgba(255,255,255,.85);
+          text-decoration:none;
+          line-height:1.6;
+          margin:0 0 8px;
+        }
+        .footer a:hover{ text-decoration: underline; }
+
+        .footerBottom{
+          max-width:1200px;
+          margin:16px auto 0;
+          padding-top:10px;
+          border-top:1px solid rgba(255,255,255,.2);
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          flex-wrap:wrap;
+          font-family:"Montserrat",sans-serif;
+          color:rgba(255,255,255,.78);
         }
       </style>
     </head>
 
     <body>
-      <div class="header">
-        <div>Ocean View Resort — Admin</div>
-        <div>
-          <a href="${pageContext.request.contextPath}/admin/logout">Logout</a>
+
+      <!-- UPDATED NAV -->
+      <div class="nav">
+        <div class="brand">
+          <div class="title">Ocean View Resort</div>
+          <div class="sub">Admin Dashboard</div>
+        </div>
+
+        <div class="navLinks">
+          <a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a>
+          <a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a>
+          <a href="${pageContext.request.contextPath}/admin/guests">Guests</a>
+          <a href="${pageContext.request.contextPath}/admin/staff">Staff</a>
+          <a class="primaryBtn" href="${pageContext.request.contextPath}/admin/logout">Logout</a>
         </div>
       </div>
 
@@ -339,8 +529,8 @@
                         </c:when>
                         <c:otherwise>
                           <img class="previewImg" alt="Room"
-							     src="${pageContext.request.contextPath}${rt.photoPath}"
-							     onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
+                               src="${pageContext.request.contextPath}${rt.photoPath}"
+                               onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='No Photo';" />
                         </c:otherwise>
                       </c:choose>
                     </c:when>
@@ -361,7 +551,6 @@
                     Edit
                   </a>
 
-                  <!-- hidden safe values -->
                   <span id="rt-${rt.roomTypeId}" style="display:none;">
                     <span class="rt-name"><c:out value="${rt.typeName}" /></span>
                     <span class="rt-rate"><c:out value="${rt.nightlyRate}" /></span>
@@ -431,7 +620,7 @@
 
           <div class="modalBodySm">
             <div class="warn">This action cannot be undone.</div>
-            <div style="font-weight:700; color:#0f172a;">
+            <div style="font-weight:900; color:#0f172a;">
               Delete room type: <span id="dmName" style="color:var(--danger-color);"></span>
             </div>
           </div>
@@ -446,6 +635,36 @@
 
       <!-- TOAST -->
       <div id="toast"></div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="footerInner">
+          <div>
+            <h3>Ocean View Resort</h3>
+            <p>Admin system for managing rooms, guests, and reservations.</p>
+          </div>
+
+          <div>
+            <h3>Quick Links</h3>
+            <p><a href="${pageContext.request.contextPath}/admin/roomtypes">Room Types</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/reservations">Reservations</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/guests">Guests</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/staff">Staff</a></p>
+          </div>
+
+          <div>
+            <h3>Contact</h3>
+            <p>Negombo, Sri Lanka</p>
+            <p>Phone: +94 77 123 4567</p>
+            <p>Email: info@oceanviewresort.com</p>
+          </div>
+        </div>
+
+        <div class="footerBottom">
+          <div>© Ocean View Resort</div>
+          <div>Admin Management System</div>
+        </div>
+      </div>
 
       <script type="text/javascript">
         <![CDATA[
@@ -616,7 +835,7 @@
           });
         })();
 
-        // ✅ TOAST FROM JSP EL (most reliable)
+        // toast from query params
         (function(){
           var msg = ("${param.msg}" || "").trim();
           var err = ("${param.error}" || "").trim();

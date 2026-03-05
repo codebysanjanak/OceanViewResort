@@ -7,238 +7,362 @@
 
   <html>
     <head>
-      <!-- Maven web root: src/main/webapp/styles/global.css -->
       <link rel="stylesheet" type="text/css"
             href="${pageContext.request.contextPath}/styles/global.css" />
 
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
             rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
             rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&amp;display=swap"
+      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
             rel="stylesheet" />
 
       <style>
-        .headerRow{
-          padding: 1rem 1.5rem;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 100%;
-          height: 10vh;
+        body{ margin:0; background:#f6f8fb; min-height:100vh; display:flex; flex-direction:column; }
+
+        :root{
+          --primary-color:#0057b8;
+          --primary-contrast:#ffffff;
+          --secondary-color:#008234;
+          --secondary-contrast:#ffffff;
+          --danger-color:#f56700;
+          --danger-contrast:#ffffff;
+        }
+
+        /* ===== NAV (match home) ===== */
+        .nav{
+          position: sticky;
+          top: 0;
+          z-index: 99;
+          background: var(--primary-color);
           color: var(--primary-contrast);
-          background-color: var(--primary-color);
-          box-sizing: border-box;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding: 14px 26px;
+          box-sizing:border-box;
         }
-        .headerRow h2{
-          font-size: 1.4rem;
-          font-family: "Roboto", sans-serif;
+        .brand{ display:flex; flex-direction:column; gap: 2px; }
+        .brand .title{
+          font-family:"Roboto",sans-serif;
+          font-weight:900;
+          font-size:1.25rem;
+          margin:0;
         }
-        .headerRow .headerActions{
-          display: flex;
-          font-family: "Montserrat", sans-serif;
-          font-size: 1.2rem;
-          gap: 1.2rem;
+        .brand .sub{
+          font-family:"Montserrat",sans-serif;
+          font-size:0.88rem;
+          opacity:0.9;
         }
-        .headerRow a{
+        .navLinks{
+          display:flex;
+          gap: 10px;
+          flex-wrap:wrap;
+          font-family:"Montserrat",sans-serif;
+          align-items:center;
+        }
+        .navLinks a{
           color: var(--primary-contrast);
-          text-decoration: none;
+          text-decoration:none;
+          padding: 10px 12px;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.28);
+          transition: 0.15s ease;
         }
-
-        .content{
-          padding: 2rem 5rem;
-          width: 100%;
-          box-sizing: border-box;
-        }
-        .content h2{
-          margin-bottom: 1.0rem;
-          color: var(--primary-color);
-          font-size: 1.8rem;
-          font-weight: 700;
-          font-family: "Cascadia Mono", sans-serif;
-        }
-
-        .loginCard{
-          width: min(620px, 100%);
-          padding: 1.6rem 1.8rem;
-          border-radius: 14px;
-          font-family: "Montserrat", sans-serif;
-        }
-
-        .subTitle{
-          margin: 0 0 1.2rem;
-          color: rgba(0,0,0,0.75);
-          font-size: 1.05rem;
-          line-height: 1.5;
-        }
-
-        .dataRow{
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          margin-bottom: 1.2rem;
-        }
-
-        .label{
-          font-weight: 600;
-          font-size: 1.2rem;
-          color: rgba(0,0,0,0.85);
-        }
-
-        .requiredMark{
-          color: var(--danger-color);
-          margin-left: 4px;
+        .navLinks a:hover{ background: rgba(255,255,255,0.12); }
+        .navLinks .primaryBtn{
+          border: none;
+          background: var(--secondary-color);
+          color: var(--primary-contrast);
           font-weight: 800;
         }
 
-        input[type="text"], input[type="password"]{
+        /* ===== PAGE ===== */
+        .pageWrap{
+          flex: 1;
+          display:flex;
+          justify-content:center;
+          padding: 46px 20px 30px;
+          box-sizing:border-box;
+        }
+        .card{
           width: 100%;
-          padding: 12px 12px;
-          border-radius: 10px;
-          border: 1px solid rgba(0,0,0,0.2);
-          outline: none;
-          font-size: 1.05rem;
-          font-family: "Montserrat", sans-serif;
-          box-sizing: border-box;
+          max-width: 720px;
+          background:#fff;
+          border-radius: 18px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+          overflow:hidden;
+        }
+        .cardHeader{
+          padding: 22px 22px 14px;
+          border-bottom: 1px solid rgba(0,0,0,0.07);
+          background: linear-gradient(135deg, rgba(0,87,184,0.08), rgba(0,130,52,0.05));
+        }
+        .cardHeader h1{
+          margin:0;
+          font-family:"Cascadia Mono",sans-serif;
+          color: var(--primary-color);
+          font-size: 1.9rem;
+          line-height:1.2;
+        }
+        .cardHeader p{
+          margin: 10px 0 0;
+          font-family:"Montserrat",sans-serif;
+          color: rgba(0,0,0,0.70);
+          line-height:1.6;
+        }
+
+        .cardBody{
+          padding: 22px;
+          box-sizing:border-box;
+          font-family:"Montserrat",sans-serif;
+        }
+
+        /* ===== FORM ===== */
+        .dataRow{
+          display:flex;
+          flex-direction:column;
+          gap: 8px;
+          margin-bottom: 14px;
+        }
+        .label{
+          font-weight: 800;
+          color: rgba(0,0,0,0.82);
+        }
+        .requiredMark{
+          color: var(--danger-color);
+          margin-left: 4px;
+          font-weight: 900;
+        }
+
+        input[type="text"], input[type="password"]{
+          width:100%;
+          height: 46px;
+          padding: 0 14px;
+          border-radius: 12px;
+          border: 1px solid rgba(0,0,0,0.18);
+          outline:none;
+          font-size: 1rem;
+          font-family:"Montserrat",sans-serif;
+          box-sizing:border-box;
+        }
+        input[type="text"]:focus, input[type="password"]:focus{
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 4px rgba(0,87,184,0.12);
         }
 
         .inputError{
           border: 1px solid var(--danger-color) !important;
+          box-shadow: 0 0 0 4px rgba(245,103,0,0.14) !important;
         }
-
         .fieldError{
-          margin: 0.2rem 0 0;
+          margin: 0;
           color: var(--danger-color);
           font-size: 0.95rem;
         }
 
         .passwordRow{
-          display: flex;
-          gap: 12px;
-          align-items: center;
+          display:flex;
+          gap: 10px;
+          align-items:center;
         }
-
         .toggleBtn{
           background: transparent;
           border: 1px solid var(--primary-color);
           color: var(--primary-color);
           padding: 10px 14px;
-          border-radius: 10px;
-          cursor: pointer;
-          font-family: "Montserrat", sans-serif;
-          font-size: 1rem;
-          white-space: nowrap;
-        }
-
-        .actionRow{
-          display: flex;
-          justify-content: flex-end;
-          gap: 1rem;
-          margin-top: 0.8rem;
-        }
-
-        .btn{
-          width: 220px;
-          height: 45px;
           border-radius: 12px;
           cursor: pointer;
-          font-size: 1.2rem;
-          font-family: "Montserrat", sans-serif;
+          font-family:"Montserrat",sans-serif;
+          font-size: 0.95rem;
+          white-space: nowrap;
+        }
+        .toggleBtn:hover{ background: rgba(0,87,184,0.08); }
+
+        .actionRow{
+          display:flex;
+          justify-content:flex-end;
+          gap: 10px;
+          margin-top: 12px;
+        }
+        .btn{
+          height: 46px;
+          padding: 0 16px;
+          border-radius: 14px;
+          cursor:pointer;
+          font-size: 1rem;
+          font-family:"Montserrat",sans-serif;
+          font-weight: 900;
+          border: 1px solid var(--primary-color);
+          background: transparent;
+          color: var(--primary-color);
+          min-width: 160px;
         }
         .btnPrimary{
-          background-color: var(--primary-color);
-          color: var(--primary-contrast);
           border: none;
+          background: var(--primary-color);
+          color: var(--primary-contrast);
+          min-width: 220px;
         }
 
-        #snackbar {
-          visibility: hidden;
-          min-width: 320px;
-          margin-left: -160px;
-          background-color: var(--secondary-color);
+        /* ===== FOOTER (match home) ===== */
+        .footer{
+          margin-top: 30px;
+          background: #0d2440;
           color: #fff;
-          text-align: center;
-          border-radius: 10px;
-          padding: 16px;
-          position: fixed;
-          z-index: 9999;
-          left: 50%;
-          bottom: 30px;
-          font-size: 17px;
-          font-family: "Montserrat", sans-serif;
-          box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+          padding: 26px 26px;
+        }
+        .footerInner{
+          max-width: 1250px;
+          margin: 0 auto;
+          display:grid;
+          grid-template-columns: 1.2fr 1fr 1fr;
+          gap: 18px;
+        }
+        @media (max-width: 900px){ .footerInner{ grid-template-columns: 1fr; } }
+        .footer h3{
+          margin:0 0 10px;
+          font-family:"Roboto",sans-serif;
+          font-weight: 900;
+        }
+        .footer p, .footer a{
+          font-family:"Montserrat",sans-serif;
+          color: rgba(255,255,255,0.86);
+          text-decoration:none;
+          line-height: 1.6;
+          margin: 0 0 6px;
+        }
+        .footer a:hover{ text-decoration: underline; }
+        .footerBottom{
+          max-width:1250px;
+          margin: 12px auto 0;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255,255,255,0.18);
+          font-family:"Montserrat",sans-serif;
+          color: rgba(255,255,255,0.78);
+          display:flex;
+          justify-content:space-between;
+          gap: 10px;
+          flex-wrap:wrap;
         }
 
-        #snackbar.show {
-          visibility: visible;
-          -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
-          animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        /* ===== SNACKBAR (keep) ===== */
+        #snackbar{
+          visibility:hidden;
+          min-width:320px;
+          margin-left:-160px;
+          background-color:var(--secondary-color);
+          color:#fff;
+          text-align:center;
+          border-radius:10px;
+          padding:16px;
+          position:fixed;
+          z-index:9999;
+          left:50%;
+          bottom:30px;
+          font-size:17px;
+          font-family:"Montserrat",sans-serif;
+          box-shadow:0 8px 22px rgba(0,0,0,0.25);
         }
-
-        @-webkit-keyframes fadein {
-          from { bottom: 0; opacity: 0; }
-          to { bottom: 30px; opacity: 1; }
+        #snackbar.show{
+          visibility:visible;
+          -webkit-animation:fadein 0.5s, fadeout 0.5s 4.5s;
+          animation:fadein 0.5s, fadeout 0.5s 4.5s;
         }
-        @keyframes fadein {
-          from { bottom: 0; opacity: 0; }
-          to { bottom: 30px; opacity: 1; }
-        }
-        @-webkit-keyframes fadeout {
-          from { bottom: 30px; opacity: 1; }
-          to { bottom: 0; opacity: 0; }
-        }
-        @keyframes fadeout {
-          from { bottom: 30px; opacity: 1; }
-          to { bottom: 0; opacity: 0; }
-        }
+        @-webkit-keyframes fadein{ from{bottom:0; opacity:0;} to{bottom:30px; opacity:1;} }
+        @keyframes fadein{ from{bottom:0; opacity:0;} to{bottom:30px; opacity:1;} }
+        @-webkit-keyframes fadeout{ from{bottom:30px; opacity:1;} to{bottom:0; opacity:0;} }
+        @keyframes fadeout{ from{bottom:30px; opacity:1;} to{bottom:0; opacity:0;} }
       </style>
     </head>
 
     <body>
-      <div class="headerRow">
-        <h2>Ocean View Resort</h2>
-        <div class="headerActions">
-          <a href="${pageContext.request.contextPath}/">Home</a>
+
+      <div class="nav">
+        <div class="brand">
+          <div class="title">Ocean View Resort</div>
+          <div class="sub">Admin portal • manage rooms &amp; operations</div>
+        </div>
+
+        <div class="navLinks">
+          <a href="${pageContext.request.contextPath}/home">Home</a>
+          <a href="${pageContext.request.contextPath}/availability">Check Availability</a>
+          <a class="primaryBtn" href="${pageContext.request.contextPath}/admin/login">Admin Login</a>
         </div>
       </div>
 
-      <div class="content">
-        <h2>Admin Login</h2>
+      <div class="pageWrap">
+        <div class="card">
 
-        <div class="loginCard">
-          <p class="subTitle">
-            Sign in to manage rooms, bookings, and resort operations.
-          </p>
+          <div class="cardHeader">
+            <h1>Admin Login</h1>
+            <p>Sign in to manage room types, bookings, and resort operations.</p>
+          </div>
 
-          <form id="adminLoginForm"
-                method="post"
-                novalidate="novalidate"
-                action="${pageContext.request.contextPath}/admin/login">
+          <div class="cardBody">
+            <form id="adminLoginForm"
+                  method="post"
+                  novalidate="novalidate"
+                  action="${pageContext.request.contextPath}/admin/login">
 
-            <div class="dataRow">
-              <span class="label">Username:<span class="requiredMark">*</span></span>
-              <input id="username" type="text" name="username" />
-              <p id="err-username" class="fieldError"></p>
-            </div>
-
-            <div class="dataRow">
-              <span class="label">Password:<span class="requiredMark">*</span></span>
-
-              <div class="passwordRow">
-                <input id="password" type="password" name="password" />
-                <button type="button" class="toggleBtn" data-toggle="password">Show</button>
+              <div class="dataRow">
+                <span class="label">Username<span class="requiredMark">*</span></span>
+                <input id="username" type="text" name="username" />
+                <p id="err-username" class="fieldError"></p>
               </div>
 
-              <p id="err-password" class="fieldError"></p>
-            </div>
+              <div class="dataRow">
+                <span class="label">Password<span class="requiredMark">*</span></span>
 
-            <div class="actionRow">
-              <button class="btn btnPrimary" type="submit">Login</button>
-            </div>
-          </form>
+                <div class="passwordRow">
+                  <input id="password" type="password" name="password" />
+                  <button type="button" class="toggleBtn" data-toggle="password">Show</button>
+                </div>
+
+                <p id="err-password" class="fieldError"></p>
+              </div>
+
+              <div class="actionRow">
+                <button class="btn" type="button"
+                        onclick="window.location.href='${pageContext.request.contextPath}/home'">
+                  Cancel
+                </button>
+                <button class="btn btnPrimary" type="submit">Login</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footerInner">
+          <div>
+            <h3>Ocean View Resort</h3>
+            <p>Secure admin portal for managing resort operations.</p>
+          </div>
+
+          <div>
+            <h3>Quick Links</h3>
+            <p><a href="${pageContext.request.contextPath}/home">Home</a></p>
+            <p><a href="${pageContext.request.contextPath}/availability">Check Availability</a></p>
+            <p><a href="${pageContext.request.contextPath}/guest/login">Guest Login</a></p>
+          </div>
+
+          <div>
+            <h3>Contact</h3>
+            <p>Negombo, Sri Lanka</p>
+            <p>Phone: +94 77 123 4567</p>
+            <p>Email: info@oceanviewresort.com</p>
+          </div>
+        </div>
+
+        <div class="footerBottom">
+          <div>© Ocean View Resort</div>
+          <div>Designed By Ishara Sanjana</div>
         </div>
       </div>
 
@@ -246,6 +370,7 @@
            data-success="${success}"
            data-error="${error}"></div>
 
+      <!-- ✅ DO NOT CHANGE YOUR SCRIPT (kept as-is) -->
       <script type="text/javascript">
         <![CDATA[
         (function () {

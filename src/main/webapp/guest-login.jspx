@@ -1,359 +1,426 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 
-  <jsp:directive.page contentType="text/html; charset=UTF-8"
-                      pageEncoding="UTF-8" />
+<jsp:directive.page contentType="text/html; charset=UTF-8"
+                    pageEncoding="UTF-8"/>
 
-  <html>
-    <head>
-      <link rel="stylesheet"
-            type="text/css"
-            href="${pageContext.request.contextPath}/styles/global.css" />
+<html>
+<head>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link rel="stylesheet"
+      type="text/css"
+      href="${pageContext.request.contextPath}/styles/global.css"/>
 
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&amp;display=swap"
-            rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap"
-            rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&amp;display=swap"
-            rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
 
-      <style>
-			/* ===== RESET ===== */
-			*{
-			  margin:0;
-			  padding:0;
-			  box-sizing:border-box;
-			}
-			
-			/* ===== ROOT COLORS ===== */
-			:root{
-			  --primary-color:#0057b8;
-			  --primary-contrast:#ffffff;
-			
-			  --secondary-color:#008234;
-			  --secondary-contrast:#ffffff;
-			
-			  --warning-color:#ffb700;
-			  --warning-contrast:#ffffff;
-			
-			  --danger-color:#f56700;
-			  --danger-contrast:#ffffff;
-			}
-			
-			/* ===== INPUTS ===== */
-			input{
-			  padding-inline-start:20px;
-			  padding-inline-end:20px;
-			  width:100%;
-			  height:45px;
-			  font-size:1.1rem;
-			  box-sizing:border-box;
-			}
-			
-			/* ===== DATA ROW ===== */
-			.dataRow{
-			  margin-bottom:25px;
-			  display:flex;
-			  flex-direction:column;
-			  gap:1rem;
-			}
-			
-			.dataRow .label{
-			  font-size:1.1rem;
-			  font-weight:600;
-			  font-family:"Montserrat",sans-serif;
-			}
-			
-			/* ===== REQUIRED MARK ===== */
-			.requiredMark{
-			  color:var(--danger-color);
-			  margin-left:4px;
-			  font-weight:600;
-			}
-			
-			/* ===== HEADER ===== */
-			.headerRow{
-			  padding:1rem 1.5rem;
-			  display:flex;
-			  align-items:center;
-			  justify-content:space-between;
-			  width:100%;
-			  height:10vh;
-			  color:var(--primary-contrast);
-			  background-color:var(--primary-color);
-			}
-			
-			.headerRow h2{
-			  font-size:1.8rem;
-			  font-family:"Roboto",sans-serif;
-			}
-			
-			.headerRow .headerActions{
-			  display:flex;
-			  font-family:"Montserrat",sans-serif;
-			  font-size:1.4rem;
-			  gap:1.2rem;
-			}
-			
-			.headerRow a{
-			  color:var(--primary-contrast);
-			  text-decoration:none;
-			}
-			
-			/* ===== CONTENT ===== */
-			.content{
-			  padding:2rem 5rem;
-			  width:100%;
-			}
-			
-			.content h2{
-			  margin-bottom:2.5rem;
-			  color:var(--primary-color);
-			  font-size:2.5rem;
-			  font-weight:600;
-			  font-family:"Cascadia Mono",sans-serif;
-			}
-			
-			.content form{
-			  padding-left:2rem;
-			  display:flex;
-			  flex-direction:column;
-			  width:60%;
-			  gap:1.5rem;
-			}
-			
-			.content form h2{
-			  font-weight:400;
-			}
-			
-			/* ===== ERRORS ===== */
-			.fieldError{
-			  margin:0.4rem 0 0;
-			  color:var(--danger-color);
-			  font-family:"Montserrat",sans-serif;
-			  font-size:1rem;
-			}
-			
-			.inputError{
-			  border:1px solid var(--danger-color) !important;
-			  outline:none;
-			}
-			
-			/* ===== PASSWORD ROW ===== */
-			.passwordRow{
-			  display:flex;
-			  align-items:center;
-			  gap:12px;
-			}
-			
-			.toggleBtn{
-			  background:transparent;
-			  border:1px solid var(--primary-color);
-			  color:var(--primary-color);
-			  padding:10px 14px;
-			  border-radius:8px;
-			  cursor:pointer;
-			  font-family:"Montserrat",sans-serif;
-			  font-size:1rem;
-			  white-space:nowrap;
-			}
-			
-			/* ===== ACTION BUTTONS ===== */
-			.content .actionRow{
-			  margin-bottom:20px;
-			  display:flex;
-			  justify-content:end;
-			  gap:1.5rem;
-			}
-			
-			.content .actionRow button{
-			  width:220px;
-			  height:65px;
-			  font-size:1.3rem;
-			  cursor:pointer;
-			}
-			
-			.content .actionRow button:last-child{
-			  background-color:var(--primary-color);
-			  color:var(--primary-contrast);
-			  border:none;
-			}
-			
-			/* ===== SNACKBAR ===== */
-			#snackbar{
-			  visibility:hidden;
-			  min-width:320px;
-			  margin-left:-160px;
-			  background-color:var(--secondary-color);
-			  color:#fff;
-			  text-align:center;
-			  border-radius:10px;
-			  padding:16px;
-			  position:fixed;
-			  z-index:9999;
-			  left:50%;
-			  bottom:30px;
-			  font-size:17px;
-			  font-family:"Montserrat",sans-serif;
-			  box-shadow:0 8px 22px rgba(0,0,0,0.25);
-			}
-			
-			#snackbar.show{
-			  visibility:visible;
-			  -webkit-animation:fadein 0.5s, fadeout 0.5s 4.5s;
-			  animation:fadein 0.5s, fadeout 0.5s 4.5s;
-			}
-			
-			/* ===== ANIMATIONS ===== */
-			@-webkit-keyframes fadein{
-			  from{bottom:0; opacity:0;}
-			  to{bottom:30px; opacity:1;}
-			}
-			
-			@keyframes fadein{
-			  from{bottom:0; opacity:0;}
-			  to{bottom:30px; opacity:1;}
-			}
-			
-			@-webkit-keyframes fadeout{
-			  from{bottom:30px; opacity:1;}
-			  to{bottom:0; opacity:0;}
-			}
-			
-			@keyframes fadeout{
-			  from{bottom:30px; opacity:1;}
-			  to{bottom:0; opacity:0;}
-			}
-			</style>
-    </head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&amp;display=swap"
+      rel="stylesheet"/>
 
-    <body>
-      <div class="headerRow">
-        <h2>Ocean View Resort</h2>
-        <div class="headerActions">
-          <a href="${pageContext.request.contextPath}/">My Bookings</a>
-          <a href="${pageContext.request.contextPath}/">Offers</a>
-          <a href="${pageContext.request.contextPath}/">About Us</a>
-          <a href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
-        </div>
-      </div>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;display=swap"
+      rel="stylesheet"/>
 
-      <div class="content">
-        <h2>Account Sign In</h2>
+<link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;700&amp;display=swap"
+      rel="stylesheet"/>
 
-        <form id="loginForm"
-              method="post"
-              novalidate="novalidate"
-              action="${pageContext.request.contextPath}/guest/login">
+<style>
 
-          <h2>View, change, or cancel your reservation or order</h2>
+/* ===== RESET ===== */
 
-          <div class="dataRow">
-            <span class="label">Email:<span class="requiredMark">*</span></span>
-            <div class="inputRow">
-              <input id="email" type="email" name="email" />
-              <p id="err-email" class="fieldError"></p>
-            </div>
-          </div>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-          <div class="dataRow">
-            <span class="label">Password:<span class="requiredMark">*</span></span>
-            <div class="inputRow">
-              <div class="passwordRow">
-                <input id="password" type="password" name="password" />
-                <button type="button" class="toggleBtn" data-toggle="password">Show</button>
-              </div>
-              <p id="err-password" class="fieldError"></p>
-            </div>
-          </div>
+/* ===== ROOT COLORS ===== */
 
-          <div class="actionRow">
-            <button type="submit">Login</button>
-          </div>
+:root{
+--primary-color:#0057b8;
+--primary-contrast:#ffffff;
 
-        </form>
-      </div>
+--secondary-color:#008234;
+--secondary-contrast:#ffffff;
 
-      <div id="snackbar"
-           data-success="${success}"
-           data-error="${error}"></div>
+--warning-color:#ffb700;
+--danger-color:#f56700;
+}
 
-      <script type="text/javascript">
-        <![CDATA[
-          (function () {
-            const form = document.getElementById("loginForm");
-            if (!form) return;
+/* ===== BODY ===== */
 
-            function setErr(id, text) {
-              const p = document.getElementById("err-" + id);
-              const input = document.getElementById(id);
-              if (p) p.textContent = text || "";
-              if (input) input.classList.toggle("inputError", !!text);
-            }
+body{
+background:#f6f8fb;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
 
-            // show/hide password
-            document.querySelectorAll("[data-toggle]").forEach(btn => {
-              btn.addEventListener("click", () => {
-                const id = btn.getAttribute("data-toggle");
-                const input = document.getElementById(id);
-                if (!input) return;
+/* ===== HEADER ===== */
 
-                const hidden = input.type === "password";
-                input.type = hidden ? "text" : "password";
-                btn.textContent = hidden ? "Hide" : "Show";
-              });
-            });
+.headerRow{
+padding:1rem 2rem;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:var(--primary-color);
+color:white;
+}
 
-            // clear error on typing
-            ["email", "password"].forEach(id => {
-              const input = document.getElementById(id);
-              if (!input) return;
-              input.addEventListener("input", () => setErr(id, ""));
-            });
+.headerRow h2{
+font-family:"Roboto",sans-serif;
+font-size:1.6rem;
+}
 
-            // client validation
-            form.addEventListener("submit", function (e) {
-              let ok = true;
+.headerActions{
+display:flex;
+gap:1.4rem;
+font-family:"Montserrat",sans-serif;
+font-size:1rem;
+}
 
-              const email = (document.getElementById("email").value || "").trim();
-              const password = (document.getElementById("password").value || "").trim();
+.headerActions a{
+color:white;
+text-decoration:none;
+padding:6px 10px;
+border-radius:8px;
+}
 
-              if (!email) { ok = false; setErr("email", "Email is required"); }
-              if (!password) { ok = false; setErr("password", "Password is required"); }
+.headerActions a:hover{
+background:rgba(255,255,255,0.15);
+}
 
-              if (!ok) e.preventDefault();
-            });
+/* ===== PAGE CENTER ===== */
 
-            // toast for success/error from server
-            const bar = document.getElementById("snackbar");
-            if (!bar) return;
+.pageWrapper{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px 20px;
+}
 
-            const successMsg = (bar.getAttribute("data-success") || "").trim();
-            const errorMsg = (bar.getAttribute("data-error") || "").trim();
-            const redirectUrl = "${redirectUrl}";
+/* ===== LOGIN CARD ===== */
 
-            function showToast(msg, isError) {
-              bar.textContent = msg;
-              bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
-              bar.classList.add("show");
-              setTimeout(() => {
-                  bar.classList.remove("show");
-                  if (!isError && redirectUrl) window.location.href = redirectUrl;
-                }, 5000);
-            }
+.loginCard{
+background:white;
+width:420px;
+padding:32px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
 
-            if (errorMsg.length > 0) {
-              showToast(errorMsg, true);   // danger background
-            } else if (successMsg.length > 0) {
-              showToast(successMsg, false); // secondary background
-            }
-          })();
-        ]]>
-      </script>
+.loginCard h2{
+margin-bottom:20px;
+color:var(--primary-color);
+font-family:"Cascadia Mono",sans-serif;
+}
 
-    </body>
-  </html>
+/* ===== INPUTS ===== */
+
+.dataRow{
+margin-bottom:20px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.label{
+font-family:"Montserrat",sans-serif;
+font-weight:600;
+}
+
+.requiredMark{
+color:var(--danger-color);
+margin-left:4px;
+}
+
+input{
+height:45px;
+padding:0 14px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:1rem;
+}
+
+input:focus{
+border-color:var(--primary-color);
+outline:none;
+}
+
+/* ===== PASSWORD ROW ===== */
+
+.passwordRow{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.toggleBtn{
+border:1px solid var(--primary-color);
+background:white;
+color:var(--primary-color);
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ===== ERRORS ===== */
+
+.fieldError{
+color:var(--danger-color);
+font-size:0.9rem;
+font-family:"Montserrat",sans-serif;
+}
+
+.inputError{
+border:1px solid var(--danger-color) !important;
+}
+
+/* ===== BUTTON ===== */
+
+.actionRow{
+display:flex;
+justify-content:center;
+margin-top:10px;
+}
+
+.actionRow button{
+width:100%;
+height:48px;
+border:none;
+border-radius:10px;
+background:var(--primary-color);
+color:white;
+font-size:1.1rem;
+cursor:pointer;
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+background:#0d2440;
+color:white;
+padding:26px;
+margin-top:auto;
+}
+
+.footerInner{
+max-width:1200px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:20px;
+font-family:"Montserrat",sans-serif;
+}
+
+.footer h3{
+font-family:"Roboto",sans-serif;
+margin-bottom:8px;
+}
+
+.footerBottom{
+text-align:center;
+margin-top:10px;
+opacity:0.8;
+}
+
+/* ===== SNACKBAR ===== */
+
+#snackbar{
+visibility:hidden;
+min-width:320px;
+margin-left:-160px;
+background:var(--secondary-color);
+color:white;
+text-align:center;
+border-radius:10px;
+padding:16px;
+position:fixed;
+left:50%;
+bottom:30px;
+font-family:"Montserrat",sans-serif;
+box-shadow:0 8px 22px rgba(0,0,0,0.25);
+}
+
+#snackbar.show{
+visibility:visible;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="headerRow">
+
+<h2>Ocean View Resort</h2>
+
+<div class="headerActions">
+<a href="${pageContext.request.contextPath}/home">Home</a>
+<a href="${pageContext.request.contextPath}/availability">Check Availability</a>
+<a href="${pageContext.request.contextPath}/guest/register">Sign Up</a>
+</div>
+
+</div>
+
+
+<!-- CENTER FORM -->
+
+<div class="pageWrapper">
+
+<div class="loginCard">
+
+<h2>Account Sign In</h2>
+
+<form id="loginForm"
+method="post"
+novalidate="novalidate"
+action="${pageContext.request.contextPath}/guest/login">
+
+<div class="dataRow">
+<span class="label">Email<span class="requiredMark">*</span></span>
+
+<input id="email" type="email" name="email"/>
+
+<p id="err-email" class="fieldError"></p>
+</div>
+
+
+<div class="dataRow">
+<span class="label">Password<span class="requiredMark">*</span></span>
+
+<div class="passwordRow">
+<input id="password" type="password" name="password"/>
+<button type="button" class="toggleBtn" data-toggle="password">Show</button>
+</div>
+
+<p id="err-password" class="fieldError"></p>
+</div>
+
+
+<div class="actionRow">
+<button type="submit">Login</button>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<div class="footerInner">
+
+<div>
+<h3>Ocean View Resort</h3>
+<p>Luxury stays with beautiful ocean views and premium service.</p>
+</div>
+
+<div>
+<h3>Quick Links</h3>
+<p><a href="${pageContext.request.contextPath}/home" style="color:white">Home</a></p>
+<p><a href="${pageContext.request.contextPath}/availability" style="color:white">Check Availability</a></p>
+</div>
+
+<div>
+<h3>Contact</h3>
+<p>Negombo, Sri Lanka</p>
+<p>Phone: +94 77 123 4567</p>
+</div>
+
+</div>
+
+<div class="footerBottom">
+© Ocean View Resort
+</div>
+
+</div>
+
+
+<div id="snackbar"
+data-success="${success}"
+data-error="${error}"></div>
+
+
+<!-- SCRIPT (UNCHANGED) -->
+
+<script type="text/javascript">
+<![CDATA[
+(function () {
+const form = document.getElementById("loginForm");
+if (!form) return;
+
+function setErr(id, text) {
+const p = document.getElementById("err-" + id);
+const input = document.getElementById(id);
+if (p) p.textContent = text || "";
+if (input) input.classList.toggle("inputError", !!text);
+}
+
+document.querySelectorAll("[data-toggle]").forEach(btn => {
+btn.addEventListener("click", () => {
+const id = btn.getAttribute("data-toggle");
+const input = document.getElementById(id);
+if (!input) return;
+
+const hidden = input.type === "password";
+input.type = hidden ? "text" : "password";
+btn.textContent = hidden ? "Hide" : "Show";
+});
+});
+
+["email", "password"].forEach(id => {
+const input = document.getElementById(id);
+if (!input) return;
+input.addEventListener("input", () => setErr(id, ""));
+});
+
+form.addEventListener("submit", function (e) {
+let ok = true;
+
+const email = (document.getElementById("email").value || "").trim();
+const password = (document.getElementById("password").value || "").trim();
+
+if (!email) { ok = false; setErr("email", "Email is required"); }
+if (!password) { ok = false; setErr("password", "Password is required"); }
+
+if (!ok) e.preventDefault();
+});
+
+const bar = document.getElementById("snackbar");
+if (!bar) return;
+
+const successMsg = (bar.getAttribute("data-success") || "").trim();
+const errorMsg = (bar.getAttribute("data-error") || "").trim();
+const redirectUrl = "${redirectUrl}";
+
+function showToast(msg, isError) {
+bar.textContent = msg;
+bar.style.backgroundColor = isError ? "var(--danger-color)" : "var(--secondary-color)";
+bar.classList.add("show");
+setTimeout(() => {
+bar.classList.remove("show");
+if (!isError && redirectUrl) window.location.href = redirectUrl;
+}, 5000);
+}
+
+if (errorMsg.length > 0) {
+showToast(errorMsg, true);
+} else if (successMsg.length > 0) {
+showToast(successMsg, false);
+}
+})();
+]]>
+</script>
+
+</body>
+</html>
 
 </jsp:root>
